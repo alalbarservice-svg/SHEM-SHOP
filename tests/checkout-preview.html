@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SHEM checkout QA</title>
+  </head>
+  <body>
+    <main
+      id="root"
+      style="max-width: 700px; margin: auto; padding: 24px"
+    ></main>
+    <script type="module">
+      import React from "react";
+      import { createRoot } from "react-dom/client";
+      import { HomeCheckout } from "../src/components/HomeCheckout.jsx";
+      import "../src/styles.css";
+      function CheckoutQA() {
+        const [customer, setCustomer] = React.useState({}),
+          [shipping, setShipping] = React.useState("standard");
+        return React.createElement(HomeCheckout, {
+          cart: [{ id: "qa-only", size: "S", qty: 1 }],
+          shipping,
+          onShipping: setShipping,
+          customer,
+          setCustomer,
+          operations: {
+            checkoutEnabled: false,
+            standardPrice: 49,
+            expressPrice: 199,
+          },
+        });
+      }
+      createRoot(document.getElementById("root")).render(
+        React.createElement(CheckoutQA),
+      );
+    </script>
+  </body>
+</html>

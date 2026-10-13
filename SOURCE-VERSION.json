@@ -1,9 +1,0 @@
-{
-  "store": "SHEM",
-  "source_commit": "64db0dfb1ee24538c5dda2fe49b79395e90f6754",
-  "deployed_version": 27,
-  "exported_at": "2026-10-12",
-  "storefront_entry": "index.html",
-  "administration_entry": "admin.html",
-  "server_entry": "worker/index.js"
-}

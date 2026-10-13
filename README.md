@@ -1,47 +1,50 @@
-# SHEM storefront and administration
+# SHEM SHOP
 
-SHEM menswear storefront and protected management interface in one React 19/Vite project with a Sites Worker, D1 and R2. Hebrew RTL and English, black/gold/ivory styling, locally bundled fonts, editorial imagery, three-image hero, new-arrival and end-of-season rails.
+גיבוי קוד מלא של שתי החנויות וממשקי הניהול, נכון ל-13 באוקטובר 2026.
 
-## Development and validation
+| תיקייה | תוכן | גרסת האתר |
+| --- | --- | --- |
+| SHEM/ | חנות SHEM, ממשק הניהול, השרת, המדיה, הפונטים, סכמת הנתונים, המיגרציות והבדיקות | 31 |
+| SHIMI/ | חנות SHIMI, ממשק הניהול, השרת, המדיה, סכמת הנתונים, המיגרציות והבדיקות | 8 |
+| docs/previous-backup/ | דוחות QA ותיעוד שנשמרו במאגר לפני ארגון התיקיות | היסטורי |
+
+בכל חנות `src/` מכיל את החנות וממשק הניהול יחד, `worker/` מכיל את השרת, `public/` מכיל מדיה, `drizzle/` מכיל מיגרציות, ו-`tests/` מכיל בדיקות. ממשק הניהול הוא חלק מאותו פרויקט כדי למנוע עותקי קוד נפרדים שאינם מסונכרנים. כתובת הכניסה הנוכחית לניהול היא `/admin.html`.
+
+## מה נשמר
+
+כל הקבצים המנוהלים ב-Git מהגרסאות המאומתות נשמרו ללא שינוי בתוכן. `SOURCE-VERSIONS.json` מזהה את גרסת המקור של כל חנות; `CHECKSUMS.sha256` ו-`FILE-MANIFEST.json` מאפשרים לוודא שלמות. היסטוריית המאגר הקודמת נשמרת ב-Git; ה-ZIP הוא צילום הקוד הנוכחי ואינו מכיל את תיקיית Git.
+
+## מה אינו חלק מגיבוי קוד
+
+הקובץ אינו גיבוי של מסדי הנתונים החיים או של קבצים שהועלו ל-R2 דרך ממשק הניהול. לקוחות, הזמנות, הגדרות ומיפויי מוצרים שנשמרים במסד הנתונים דורשים גיבוי נתונים נפרד לפני מעבר פלטפורמה. סודות סביבת השרת, סיסמאות, `node_modules` ופלט build אינם נכללים. `.env.example` מציג את שמות ההגדרות בלבד. אין כאן שינוי בדומיינים, בפריסה, בהרשאות או בחיבור בין החנויות.
+
+## התקנה ובנייה
+
+לכל חנות בנפרד, מתוך התיקייה שלה:
 
 ```sh
 npm ci
 npm run build
-npm run dev -- --host 0.0.0.0 --port 4173
-npm test
-npm run test:admin
-npm run test:operations
-npm run test:management
 npm run test:sites
+npm run test:channel
 ```
 
-Build before starting local preview because the local API loads the compiled Worker. Local preview has isolated D1/R2 data and a visibly simulated identity. Never copy its customer/order records into production. Browser fixtures live under tests/. Runtime secrets and generated build/node_modules are excluded from Git.
+ב-SHEM אפשר להריץ גם `npm run test:all`. קוד ההרשאות והאחסון משתמש בשירותי Sites, Cloudflare Workers, D1 ו-R2; העתקת הקוד לבדה לשרת רגיל או לוורדפרס אינה מחליפה את התשתית הזו. יש לשמר את מזהי הפרויקטים ב-`.openai/hosting.json` בעת המשך עבודה עם Sites.
 
-## Source map
+## אינטגרציה וגבולות
 
-- src/App.jsx and src/components/: storefront, checkout, membership and module-specific administration.
-- worker/api.js: authentication, catalogue and same-origin administration.
-- worker/operations.js: public quotes, collection/customer-care operations.
-- worker/management.js: management CRUD/archive, variant inventory, manual orders, immutable payment confirmation, loyalty and future home-site integration.
-- worker/documents.js: branded A4 invoice/order PDFs, protected R2 document cache and printable HTML.
-- worker/document-assets/: embedded Hebrew-capable font sources and license.
-- drizzle/: immutable production migrations.
-- public/assets/: brand, editorial and product assets.
-- docs/home-site-protocol.md: payment callback, email and remaining integration contract.
-- .openai/hosting.json: existing Sites project binding. Reuse it; do not create another production Site accidentally.
+SHEM הוא מקור המלאי, המחירים והסיכום הסופי לפריטים המקושרים. SHIMI הוא אתר הבית לתהליך התשלום, עם מיפוי מפורש של מוצר ווריאנט. חשבונית העסקה של SHEM מופקת לאחר אישור תשלום מאומת, בפורמט A4 ובגישה מוגנת להורדת PDF. מצב מסירת החשבונית העדכני הוא הורדה; אזכורי מייל או אתר בית עתידי בתיעוד ישן אינם משקפים את כל העדכונים האחרונים. חיבור ספק סליקה אמיתי, מחסן וחברת משלוחים עדיין דורש הגדרה ואימות; גיבוי הקוד אינו מפעיל אותם.
 
-## Orders and pricing
+יש לשמר מק"טים, מידות, כמויות, הנחות, משלוח, מע"מ כלול וסכום סופי זהה בין החנויות; אימות תשלום, מניעת כפילויות וחשבונית מוגנת. לעדכונים האחרונים של SHEM ראו `SHEM/docs/customer-experience.md`.
 
-Product prices include VAT. Show net items and the embedded 18% VAT component, then gross items, shipping and final total. Do not add VAT again. Standard home courier: 49 ILS / 5-7 business days; express: 199 ILS / one business day. Checkout collects name, phone, email and shipping address, selects delivery, and reviews details before embedded payment.
+מספר העסק לתנאי SHEM ולחשבונית העסקה: 516067873. מספר העסק לתנאי SHIMI: 043644418. פרטי התמיכה והניהול נשמרו בקוד המקור כפי שהיו; שמירת הקוד בגיטהב אינה מעבירה את הבעלות על התשתית או משנה את ההרשאות.
 
-Paid confirmation atomically updates stock, creates an immutable transaction invoice if the manager has completed issuer settings, queues the customer's A4 PDF email and a separate manager order certificate, and applies configured loyalty earnings. Order details expose invoice links, shipment/customer details, provider reference and masked payment identification. Full PAN/CVV are never stored. Provider acceptance is distinct from inbox delivery.
+## אימות קובצי הגיבוי
 
-## Production boundaries
+ממערכת עם `sha256sum`, בתיקיית הפרויקט:
 
-The storefront is public; administration requires a platform-authenticated user ID and the authorized manager email your.shem88@gmail.com. Production bootstrap is disabled. The Sites owning account is alalbar.service@gmail.com; business contact settings do not transfer ownership. The GitHub source account requested by the user is alalbar.service@gmail.com.
+```sh
+sha256sum -c CHECKSUMS.sha256
+```
 
-The future home site, actual payment provider, verified email sender/credentials and warehouse integration have not been connected. Keep live checkout disabled until real sandbox reconciliation passes. No live charge or delivered email is claimed. Replace demonstration merchandise/photos and complete business/policy/accounting/accessibility review before commercial launch. Refund/chargeback automation and authenticated storefront club-credit redemption are not implemented. Archive preserves commercial records; paid financial documents/system audit cannot be destructively edited.
-
-## Repository organization
-
-For the requested SHEM SHOP monorepo, place this whole project under SHEM/. Keep the future home-store application in a separate sibling directory. The store and management share this source tree, not separate drifting copies. See AGENTS.md for approved design and operating constraints.
+בדיקת האריזה מאמתת שהקבצים הועתקו במדויק ושה-ZIP ניתן לפתיחה. היא אינה בדיקת רכישה חיה חדשה.

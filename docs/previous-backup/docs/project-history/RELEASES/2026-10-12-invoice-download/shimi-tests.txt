@@ -1,0 +1,28 @@
+✔ protected persistent catalogue and club enforce identity, validation and same-origin writes (4551.307499ms)
+✔ manual product links synchronize only SKU/prices, require identity, preserve copy, and honor central stock (5017.1399ms)
+✔ SHEM final totals are authoritative; masked signed payment is idempotent; mixed SHIMI carts deduct central/local stock once (3423.248688ms)
+✔ persisted demo catalogue stays separate and its prepared link synchronizes actual source edits (1830.259182ms)
+✔ pre-payment review selects exact linked variants and mirrors discounts, sale prices, VAT and shipping without creating orders (13130.329248ms)
+✔ authorized temporary QA fixtures are signed, bounded, idempotent and removable (1487.124166ms)
+✔ same product and size merge while different sizes remain separate (1.8015ms)
+✔ delivery totals use the specified rates and empty bag has no shipping charge (0.145635ms)
+✔ invalid size and delivery cannot enter checkout calculation (0.282266ms)
+✔ discard stale or malformed stored lines rather than breaking the app (0.280043ms)
+✔ end-of-season cart uses the discounted SKU price (1.764345ms)
+✔ personal invoice requires paid order and its token, downloads the same A4 PDF without mail (3469.864282ms)
+✔ A4 pagination and embedded VAT retain totals and Hebrew document layout (1345.87244ms)
+✔ CRUD, archive, size/color stock, manual paid order, immutable invoice, signed callback and loyalty are real and isolated (4489.421956ms)
+✔ manager operations persist collections, profiles, requests, canonical quotes and audit without exposing personal data (3235.48652ms)
+✔ serves existing static assets without a fallback (13.462057ms)
+✔ falls back to index.html for an unknown app route (1.912694ms)
+✔ does not turn missing API or write requests into the app shell (3.632874ms)
+✔ emits the files required by Sites packaging (18.367219ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26159.908021
+

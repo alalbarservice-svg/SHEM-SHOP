@@ -1,0 +1,50 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync,readdirSync} from 'node:fs';
+import {Miniflare} from 'miniflare';
+import {PDFDocument} from 'pdf-lib';
+import {api} from '../worker/api.js';
+import {confirmPayment,processMail} from '../worker/management.js';
+test('personal invoice requires paid order and its token, downloads the same A4 PDF without mail',async()=>{
+ const mf=new Miniflare({modules:true,script:'export default {fetch(){return new Response("isolated")}}',compatibilityDate:'2026-08-06',d1Databases:['DB'],r2Buckets:['BUCKET']});
+ try {
+  const DB=await mf.getD1Database('DB');
+  for(const f of readdirSync('drizzle').filter(f=>f.endsWith('.sql')).sort())for(const sql of readFileSync('drizzle/'+f,'utf8').replaceAll('--> statement-breakpoint','').split(';').map(s=>s.trim()).filter(Boolean))await DB.prepare(sql).run();
+  const env={DB,BUCKET:await mf.getR2Bucket('BUCKET'),ADMIN_EMAILS:'your.shem88@gmail.com',INVOICE_DELIVERY_MODE:'download'};
+  const call=(path,method='GET',data,admin=false)=>api(new Request('https://shop.test'+path,{method,headers:{origin:'https://shop.test','content-type':'application/json',...(admin?{'oai-authenticated-user-id':'isolated-admin','oai-authenticated-user-email':'your.shem88@gmail.com'}:{})},body:data?JSON.stringify(data):undefined}),env);
+  const p=await(await call('/api/admin/products','POST',{he:'פריט בדיקה',sku:'PDF-ONLY',price:125,stock:2,sizes:['M'],sizeStock:{M:2},active:true,image:'knit'},true)).json();
+  assert.ok(p.id);
+  const business={legalName:'עסק בדיקה',registrationNumber:'TEST',address:'כתובת בדיקה',phone:'0500000000',email:'qa@example.test',vatMode:'included',vatRate:18,numberPrefix:'QA-'};
+  assert.equal((await call('/api/admin/manage/settings/invoice','PUT',business,true)).status,200);
+  const order=await(await call('/api/admin/manage/orders','POST',{customer:{name:'לקוח בדיקה',email:'qa@example.test',phone:'0500000000',city:'בדיקה',street:'בדיקה 1'},items:[{productId:p.id,size:'M',qty:1}],shippingCost:49,shippingMethod:'standard'},true)).json();
+  assert.ok(order.id);
+  await DB.prepare("UPDATE orders SET data=json_set(data,'$.viewToken',?) WHERE id=?").bind('private-order-token',order.id).run();
+  const url='/api/checkout-invoice/'+order.id+'?token=private-order-token';
+  assert.equal((await call(url)).status,409);
+  assert.equal((await call('/api/checkout-invoice/'+order.id)).status,404);
+  assert.equal((await call('/api/checkout-invoice/'+order.id+'?token=wrong')).status,404);
+  assert.equal((await(await call('/api/checkout-status/'+order.id+'?token=private-order-token')).json()).invoiceReady,false);
+  await confirmPayment(env,order.id,'isolated-confirmation','test');
+  const status=await(await call('/api/checkout-status/'+order.id+'?token=private-order-token')).json();
+  assert.equal(status.paymentStatus,'paid');assert.equal(status.invoiceReady,true);
+  const inline=await call(url),download=await call(url+'&download=1');
+  assert.equal(inline.status,200);assert.equal(inline.headers.get('content-type'),'application/pdf');assert.match(inline.headers.get('content-disposition'),/^inline;/);assert.match(download.headers.get('content-disposition'),/^attachment;/);
+  assert.equal(download.headers.get('cache-control'),'private,no-store');
+  const bytes=new Uint8Array(await inline.arrayBuffer());assert.deepEqual(new Uint8Array(await download.arrayBuffer()),bytes);
+  const doc=await PDFDocument.load(bytes);for(const page of doc.getPages()){assert.ok(Math.abs(page.getWidth()-595.28)<.01);assert.ok(Math.abs(page.getHeight()-841.89)<.01);}
+  assert.equal((await DB.prepare('SELECT COUNT(*) n FROM mail_jobs').first()).n,0);
+  assert.equal((await processMail(env)).sent,0);
+  await confirmPayment(env,order.id,'isolated-confirmation','test');assert.equal((await DB.prepare('SELECT COUNT(*) n FROM invoice_documents').first()).n,1);
+  assert.equal((await call('/api/checkout-invoice/'+order.id+'?token=wrong')).status,404);
+  const second=await(await call('/api/admin/manage/orders','POST',{customer:{name:'Test',email:'qa@example.test',phone:'0500000000',city:'Test',street:'Test 1'},items:[{productId:p.id,size:'M',qty:1}],shippingCost:49},true)).json();
+  await DB.prepare("UPDATE orders SET data=json_set(data,'$.viewToken',?) WHERE id=?").bind('second-private',second.id).run();
+  await DB.prepare("DELETE FROM settings WHERE key='invoice'").run();
+  await confirmPayment(env,second.id,'second-isolated-confirmation','test');
+  assert.equal((await(await call('/api/checkout-status/'+second.id+'?token=second-private')).json()).invoiceReady,false);
+  assert.equal((await call('/api/checkout-invoice/'+second.id+'?token=second-private')).status,409);
+  await call('/api/admin/manage/settings/invoice','PUT',business,true);
+  assert.equal((await call('/api/admin/manage/orders/'+second.id+'/issue-document','POST',{},true)).status,201);
+  assert.equal((await DB.prepare('SELECT COUNT(*) n FROM mail_jobs').first()).n,0);
+  assert.equal((await call('/api/checkout-invoice/'+second.id+'?token=second-private')).status,200);
+ } finally {await mf.dispose();}
+});

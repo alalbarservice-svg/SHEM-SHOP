@@ -1,0 +1,31 @@
+✔ protected persistent catalogue and club enforce identity, validation and same-origin writes (3896.675689ms)
+✔ manual product links synchronize only SKU/prices, require identity, preserve copy, and honor central stock (4408.958081ms)
+✔ SHEM final totals are authoritative; masked signed payment is idempotent; mixed SHIMI carts deduct central/local stock once (3279.717166ms)
+✔ persisted demo catalogue stays separate and its prepared link synchronizes actual source edits (1707.869696ms)
+✔ pre-payment review selects exact linked variants and mirrors discounts, sale prices, VAT and shipping without creating orders (12649.320203ms)
+✔ authorized temporary QA fixtures are signed, bounded, idempotent and removable (1586.89903ms)
+✔ same product and size merge while different sizes remain separate (5.198454ms)
+✔ delivery totals use the specified rates and empty bag has no shipping charge (0.243379ms)
+✔ invalid size and delivery cannot enter checkout calculation (0.287725ms)
+✔ discard stale or malformed stored lines rather than breaking the app (0.219244ms)
+✔ end-of-season cart uses the discounted SKU price (1.033576ms)
+✔ brand collections isolate brands, normalize supported labels and exclude unpublished products (1.775341ms)
+✔ manager product type takes precedence and unknown items stay in a neutral category (0.299963ms)
+✔ all six brand pages have original high-resolution black and white PNG assets (6.412906ms)
+✔ A4 pagination and embedded VAT retain totals and Hebrew document layout (1147.132263ms)
+✔ production app embeds all thirteen logos without separate logo image URLs (62.602229ms)
+✔ CRUD, archive, size/color stock, manual paid order, immutable invoice, signed callback and loyalty are real and isolated (3931.866147ms)
+✔ manager operations persist collections, profiles, requests, canonical quotes and audit without exposing personal data (2514.666116ms)
+✔ serves existing static assets without a fallback (8.165364ms)
+✔ falls back to index.html for an unknown app route (9.977058ms)
+✔ does not turn missing API or write requests into the app shell (10.390097ms)
+✔ emits the files required by Sites packaging (22.572259ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24606.734095
+

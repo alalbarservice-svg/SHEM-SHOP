@@ -1,0 +1,1049 @@
+[
+  {
+    "shop": "shem",
+    "path": "/api/channel/qa-fixtures",
+    "status": 200,
+    "durationMs": 6454,
+    "body": {
+      "ok": true,
+      "action": "seed",
+      "qaBatch": "qa-20261009",
+      "products": 2
+    }
+  },
+  {
+    "shop": "shimi",
+    "path": "/api/channel/qa-fixtures",
+    "status": 200,
+    "durationMs": 6111,
+    "body": {
+      "ok": true,
+      "action": "seed",
+      "qaBatch": "qa-20261009",
+      "products": 2
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/checkout-review",
+    "status": 200,
+    "durationMs": 7699,
+    "body": {
+      "source": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 20000,
+            "lineCents": 20000
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 45980,
+        "discountCents": 0,
+        "shippingCents": 4900,
+        "vatCents": 7014,
+        "netSubtotalCents": 38966,
+        "totalCents": 50880,
+        "shippingMethod": "standard",
+        "couponCode": "",
+        "vatRate": 18
+      },
+      "home": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 20000,
+            "lineCents": 20000
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 45980,
+        "discountCents": 0,
+        "shippingCents": 4900,
+        "vatCents": 7014,
+        "netSubtotalCents": 38966,
+        "totalCents": 50880,
+        "shippingMethod": "standard",
+        "couponCode": "",
+        "vatRate": 18
+      },
+      "verified": true,
+      "quote": {
+        "items": [
+          {
+            "id": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "size": "M",
+            "qty": 1,
+            "price": 200,
+            "he": "בדיקת QA - סריג SHEM"
+          },
+          {
+            "id": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "size": "L",
+            "qty": 2,
+            "price": 129.9,
+            "he": "בדיקת QA - חולצה SHEM"
+          }
+        ],
+        "subtotal": 459.8,
+        "discount": 0,
+        "shipping": 49,
+        "vatRate": 18,
+        "vatIncluded": 70.14,
+        "netSubtotal": 389.66,
+        "total": 508.8,
+        "promotion": null,
+        "quotedAt": "2026-10-09T06:59:36.574Z",
+        "paymentConnected": false
+      },
+      "checkedAt": "2026-10-09T06:59:38.492Z"
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/checkout-review",
+    "status": 200,
+    "durationMs": 13342,
+    "body": {
+      "source": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 20000,
+            "lineCents": 20000
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 45980,
+        "discountCents": 4598,
+        "shippingCents": 4900,
+        "vatCents": 6313,
+        "netSubtotalCents": 35069,
+        "totalCents": 46282,
+        "shippingMethod": "standard",
+        "couponCode": "QAOCT09",
+        "vatRate": 18
+      },
+      "home": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 20000,
+            "lineCents": 20000
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 45980,
+        "discountCents": 4598,
+        "shippingCents": 4900,
+        "vatCents": 6313,
+        "netSubtotalCents": 35069,
+        "totalCents": 46282,
+        "shippingMethod": "standard",
+        "couponCode": "QAOCT09",
+        "vatRate": 18
+      },
+      "verified": true,
+      "quote": {
+        "items": [
+          {
+            "id": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "size": "M",
+            "qty": 1,
+            "price": 200,
+            "he": "בדיקת QA - סריג SHEM"
+          },
+          {
+            "id": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "size": "L",
+            "qty": 2,
+            "price": 129.9,
+            "he": "בדיקת QA - חולצה SHEM"
+          }
+        ],
+        "subtotal": 459.8,
+        "discount": 45.98,
+        "shipping": 49,
+        "vatRate": 18,
+        "vatIncluded": 63.13,
+        "netSubtotal": 350.69,
+        "total": 462.82,
+        "promotion": {
+          "code": "QAOCT09",
+          "discount": 10
+        },
+        "quotedAt": "2026-10-09T06:59:44.313Z",
+        "paymentConnected": false
+      },
+      "checkedAt": "2026-10-09T06:59:51.841Z"
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/channel/qa-fixtures",
+    "status": 200,
+    "durationMs": 6001,
+    "body": {
+      "ok": true,
+      "action": "sale",
+      "qaBatch": "qa-20261009",
+      "products": 2
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/checkout-review",
+    "status": 200,
+    "durationMs": 10212,
+    "body": {
+      "source": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 17900,
+            "lineCents": 17900
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 43880,
+        "discountCents": 0,
+        "shippingCents": 4900,
+        "vatCents": 6694,
+        "netSubtotalCents": 37186,
+        "totalCents": 48780,
+        "shippingMethod": "standard",
+        "couponCode": "",
+        "vatRate": 18
+      },
+      "home": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 17900,
+            "lineCents": 17900
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 43880,
+        "discountCents": 0,
+        "shippingCents": 4900,
+        "vatCents": 6694,
+        "netSubtotalCents": 37186,
+        "totalCents": 48780,
+        "shippingMethod": "standard",
+        "couponCode": "",
+        "vatRate": 18
+      },
+      "verified": true,
+      "quote": {
+        "items": [
+          {
+            "id": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "size": "M",
+            "qty": 1,
+            "price": 179,
+            "he": "בדיקת QA - סריג SHEM"
+          },
+          {
+            "id": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "size": "L",
+            "qty": 2,
+            "price": 129.9,
+            "he": "בדיקת QA - חולצה SHEM"
+          }
+        ],
+        "subtotal": 438.8,
+        "discount": 0,
+        "shipping": 49,
+        "vatRate": 18,
+        "vatIncluded": 66.94,
+        "netSubtotal": 371.86,
+        "total": 487.8,
+        "promotion": null,
+        "quotedAt": "2026-10-09T07:00:04.768Z",
+        "paymentConnected": false
+      },
+      "checkedAt": "2026-10-09T07:00:08.046Z"
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/channel/qa-fixtures",
+    "status": 200,
+    "durationMs": 5650,
+    "body": {
+      "ok": true,
+      "action": "sale",
+      "qaBatch": "qa-20261009",
+      "products": 2
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/checkout-review",
+    "status": 200,
+    "durationMs": 7459,
+    "body": {
+      "source": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 17900,
+            "lineCents": 17900
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 43880,
+        "discountCents": 4388,
+        "shippingCents": 4900,
+        "vatCents": 6024,
+        "netSubtotalCents": 33468,
+        "totalCents": 44392,
+        "shippingMethod": "standard",
+        "couponCode": "QAOCT09",
+        "vatRate": 18
+      },
+      "home": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 17900,
+            "lineCents": 17900
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 43880,
+        "discountCents": 4388,
+        "shippingCents": 4900,
+        "vatCents": 6024,
+        "netSubtotalCents": 33468,
+        "totalCents": 44392,
+        "shippingMethod": "standard",
+        "couponCode": "QAOCT09",
+        "vatRate": 18
+      },
+      "verified": true,
+      "quote": {
+        "items": [
+          {
+            "id": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "size": "M",
+            "qty": 1,
+            "price": 179,
+            "he": "בדיקת QA - סריג SHEM"
+          },
+          {
+            "id": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "size": "L",
+            "qty": 2,
+            "price": 129.9,
+            "he": "בדיקת QA - חולצה SHEM"
+          }
+        ],
+        "subtotal": 438.8,
+        "discount": 43.88,
+        "shipping": 49,
+        "vatRate": 18,
+        "vatIncluded": 60.24,
+        "netSubtotal": 334.68,
+        "total": 443.92,
+        "promotion": {
+          "code": "QAOCT09",
+          "discount": 10
+        },
+        "quotedAt": "2026-10-09T07:00:19.293Z",
+        "paymentConnected": false
+      },
+      "checkedAt": "2026-10-09T07:00:21.162Z"
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/channel/qa-fixtures",
+    "status": 200,
+    "durationMs": 5264,
+    "body": {
+      "ok": true,
+      "action": "sale",
+      "qaBatch": "qa-20261009",
+      "products": 2
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/checkout-review",
+    "status": 200,
+    "durationMs": 9522,
+    "body": {
+      "source": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 17900,
+            "lineCents": 17900
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 43880,
+        "discountCents": 4388,
+        "shippingCents": 19900,
+        "vatCents": 6024,
+        "netSubtotalCents": 33468,
+        "totalCents": 59392,
+        "shippingMethod": "express",
+        "couponCode": "QAOCT09",
+        "vatRate": 18
+      },
+      "home": {
+        "items": [
+          {
+            "productId": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "name": "בדיקת QA - סריג SHEM",
+            "sku": "QA-OCT09-KNIT-M",
+            "size": "M",
+            "color": "שחור",
+            "qty": 1,
+            "priceCents": 17900,
+            "lineCents": 17900
+          },
+          {
+            "productId": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "name": "בדיקת QA - חולצה SHEM",
+            "sku": "QA-OCT09-SHIRT-L",
+            "size": "L",
+            "color": "שחור",
+            "qty": 2,
+            "priceCents": 12990,
+            "lineCents": 25980
+          }
+        ],
+        "currency": "ILS",
+        "subtotalCents": 43880,
+        "discountCents": 4388,
+        "shippingCents": 19900,
+        "vatCents": 6024,
+        "netSubtotalCents": 33468,
+        "totalCents": 59392,
+        "shippingMethod": "express",
+        "couponCode": "QAOCT09",
+        "vatRate": 18
+      },
+      "verified": true,
+      "quote": {
+        "items": [
+          {
+            "id": "qa-shem-knit-20261009",
+            "variantId": "qa-shem-knit-20261009-M",
+            "size": "M",
+            "qty": 1,
+            "price": 179,
+            "he": "בדיקת QA - סריג SHEM"
+          },
+          {
+            "id": "qa-shem-shirt-20261009",
+            "variantId": "qa-shem-shirt-20261009-L",
+            "size": "L",
+            "qty": 2,
+            "price": 129.9,
+            "he": "בדיקת QA - חולצה SHEM"
+          }
+        ],
+        "subtotal": 438.8,
+        "discount": 43.88,
+        "shipping": 199,
+        "vatRate": 18,
+        "vatIncluded": 60.24,
+        "netSubtotal": 334.68,
+        "total": 593.9200000000001,
+        "promotion": {
+          "code": "QAOCT09",
+          "discount": 10
+        },
+        "quotedAt": "2026-10-09T07:00:32.299Z",
+        "paymentConnected": false
+      },
+      "checkedAt": "2026-10-09T07:00:35.948Z"
+    }
+  },
+  {
+    "shop": "shem",
+    "path": "/api/catalogue",
+    "status": 200,
+    "durationMs": 5786,
+    "body": {
+      "products": [
+        {
+          "id": "qa-shem-knit-20261009",
+          "he": "בדיקת QA - סריג SHEM",
+          "en": "QA test knit SHEM",
+          "brand": "SHEM",
+          "cat": "clothing",
+          "sku": "QA-OCT09-KNIT",
+          "price": 179,
+          "stock": 20,
+          "sizeStock": {
+            "M": 10,
+            "L": 10
+          },
+          "sizes": [
+            "M",
+            "L"
+          ],
+          "color": "שחור",
+          "imageUrl": "/assets/knit.png",
+          "image": "knit",
+          "active": true,
+          "demo": true,
+          "qaBatch": "qa-20261009",
+          "variants": [
+            {
+              "id": "qa-shem-knit-20261009-M",
+              "size": "M",
+              "color": "שחור",
+              "sku": "QA-OCT09-KNIT-M",
+              "stock": 10
+            },
+            {
+              "id": "qa-shem-knit-20261009-L",
+              "size": "L",
+              "color": "שחור",
+              "sku": "QA-OCT09-KNIT-L",
+              "stock": 10
+            }
+          ],
+          "description": "פריט בדיקה בלבד עם מלאי בדיקה, אינו מלאי המחסן. ניתן למחוק לאחר הבדיקות.",
+          "previousPrice": 219
+        },
+        {
+          "id": "qa-shem-shirt-20261009",
+          "he": "בדיקת QA - חולצה SHEM",
+          "en": "QA test shirt SHEM",
+          "brand": "SHEM",
+          "cat": "clothing",
+          "sku": "QA-OCT09-SHIRT",
+          "price": 129.9,
+          "stock": 20,
+          "sizeStock": {
+            "M": 10,
+            "L": 10
+          },
+          "sizes": [
+            "M",
+            "L"
+          ],
+          "color": "שחור",
+          "imageUrl": "/assets/shirt.png",
+          "image": "shirt",
+          "active": true,
+          "demo": true,
+          "qaBatch": "qa-20261009",
+          "variants": [
+            {
+              "id": "qa-shem-shirt-20261009-M",
+              "size": "M",
+              "color": "שחור",
+              "sku": "QA-OCT09-SHIRT-M",
+              "stock": 10
+            },
+            {
+              "id": "qa-shem-shirt-20261009-L",
+              "size": "L",
+              "color": "שחור",
+              "sku": "QA-OCT09-SHIRT-L",
+              "stock": 10
+            }
+          ],
+          "description": "פריט בדיקה בלבד עם מלאי בדיקה, אינו מלאי המחסן. ניתן למחוק לאחר הבדיקות."
+        },
+        {
+          "id": "11d26fa9-f663-4aec-a2a0-739ea8f7ec6a",
+          "he": "חולצה מכופתרת משי",
+          "en": "Silk evening shirt",
+          "brand": "Givenchy",
+          "cat": "clothing",
+          "price": 169,
+          "previousPrice": 229,
+          "stock": 0,
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "color": "black",
+          "image": "shirt",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        },
+        {
+          "id": "4c2d3f83-4996-4a54-b499-1aa66f4887fc",
+          "he": "מכנסי צ׳ינו מחויטים",
+          "en": "Tailored chino trousers",
+          "brand": "Ralph Lauren",
+          "cat": "clothing",
+          "price": 179,
+          "previousPrice": 249,
+          "stock": 0,
+          "sizes": [
+            "30",
+            "32",
+            "34",
+            "36"
+          ],
+          "color": "ivory",
+          "image": "trousers",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        },
+        {
+          "id": "48ce111e-0aeb-4082-bc57-955def829fce",
+          "he": "סריג צמר פרימיום",
+          "en": "Textured wool knit",
+          "brand": "Loro Piana",
+          "cat": "clothing",
+          "price": 149,
+          "previousPrice": 199,
+          "stock": 0,
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "color": "black",
+          "image": "knit",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        },
+        {
+          "id": "763e556a-0f6c-467d-8caa-b5bf945907e9",
+          "he": "מוקסין עור איטלקי",
+          "en": "Leather loafers",
+          "brand": "Dior",
+          "cat": "shoes",
+          "price": 299,
+          "stock": 0,
+          "sizes": [
+            "40",
+            "41",
+            "42",
+            "43",
+            "44"
+          ],
+          "color": "black",
+          "image": "loafers",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        },
+        {
+          "id": "0025046b-4391-4852-b5fb-e57e57246e98",
+          "he": "חולצה מכופתרת משי",
+          "en": "Silk evening shirt",
+          "brand": "Givenchy",
+          "cat": "clothing",
+          "price": 229,
+          "stock": 0,
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "color": "black",
+          "image": "shirt",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        },
+        {
+          "id": "a9efecfc-0792-47eb-b2a9-cb64b71f642c",
+          "he": "מכנסי צ׳ינו מחויטים",
+          "en": "Tailored chino trousers",
+          "brand": "Ralph Lauren",
+          "cat": "clothing",
+          "price": 249,
+          "stock": 0,
+          "sizes": [
+            "30",
+            "32",
+            "34",
+            "36"
+          ],
+          "color": "ivory",
+          "image": "trousers",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        },
+        {
+          "id": "88c9981a-a424-4e21-9ffd-17a2649b2bf7",
+          "he": "סריג צמר פרימיום",
+          "en": "Textured wool knit",
+          "brand": "Loro Piana",
+          "cat": "clothing",
+          "price": 199,
+          "stock": 0,
+          "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ],
+          "color": "black",
+          "image": "knit",
+          "imageUrl": "",
+          "active": true,
+          "variants": []
+        }
+      ],
+      "configured": true
+    }
+  },
+  {
+    "shop": "shimi",
+    "path": "/api/catalogue",
+    "status": 200,
+    "durationMs": 6162,
+    "body": {
+      "products": [
+        {
+          "id": "qa-shimi-shirt-20261009",
+          "he": "בדיקת QA - חולצה SHIMI",
+          "en": "QA test shirt SHIMI",
+          "brand": "SHIMI",
+          "cat": "clothing",
+          "sku": "QA-OCT09-SHIRT",
+          "price": 129.9,
+          "stock": 20,
+          "sizeStock": {
+            "M": 10,
+            "L": 10
+          },
+          "sizes": [
+            "M",
+            "L"
+          ],
+          "color": "אבן",
+          "imageUrl": "/assets/shirt.png",
+          "image": "shirt",
+          "active": true,
+          "demo": true,
+          "qaBatch": "qa-20261009",
+          "variants": [
+            {
+              "id": "qa-shimi-shirt-20261009-M",
+              "size": "M",
+              "color": "אבן",
+              "sku": "QA-OCT09-SHIRT-M",
+              "stock": 10
+            },
+            {
+              "id": "qa-shimi-shirt-20261009-L",
+              "size": "L",
+              "color": "אבן",
+              "sku": "QA-OCT09-SHIRT-L",
+              "stock": 10
+            }
+          ],
+          "description": "פריט בדיקה בלבד עם מלאי בדיקה, אינו מלאי המחסן. ניתן למחוק לאחר הבדיקות."
+        },
+        {
+          "id": "qa-shimi-knit-20261009",
+          "he": "בדיקת QA - סריג SHIMI",
+          "en": "QA test knit SHIMI",
+          "brand": "SHIMI",
+          "cat": "clothing",
+          "sku": "QA-OCT09-KNIT",
+          "price": 179,
+          "stock": 20,
+          "sizeStock": {
+            "M": 10,
+            "L": 10
+          },
+          "sizes": [
+            "M",
+            "L"
+          ],
+          "color": "אבן",
+          "imageUrl": "/assets/knit.png",
+          "image": "knit",
+          "active": true,
+          "demo": true,
+          "qaBatch": "qa-20261009",
+          "variants": [
+            {
+              "id": "qa-shimi-knit-20261009-M",
+              "size": "M",
+              "color": "אבן",
+              "sku": "QA-OCT09-KNIT-M",
+              "stock": 10
+            },
+            {
+              "id": "qa-shimi-knit-20261009-L",
+              "size": "L",
+              "color": "אבן",
+              "sku": "QA-OCT09-KNIT-L",
+              "stock": 10
+            }
+          ],
+          "description": "פריט בדיקה בלבד עם מלאי בדיקה, אינו מלאי המחסן. ניתן למחוק לאחר הבדיקות.",
+          "previousPrice": 219
+        },
+        {
+          "id": "demo-shimi-shirt",
+          "he": "חולצה מכופתרת בגזרה נקייה",
+          "en": "חולצה מכופתרת בגזרה נקייה",
+          "brand": "SHIMI",
+          "cat": "clothing",
+          "sku": "SHIMI-SHIRT",
+          "price": 129,
+          "stock": 0,
+          "sizeStock": {
+            "M": 0,
+            "L": 0
+          },
+          "sizes": [
+            "M",
+            "L"
+          ],
+          "color": "שחור",
+          "imageUrl": "/assets/shirt.png",
+          "image": "",
+          "active": true,
+          "demo": true,
+          "variants": [],
+          "description": "פריט הדגמה להצגת החנות. התמונה, המחיר והמפרט מיועדים להמחשה ויש לעדכן אותם לפני מכירה.",
+          "material": "הרכב הבד יעודכן לפני מכירה.",
+          "care": "הוראות הטיפול יעודכנו לפי תווית המוצר."
+        },
+        {
+          "id": "demo-shimi-trousers",
+          "he": "מכנסיים בגזרה ישרה",
+          "en": "מכנסיים בגזרה ישרה",
+          "brand": "SHIMI",
+          "cat": "clothing",
+          "sku": "SHIMI-TROUSERS",
+          "price": 149,
+          "stock": 0,
+          "sizeStock": {
+            "30": 0,
+            "32": 0,
+            "34": 0,
+            "36": 0
+          },
+          "sizes": [
+            "30",
+            "32",
+            "34",
+            "36"
+          ],
+          "color": "אבן",
+          "imageUrl": "/assets/trousers.png",
+          "image": "",
+          "active": true,
+          "demo": true,
+          "variants": [],
+          "description": "פריט הדגמה להצגת החנות. התמונה, המחיר והמפרט מיועדים להמחשה ויש לעדכן אותם לפני מכירה.",
+          "material": "הרכב הבד יעודכן לפני מכירה.",
+          "care": "הוראות הטיפול יעודכנו לפי תווית המוצר."
+        },
+        {
+          "id": "demo-shimi-knit",
+          "he": "סריג בייסיק שחור",
+          "en": "סריג בייסיק שחור",
+          "brand": "SHIMI",
+          "cat": "clothing",
+          "sku": "SHIMI-KNIT",
+          "price": 179,
+          "stock": 0,
+          "sizeStock": {
+            "M": 0,
+            "L": 0
+          },
+          "sizes": [
+            "M",
+            "L"
+          ],
+          "color": "שחור",
+          "imageUrl": "/assets/knit.png",
+          "image": "",
+          "active": true,
+          "demo": true,
+          "variants": [],
+          "description": "פריט הדגמה להצגת החנות. התמונה, המחיר והמפרט מיועדים להמחשה ויש לעדכן אותם לפני מכירה.",
+          "material": "הרכב הבד יעודכן לפני מכירה.",
+          "care": "הוראות הטיפול יעודכנו לפי תווית המוצר.",
+          "previousPrice": 219
+        }
+      ],
+      "configured": true
+    }
+  }
+]

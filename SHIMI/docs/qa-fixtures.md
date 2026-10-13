@@ -1,0 +1,5 @@
+# Authorized QA fixtures - 2026-10-09
+
+The user explicitly requested disposable test products in both live stores. The temporary server-only signed fixture operation creates only the fixed qa-shem/qa-shimi knit and shirt records, their explicit M/L links, and QAOCT09 (10%) on SHEM. It cannot modify unrelated products. Source inventory is 20 per product, 10 per size, marked synthetic/demo. Price updates support only regular/sale for these fixed source records. No charges, payment sessions or real orders are created by seeding/review. The operation requires QA_FIXTURE_SECRET, signed timestamp/body, and expires on 2026-10-10. Remove the runtime secret after QA; fixtures remain editable/archivable through the normal manager UI. No business inventory or manager permissions are changed. UI browser acceptance remains separate from live API checks.
+
+Live QA found Edge fetch rejects redirect:error before any request. Signed peer/payment calls now use redirect:manual; non-success/redirect responses are rejected rather than followed.

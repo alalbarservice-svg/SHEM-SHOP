@@ -1,0 +1,1997 @@
+{
+  "files": [
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad3652954bd3d702e385f45035acd64f484e4d7d",
+      "size": 4440,
+      "sha256": "c17d90e2a677ebc21d5de406d99c4ea0fada8a708ef47b8d34d80248c5eeaf57"
+    },
+    {
+      "path": "SHEM/.env.example",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b7f8a2ccb4c72c37cbc39e0c324e572c371a71d1",
+      "size": 359,
+      "sha256": "756febf30d40e9b97ec042dd6e3fdb1eede76d4c643c9adbac34496434b2fda7"
+    },
+    {
+      "path": "SHEM/.gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b5d0af440bfc65aa6e1c627b282e977cca179f02",
+      "size": 73,
+      "sha256": "22ec52d4598bc63b4e1bad65d6c3d2e475005d0c8e3600bd68b1afa3c65a9a7e"
+    },
+    {
+      "path": "SHEM/.npmrc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1223b5c7deb2b1053be942740dbac26b7f0954c5",
+      "size": 23,
+      "sha256": "f7dbda001b627b3a792fb6929303b517f047f03916f2c55227e81216d38a2008"
+    },
+    {
+      "path": "SHEM/.openai/hosting.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eed9b69edbf2cd29d9331c79381705cdfeac777f",
+      "size": 95,
+      "sha256": "e09ae340c41255c3ab95e219215334308cfa87869b0de9c272b3cf9a040fecdb"
+    },
+    {
+      "path": "SHEM/ADMIN-AUDIT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8af6cf201fc4d3b720c26ff815717aa3c1beb10e",
+      "size": 6930,
+      "sha256": "47771fbc082f0e43a619eb85536d85f8131bdaa897c4afce28a9351a5f8380e5"
+    },
+    {
+      "path": "SHEM/AGENTS.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2263dcfd87c53a1a473a0aeaba64eff638429e64",
+      "size": 15858,
+      "sha256": "4f23e51d7d1e37a5ee30cedb98ee24758bb30e8bc536b9d25be8717d75e1c3ca"
+    },
+    {
+      "path": "SHEM/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77e3ce2e369cc8f7d118821a0321a28a854ab7c6",
+      "size": 3862,
+      "sha256": "94348066bb198b720a73e1963eb4d8389230e79b074894440d762cf2b1f4b154"
+    },
+    {
+      "path": "SHEM/db/schema.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b359acd7eabcacfaad5a816d9bca6465736e3a43",
+      "size": 5179,
+      "sha256": "f6379efcec00b19f66f5cebbd0fe831b0f1fe104214c70c51e9324e4b9f2bfca"
+    },
+    {
+      "path": "SHEM/design-qa.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "df5a4899cc572f299366c335c75b0ed31da4c011",
+      "size": 9797,
+      "sha256": "d46b89e79d6d6b8f92e012244da4226c643b89cd3806bf2214babf54408fc825"
+    },
+    {
+      "path": "SHEM/docs/customer-experience.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4662b882706f78fc1be2b06babddfb689493a409",
+      "size": 5980,
+      "sha256": "a73bdb867948f252bae867c7cac31413d58f65f109ffcce152980060c8e403ca"
+    },
+    {
+      "path": "SHEM/docs/demo-catalogue.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c9968aa308f94c184fc4e14bbc2f99626a7b0ac9",
+      "size": 2812,
+      "sha256": "b8cb3ac86f1823ebbd3ef58f6321cff0278c8243846d1f99cbdacd735ca24a5f"
+    },
+    {
+      "path": "SHEM/docs/home-site-protocol.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "76b32b362bea9e6d97e4142d68502e5f0479cc5f",
+      "size": 6034,
+      "sha256": "7ccf80d511a7966ccaa058e0fdec92cd1d4a8fdef9c4c618ca8d47f9d21959ed"
+    },
+    {
+      "path": "SHEM/docs/prepayment-review.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a79c85f8de8190a5523bc8663b82aed66cead67",
+      "size": 2340,
+      "sha256": "257434d7ab846d4610f625676bb050ca57fedc56951a297347f9c0f6f625c7e3"
+    },
+    {
+      "path": "SHEM/docs/qa-fixtures.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a419f62f7e9ab62b3168387f4dbc3d8f6b294c58",
+      "size": 1039,
+      "sha256": "9a987abf900cad33ea25f2e5a8d829d8206aa7f43478a352e1504b67b0188064"
+    },
+    {
+      "path": "SHEM/docs/shop-channel.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3e9928e0690f1a85056eedda5e7abedcfc6c84f",
+      "size": 5032,
+      "sha256": "ed8584d5fe46513945ba2e151c68880e4b04e255e752514174f1e022a800a09d"
+    },
+    {
+      "path": "SHEM/drizzle/0000_loose_colleen_wing.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6436d3851fe6f55a3db46435cd1256951e048840",
+      "size": 829,
+      "sha256": "8cc164bfd07abe7a5b90cd7ec15df1fc82d1fd40baabd8ba5e4510ffaf51b407"
+    },
+    {
+      "path": "SHEM/drizzle/0001_abnormal_vengeance.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a18359fb04062725165076e7e596629e4f8358af",
+      "size": 699,
+      "sha256": "4cc7323ddd226fc30355e418012c98a7024a25ade94f1ffe527b68ba43f94cd9"
+    },
+    {
+      "path": "SHEM/drizzle/0002_tan_felicia_hardy.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2d39125ff38deb612279e36e663c1f12e208e6da",
+      "size": 1126,
+      "sha256": "dad5e13f6b3910dc957f9e8e644c586cb3fab26c9c6b4d0eccef6837d0ecd3a9"
+    },
+    {
+      "path": "SHEM/drizzle/0003_shop_channel.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0974ef4c478a7769d6be66e7a561bdae646ac979",
+      "size": 1081,
+      "sha256": "52359617165acafb2802549f2f87c5b7ccf933130e7702bf45669c947b6c75a5"
+    },
+    {
+      "path": "SHEM/drizzle/0004_demo_catalogue.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c65b76672c5b461af076539c6eac3b676f869eee",
+      "size": 1703,
+      "sha256": "085ff1c18a444862241f5f4469f6f4124ef032d9cbcd933b3383752896d1c878"
+    },
+    {
+      "path": "SHEM/drizzle/0005_invoice_registration_number.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b15e766b28ff7d05754dc05636db19ed9796536e",
+      "size": 348,
+      "sha256": "34dcc86ae0ecb65d44d26cd2bf2d8210f5333259e2c2203947a73d6f3d4743ef"
+    },
+    {
+      "path": "SHEM/drizzle/0006_terms_registration_number.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "84db7c48d23b049c9f4de3523adf18d64ea42e9f",
+      "size": 275,
+      "sha256": "afee5608d9f6c64f7d6930fc45f2f63b50b8802379c7f557e511ececc89470ce"
+    },
+    {
+      "path": "SHEM/drizzle/0007_gigantic_wild_child.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c03b3d3076e423291e694dbaa81839f9c038d98f",
+      "size": 678,
+      "sha256": "5e7e5dd39c0731e478e60a9523c48d8a4ad5cf764f56eb71cb22a1f1612bc5c3"
+    },
+    {
+      "path": "SHEM/drizzle/0008_clever_whiplash.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "48509e0208ae0fe90b4a8f9de8f97bb5f1b6659e",
+      "size": 127,
+      "sha256": "e7d40a9fea5054205c2f0a0cdffbe9b5bf8836feb89287c188ed9ba4eefb965a"
+    },
+    {
+      "path": "SHEM/drizzle/meta/0000_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "98108fcab0ef32a126c44584370116148a966634",
+      "size": 4581,
+      "sha256": "6d16d145f1e83c0bb3820fa17f84df2a50d62254f45ea3bd0113924fd5d2879a"
+    },
+    {
+      "path": "SHEM/drizzle/meta/0001_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c7e3d6da69e44b5da3baf9bd0b4acd2d67517d5e",
+      "size": 8480,
+      "sha256": "ac6509ac36c35eb87ba1cb48d1828efcd45268f61ebcda2fe56df363e82c7daf"
+    },
+    {
+      "path": "SHEM/drizzle/meta/0002_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "708702fb10abba482fb237a4f2b618d463f77fee",
+      "size": 14121,
+      "sha256": "e6d5b3dfbd42c2ae955790f2848f98e4da3e30e5d0c3aad906116e1e3324d706"
+    },
+    {
+      "path": "SHEM/drizzle/meta/0007_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ae8e6a92677ba566a92021db40794c96fbec6e2",
+      "size": 20918,
+      "sha256": "7a710bc6991c9467fdc787d5f5e3b0d937b18cb6fbb776391a3af3b05edf475f"
+    },
+    {
+      "path": "SHEM/drizzle/meta/0008_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e05390f2c978d69e59fb4ebe88d9a51c5158310e",
+      "size": 21687,
+      "sha256": "a0d1c44be6162e9547f732911fa2b8357f48deaf8fdedc88cf1f3b7a9433f639"
+    },
+    {
+      "path": "SHEM/drizzle/meta/_journal.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b25a44640cea5edb7661382b924681a54ff219f1",
+      "size": 1379,
+      "sha256": "d737471797de94ec563019085bc18ac45e711fc6c2a8475f50e814cf0a8fb6f7"
+    },
+    {
+      "path": "SHEM/drizzle.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb8c39271e5bc8c68674f9e5f341a72e252b7f24",
+      "size": 133,
+      "sha256": "39966f3818721bb8bbc31f33ed0eeeaa35878d81a330127a1936b1b334e39ab8"
+    },
+    {
+      "path": "SHEM/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cb85d30eb70ab934477eca8340f82cd9405ae66d",
+      "size": 2103,
+      "sha256": "67743d40a948eb33df9da44d26b202127bab3821ba7125ba7c05098623d22c0b"
+    },
+    {
+      "path": "SHEM/package-lock.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "310db762dfabaf60ad5f307acd4cf366c26d6f22",
+      "size": 169527,
+      "sha256": "7321af1e757504b2cadfc5ccd74e9215c9fb4ce75bb2d997543aae865c71daf6"
+    },
+    {
+      "path": "SHEM/package.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58fb70349bcae2e96af2233662b7f3bb1078bce4",
+      "size": 1407,
+      "sha256": "98e47355050f6793bde65b569c868ca893a86ddae91b2e6a0b70bce7426a4a9d"
+    },
+    {
+      "path": "SHEM/public/assets/designers/amiri-black.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f26837abbff860f278c0cee244d65af7a32525b7",
+      "size": 396382,
+      "sha256": "b0b40423198fb4a58dee1189ecc12c72ee15819e6487e3af4192fbfaef300515"
+    },
+    {
+      "path": "SHEM/public/assets/designers/amiri-white.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "820043d222bc929c05407a912021dd545c2b1279",
+      "size": 322172,
+      "sha256": "06b49166b5d8f0551ce8a3110a6e83fea5f7f4a87d49268cdd47389d98a43a40"
+    },
+    {
+      "path": "SHEM/public/assets/designers/dior-black.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "876c0b1363e642ef6d5fcb67ef31c49c80839d33",
+      "size": 586076,
+      "sha256": "f7c1c6e2725e8fc9853f92e013a62e871532a3bb4942b442da00032c75ebbfe5"
+    },
+    {
+      "path": "SHEM/public/assets/designers/dior-white.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa093c2b43c49a7a81804eb7017a99bac0e20500",
+      "size": 583511,
+      "sha256": "d3f5a35e44f8dadb911f190e8f7fc4fb257acbc2bdd7c4fd25e12ff30320f013"
+    },
+    {
+      "path": "SHEM/public/assets/designers/essentials-black.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9597080809b57f0a62dd4d1377e5706997c65dd1",
+      "size": 749878,
+      "sha256": "7f50f4d52b2d02ce8d2fb656a2f5a4256f8b36ea8195a20f8a7e833ff8c305de"
+    },
+    {
+      "path": "SHEM/public/assets/designers/essentials-white.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5b5ae959a8d00a9ceea615877a4a157f34a8dd2",
+      "size": 809597,
+      "sha256": "b509be066e8397193e3ff0e3041d2348d0b52515573f5152af6bebe21a8eb969"
+    },
+    {
+      "path": "SHEM/public/assets/designers/givenchy-black.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0c267bd113855476be31a4925726cacba96a04ee",
+      "size": 477535,
+      "sha256": "c0fb430806cb5e1463077214a0991f364c2d42b25cf2baa2c6d429023340d7a5"
+    },
+    {
+      "path": "SHEM/public/assets/designers/givenchy-white.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "80b73dd3600e0dd1c01a84cbba23e4a1316f721e",
+      "size": 656107,
+      "sha256": "d079530814113241d8d6e7a311a9334a0bb4dfdc975ffa520044285bd4476a4c"
+    },
+    {
+      "path": "SHEM/public/assets/designers/loro-piana-black.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2f4df376d2535f02422c98dcb1826bbda44c875b",
+      "size": 830971,
+      "sha256": "b8bccb4810243a0456c794b45c169afcc95f77a02d9ae9e5c5949b117f73bf20"
+    },
+    {
+      "path": "SHEM/public/assets/designers/loro-piana-white.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3d74f123bf1952895fcf10b8690acc56015cc8ce",
+      "size": 1053016,
+      "sha256": "9890c49d173870f6f2400bff355ad83648136faec969a48ce27953af69d6db2e"
+    },
+    {
+      "path": "SHEM/public/assets/designers/ralph-lauren-black.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6a3edc7c6a4edfbe546a77c79ee2a374c1949f96",
+      "size": 826899,
+      "sha256": "2099a18f3c37b4d77b6b16cc15f0efbbb33e52a07f5adbdf849941515b8e17ca"
+    },
+    {
+      "path": "SHEM/public/assets/designers/ralph-lauren-white.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3699395c261198dfd140641a675157d310114208",
+      "size": 929165,
+      "sha256": "30fb666991d4e403f30868aa8b8a0c1bd23a00f7b7c249e41b073e564ef4e0db"
+    },
+    {
+      "path": "SHEM/public/assets/hero-knitwear.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0c509faf792fe9d61d63369d031363c5839a06c8",
+      "size": 2083302,
+      "sha256": "07ca4abd4783eaa3b02a0dfaba20782256915203b6c4e2c40a26026d16c532fd"
+    },
+    {
+      "path": "SHEM/public/assets/hero-knitwear.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7197ca298dd9f668552290e4ec31f83fc33be890",
+      "size": 216232,
+      "sha256": "af0eba94bac6a0c9dedb8c477d1e2f4c101b4d5934d3fef914a745f6eac402e6"
+    },
+    {
+      "path": "SHEM/public/assets/hero-mobile.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "89328a73e2b0c4e1063b6dd6155a9d4fef750dff",
+      "size": 1846103,
+      "sha256": "bde860209accc17987af8f3f0c7491e5a76cb681f7e3263db46db8f2b30a01dd"
+    },
+    {
+      "path": "SHEM/public/assets/hero-mobile.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "99a85fcda6d72724164b18a1cb205668c3c67df0",
+      "size": 163142,
+      "sha256": "31aa92122701f130e34a4025250df45daca3e74b5c630f1cd69e92dd0317ac6b"
+    },
+    {
+      "path": "SHEM/public/assets/hero-tailoring.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "919c8e856d2e4b4508430412461ba982abef10f5",
+      "size": 2061855,
+      "sha256": "2570aad777d44d1d3eea0920e2d7edd779a4d48a021e23255e2a7d868b466e89"
+    },
+    {
+      "path": "SHEM/public/assets/hero-tailoring.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d0f42e5706486fcbdb25d623bd638e0a5aba5c78",
+      "size": 173408,
+      "sha256": "6d7b29b45158345eb358ae68d538b0f0fa3b1e3768cabaa47ea8ebd4791b42eb"
+    },
+    {
+      "path": "SHEM/public/assets/hero.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e06a06f10375ae9262908c907467dc0c1ac8c11",
+      "size": 2013078,
+      "sha256": "cb1cfe1b195f768bfd6bf3a40349461aea185295d6e006254b045cb76ecbfaa2"
+    },
+    {
+      "path": "SHEM/public/assets/hero.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b7aef63a6beccfe8809f3f875d7fa92285ee6dda",
+      "size": 200698,
+      "sha256": "01f10d8e537b3f4c86d5e4451e7d4aba7e8da4070c54777ad5ae09e8da0cae3a"
+    },
+    {
+      "path": "SHEM/public/assets/knit.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd11d2f988fadc6462dab35c430971e8d8daf339",
+      "size": 2067743,
+      "sha256": "98091da37bfa689b339ba4962a694c6934418cece282aca844db6e7aa009e3c7"
+    },
+    {
+      "path": "SHEM/public/assets/loafers.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ece07867e86e124365ab214fe5f1134c815ed6d9",
+      "size": 1009664,
+      "sha256": "79967b91cee6f4c4752165a062d821f7b497fcb4eeef528ff6541d68cbe10009"
+    },
+    {
+      "path": "SHEM/public/assets/logo-monogram.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a9eea473d68e18dfe493f6f8e18e6f5f734d4eb0",
+      "size": 1395504,
+      "sha256": "d52b469e63b2b574d347fe4d074c1a28caa2c25a60f05fa1cee9c229b8df6306"
+    },
+    {
+      "path": "SHEM/public/assets/logo.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bb7f0dba9f1e25de4087c34118f42f664ece90b3",
+      "size": 20374,
+      "sha256": "b7e22ae08ed33f855e4eb57f7271a3ca964aed62a402f9257de62d118f4dd46c"
+    },
+    {
+      "path": "SHEM/public/assets/shem-share-black-v2.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eabf9e9ab0e61b303b45284ae7d0c70a61afb818",
+      "size": 768434,
+      "sha256": "e67b4db06c1b1946fa14cef07e122c703499f229c2a5a622fb8653b2fd9aff51"
+    },
+    {
+      "path": "SHEM/public/assets/shirt.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "452896f9b5340b18fd0b7a2024c32a690e08d738",
+      "size": 1481667,
+      "sha256": "94019f5dfc5c414ab608d8b315b297b0bac028f770ed249542ecb582d3c61204"
+    },
+    {
+      "path": "SHEM/public/assets/trousers.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bbac93314fd8187cc7b08db2bac62cc06c22e1ac",
+      "size": 1391295,
+      "sha256": "765ac0c443871c5482eec71f8dbc01ac5d45c92cc36022403573516912fbc6ac"
+    },
+    {
+      "path": "SHEM/qa/admin-desktop.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cc23ec9880707a092573288ac179f317904ec002",
+      "size": 57600,
+      "sha256": "9c243f0a48c54cb352adc5d92b35098908e05917348f6bdb2270a7c3602a5002"
+    },
+    {
+      "path": "SHEM/qa/approved-reference.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "03eded8108245ad97d80c50a7258909a784ba1c8",
+      "size": 1663188,
+      "sha256": "8f8077c6006d45d959de6f854ee434b94f574fb4be4bc6650b37fe16799ebdf4"
+    },
+    {
+      "path": "SHEM/qa/comparison.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2911d1f50ea5d90798d6d64a69f7172d9363a896",
+      "size": 2276429,
+      "sha256": "c3e7815cc4e4e4842e842fe52ee80f33985e41dfaf6696dfeec5ae93b041a6ab"
+    },
+    {
+      "path": "SHEM/qa/desktop-final.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "daefb2f6187439267fb88f92be8199ec93f5a9db",
+      "size": 817010,
+      "sha256": "c72a4892d0523ca5e4ecfc5efe024507ab377076d8d7e484e166bd56c9cc733a"
+    },
+    {
+      "path": "SHEM/qa/focused-comparison.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45645f268afc37c9d342f770a54adabae3eb6144",
+      "size": 508600,
+      "sha256": "7dad16e291c7f0bec92df78149ca0cd7ce3aa28adb9bbbd774f38c566edf9333"
+    },
+    {
+      "path": "SHEM/qa/hero-carousel-desktop.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "68fbe1a857dd27e6aecdc3d82d8bc7ab0f7ec2e7",
+      "size": 113852,
+      "sha256": "1d41c799ae45611b153475b83293ec22684357ad51c66d611ad2655ce9125457"
+    },
+    {
+      "path": "SHEM/qa/integrations-20261007.jpg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c0f277b598bfc4dda7b54c905c7f06c7a12f876e",
+      "size": 91065,
+      "sha256": "6d01b6a3911955bdb4058a5559247c4eaa422942a66d6aca9ef0216e7d7408ff"
+    },
+    {
+      "path": "SHEM/qa/mobile-final.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ccc381558a20097579d79de85250e9788e08d0a1",
+      "size": 245428,
+      "sha256": "8425014fac9ba2ab9385283546e70a8b1b85638c4f8684a374377b7027e126b5"
+    },
+    {
+      "path": "SHEM/qa/refinement-desktop.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c1260a1004e0f84f7cef9bc83f35679c3b64da7",
+      "size": 128860,
+      "sha256": "99c1920062767c4dd094569205e6d2493d4d9f5024b41c90928f633102d2e4c4"
+    },
+    {
+      "path": "SHEM/scripts/local-api-plugin.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4092c38308734bd93d2e531f9f692804ff374eb6",
+      "size": 3453,
+      "sha256": "62c1fc07f277dd5fe23c4a63c01e68e31b394dc9598165092dfb3538e7e777eb"
+    },
+    {
+      "path": "SHEM/scripts/prepare-admin-share.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5abe3dfda65a52ae934230cd8ba7c090dff6f20b",
+      "size": 1554,
+      "sha256": "ce5edf07b8d48ffb322f8f06261d8659b2bb4d68ec14e00201ee7e254252f572"
+    },
+    {
+      "path": "SHEM/scripts/prepare-sites-build.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "01c4c29e4976b656128c2bb4e87e4959bf689ebc",
+      "size": 1182,
+      "sha256": "96f0e84030d707da943d6057694d23a924698a46f7c86a44da1e2a5dc376315b"
+    },
+    {
+      "path": "SHEM/src/App.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ae08b9b5180b1eb0741ee8ed09ce7139b68d5e9",
+      "size": 61251,
+      "sha256": "9ac023c44b0cc325213d31912654b94538be60ec6e0592dba216b87b6455a43a"
+    },
+    {
+      "path": "SHEM/src/admin-api.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a4cadba503ce28abed748e307dcd4935b5ef81f",
+      "size": 447,
+      "sha256": "a5710d4713fb01deaa6b236bf60455c2926e4563aa06295d6c9cffed670dcf55"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/amiri-black.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35a49f0a29c9f28896daaf3387424e824fd0f717",
+      "size": 217000,
+      "sha256": "7ece595579d823f8162997704716d7231162e5bb2ffd26d8cad0269b08678934"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/amiri-white.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2bd625f87e39e5af72192bd41343ccf1a87fd407",
+      "size": 185062,
+      "sha256": "4ca0c539f6aa1c8789d6ba2a92ab12b26816dc9c039365166722c274893b13ea"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/dior-black.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2f6217ce77c77f084da916b0fe9f6bea3e94bd89",
+      "size": 324100,
+      "sha256": "9362be49088d4b8799dabfdf11aba4b2b8bd9d6696fbe5aa679e6df091192d0d"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/dior-white.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cdc6f5bc47602b82e0cea5cb4b724d4803073a1b",
+      "size": 336272,
+      "sha256": "de34d0dfc8446c616916f721bd551e4daf78600d474b0763827d1ce4b8f50dd8"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/essentials-black.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "abd6b1236d41f8e08ca3138935dee28e3df421e3",
+      "size": 426618,
+      "sha256": "730ee551050e7dc6ecbfb3284e2da99260bb6d1b7da20600f515760cec4dbdbd"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/essentials-white.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e165aebc5ae9a4ec6137931f40e0ca202f72aa02",
+      "size": 459950,
+      "sha256": "ad6425033a7ecfe1c1a6bcf3ee85860cdaa270f12701e46e72a7680850c4b54f"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/givenchy-black.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "73a73b530999d87bb83a01d31a8f223516226f76",
+      "size": 266742,
+      "sha256": "378bdd763df9a85d6f8cf1224adfffaed984006843b308cf699a2506f5d5f22c"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/givenchy-white.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0dd0e82174ea5b0103cd7b74c503f7f46f559c15",
+      "size": 327140,
+      "sha256": "2d1c234bfb1af81c2ed25610cb996397c70afcfd3d7b3496dabac677a0afc1b3"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/logo-monogram.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bbdddc1e78f2eebb8010baffb96cbbde7be866d1",
+      "size": 817844,
+      "sha256": "f39df41ebf75399033a685caa26f05e456e85142fb925bca85b335320bde5f73"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/loro-piana-black.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2e26be28df318bd0c4a0388a289b308df72991c5",
+      "size": 481828,
+      "sha256": "c91e5b1a9ad313724bcb31c45823e962f1e6ad87ff995004d811a2136d86322d"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/loro-piana-white.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35ed46e6f0a856311e2bd523132fb94f7cd51f89",
+      "size": 616048,
+      "sha256": "ce48427f1f9097c66ffb761835d77a30374506985fb53d999c81bcc33b497ef3"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/ralph-lauren-black.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8d964fe4ee8b47bf0de51cca7d5588b52bb236b0",
+      "size": 495352,
+      "sha256": "93e2c15c7bfa24390beb3600fbf2154de13faa3824e54da3a42fb432365f0d87"
+    },
+    {
+      "path": "SHEM/src/assets/embedded-logos/ralph-lauren-white.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c57867ae0faf42dd06385fd18ceba1734ba34da",
+      "size": 525798,
+      "sha256": "8b90cb45fd074b2f2e92c2ca0140761279b68836bd216716c2111919ee2f8cd3"
+    },
+    {
+      "path": "SHEM/src/brand-logo-assets.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a0e63821f655ee136d473a518d86f8ccb83c787c",
+      "size": 1427,
+      "sha256": "5380c0db50f3427fa890a189170efd8d8c192b751f728b901fe8de063a54dea9"
+    },
+    {
+      "path": "SHEM/src/catalogue.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "598e3c592b63c0c3d1d5d923e2bb55f6ad487a55",
+      "size": 1303,
+      "sha256": "c31db35f153c5c1e211d1f435e0c443cb6ed5dbc15b9a519279f18cc23212217"
+    },
+    {
+      "path": "SHEM/src/commerce.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65bf5034980b5797a406b61b6b7a5f524b03222f",
+      "size": 1781,
+      "sha256": "ddbb5f4c3846a32b5741d47a26d4570781b663e0f6b19f06046a460d3b80d316"
+    },
+    {
+      "path": "SHEM/src/components/Admin.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aeed83f58cf28558b20a6597fcb3a5048039e92b",
+      "size": 58363,
+      "sha256": "0ba868ff3afc8b14315ff0da9a800fbffb800c8564e702c0ffc8991c3cdcc397"
+    },
+    {
+      "path": "SHEM/src/components/AdminOperations.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5feb32f869e20b862383bcd7864f83b0bfee15b4",
+      "size": 23404,
+      "sha256": "146d7cdf2188318e144b3766b776cee73f7614fdc71a7e062bd51dfd5ca3b63d"
+    },
+    {
+      "path": "SHEM/src/components/ChannelManagement.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5d2350c018f1ae26c95b46f379d5b648262b7e56",
+      "size": 13878,
+      "sha256": "4814f893e6e0e27feb1fc2e2c033be5a389ddc7cc8d8ae6227d6962f25b1309c"
+    },
+    {
+      "path": "SHEM/src/components/Club.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "630c94faa158f88247ca1f807119bdddd2700dab",
+      "size": 4366,
+      "sha256": "3ec7cbb26a6cbee384758147f792dd31b1002719f5c036c93fb89646d49d75b9"
+    },
+    {
+      "path": "SHEM/src/components/CouponQuote.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3581aa6241b62b7bdd1ae105fc8a3888a37d62f6",
+      "size": 2292,
+      "sha256": "e884af71a2529c2b4e79343202576e16d8deecd180ae70030903d6c62f6a5ca3"
+    },
+    {
+      "path": "SHEM/src/components/CustomerArea.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d786986dd09a79514f45b4779925c0951f92143e",
+      "size": 18603,
+      "sha256": "390e74dd9eaf619a081d97b0d5140c25b7af896aa9b6948c2a75d93d32291a68"
+    },
+    {
+      "path": "SHEM/src/components/DesignerCollections.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e13b957067184eb8b4b485105cb9c3916e99937f",
+      "size": 8522,
+      "sha256": "748647a45c68302ccb4e52540dd48ecb6780d040549b36c4c37151869ff74a6b"
+    },
+    {
+      "path": "SHEM/src/components/ExperienceAdmin.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "41a4fb450265056c030bc981f53d7e980603f71a",
+      "size": 8878,
+      "sha256": "aa5220c5218b8e0b7207ef6edb3ba897e8466b9108629d39e3fe4e5919340262"
+    },
+    {
+      "path": "SHEM/src/components/HelpCenter.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6d77f5bd085b040001beb914f363b4fb30c9d5b2",
+      "size": 4634,
+      "sha256": "6d6c0f5a00f26f4b2f483e0acfd48ba6c82064aecd42bbee02e5802b41738680"
+    },
+    {
+      "path": "SHEM/src/components/HeroCarousel.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4ae18ad7834df6e5cff6379de3452faa9eb2cf0d",
+      "size": 4299,
+      "sha256": "0b500e2fe49924f53a2bb931e1690fbdab6255c660ba8b9b8ea9a8cf02bc2288"
+    },
+    {
+      "path": "SHEM/src/components/HomeCheckout.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "31dc47ebaff121ea971b82d44695ab29f1b0faf9",
+      "size": 17686,
+      "sha256": "d799ca49c14848736b2cbeb8bb38f41dc722b0dcdf7940aaba45efc1c9cdabc6"
+    },
+    {
+      "path": "SHEM/src/components/Integrations.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2adaddcd3da6cce7ce1db99e899adb9d6dbd3b22",
+      "size": 4306,
+      "sha256": "70f826d514dbd9938dfe1a9914d3c66904e987f1b51a551107ca3067a21ecfe5"
+    },
+    {
+      "path": "SHEM/src/components/InventoryFilters.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b1ca87be3f0cb92f5a1b5a61f80d09d8f564a2b8",
+      "size": 3148,
+      "sha256": "277054fca23af97490df2a3c299516827c237a5a68f712f6307da4b929750005"
+    },
+    {
+      "path": "SHEM/src/components/Management.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c692bd915c74821d353b46e31de6e4b98626d92",
+      "size": 76653,
+      "sha256": "d0c720d044a603518a1e0403573eec1fc124a3e742370f217d38d5112bd76c1d"
+    },
+    {
+      "path": "SHEM/src/components/OrderComplete.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "140ea64a139c32d978df70b71a2b9318378c6926",
+      "size": 5701,
+      "sha256": "d0bb15d2c6c772ab712aeef7b68b386ac4efeedf3bdf620851702d9d77f7a2ff"
+    },
+    {
+      "path": "SHEM/src/components/PolicyPages.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa37bba0e64742403460032f2085bd4b4bd664ee",
+      "size": 21170,
+      "sha256": "16b61028bfcde3d656f04b02e8b156c195c935803266e6fcf612dbb091a1e0a4"
+    },
+    {
+      "path": "SHEM/src/components/ProductCard.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "98d78e7de36477354c078b3b2472eff13dfdb250",
+      "size": 1448,
+      "sha256": "60aed9fc30767c65894b930c3324cd3f4412313651c342c1b5e90ee04bddde10"
+    },
+    {
+      "path": "SHEM/src/components/ProductExperience.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a37835390d4ba337038e8a919add407978fbb0d7",
+      "size": 17818,
+      "sha256": "cc3644e25430925f9de6cf57070a0e925fd63123acdd5d4ce6375cf20d80ac1a"
+    },
+    {
+      "path": "SHEM/src/components/ProductRail.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2503d9f0580dad4b448f9d63f4f6b4527ca1b18",
+      "size": 1091,
+      "sha256": "166330a7b089f68a222db1cb942452afa47ef801c04dd53caf7984663a8ea905"
+    },
+    {
+      "path": "SHEM/src/components/admin.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1852b4f6aa45f0a8c65bdd94582598b8d4592c8f",
+      "size": 10281,
+      "sha256": "ea3051a0ef7658b6b0f4ec34b97c3a0ded29f2bab68ea178a6e9ee4247160196"
+    },
+    {
+      "path": "SHEM/src/components/experience.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8b3bad8c80380814cc72527bdf14652f888a2771",
+      "size": 12803,
+      "sha256": "0375f6c6bdb2a37f727f7949e83e827cdb7f14178ac2a84a291166b156faf945"
+    },
+    {
+      "path": "SHEM/src/components/order-complete.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d03a30952cd1f2c8dcfb4f9ace06f5b4c501f120",
+      "size": 2185,
+      "sha256": "7012be7f38c57ff816b64dcf35a6bc1660ab6534f66f393c023b294ff5ee2e7d"
+    },
+    {
+      "path": "SHEM/src/designers.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cf56f1acf2e6e2ec46bc060ee8885870c943661e",
+      "size": 1700,
+      "sha256": "31f0bfd51b5c1a4d0c762b70ee47352a0637ab37d3eac8e354090144df89663a"
+    },
+    {
+      "path": "SHEM/src/experience.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c68ca55db5f77207111c030bba6e58394ff6942d",
+      "size": 4644,
+      "sha256": "e414e39133a5ee8473ba3da85cfe5152405757cbde1f4a083979ee069d23c2c8"
+    },
+    {
+      "path": "SHEM/src/main.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6c1cd988734aeba32a2e83010217eb97bcb3f082",
+      "size": 384,
+      "sha256": "843e4e8622cca6a0898841620cecbb127ea266d9ef7a40b096784145728bb688"
+    },
+    {
+      "path": "SHEM/src/services/catalogueAdapter.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd0e2d50a2992cf5f3eaa2ce53e19e394f28865f",
+      "size": 1050,
+      "sha256": "931e9effe0fa8a89568a43d16ffb50afec0b4fd543d1415d837f1d82e5808132"
+    },
+    {
+      "path": "SHEM/src/styles.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "782d2ae26f361db9a76c2086a3989020caac6376",
+      "size": 55037,
+      "sha256": "e7ad551b91cc3596073eef7aaf65784186257f1fcec88693fc00324ac356fa76"
+    },
+    {
+      "path": "SHEM/tests/admin-api.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9fb900247ab8994b936a80e136d83d2a930ebd5c",
+      "size": 8163,
+      "sha256": "11a9755c69c0d5369b4fc7f5d0f5c02609d2b090ef5134015bd09ad3c91e362f"
+    },
+    {
+      "path": "SHEM/tests/channel.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "425b15cf14dc9edab958cad84b6f1d03fa7e0dcb",
+      "size": 35424,
+      "sha256": "ba7995616904d754786b69db3af59e9029a51b2cf9fc249bf03de6b0e9d3afa2"
+    },
+    {
+      "path": "SHEM/tests/checkout-preview.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e98e6e219cc45681c7221b901f129cd7719275bd",
+      "size": 1183,
+      "sha256": "bc95fdaa156f01346002a3198ca598e351a5cfeb626482da1acbf1b001e6cbd8"
+    },
+    {
+      "path": "SHEM/tests/commerce.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "577f5dbe25f96a6b4edf4d33e7be5542a5d69835",
+      "size": 1901,
+      "sha256": "0a53c8bf7585014b7489f15d12e77493a9814ce1ed5dc7425504464a56f6d6dc"
+    },
+    {
+      "path": "SHEM/tests/customer-experience.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "beb850a0cb5a2e97b6626899f20d04e3d9b7ae62",
+      "size": 15741,
+      "sha256": "a66717a16d1a9a6c3f964fc99b663f91009de29fd0a501a54c3acf8d08a1f93d"
+    },
+    {
+      "path": "SHEM/tests/customer-invoice.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9fa9e64f07ab8787d8766766a65b53ab1a9e8be1",
+      "size": 5163,
+      "sha256": "f8eed57b04914365ac99147188ba35a8a41091f378509ae607f339ab7d3caf19"
+    },
+    {
+      "path": "SHEM/tests/customer-ui.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "425b3a3bc953703adf8cdd29e8ec4b50cb278bf3",
+      "size": 4377,
+      "sha256": "7aa88246961329339a04fc22b9738bd17dcecc42ebf0d119dda0387587e3d3bc"
+    },
+    {
+      "path": "SHEM/tests/designers.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "44a1af61e87dbf656512f005e036f7d6304a7f1e",
+      "size": 1943,
+      "sha256": "c32931ab3d4ff7ee89daa408b69372f3de014f088e4d0bc5ec2ab891b847249c"
+    },
+    {
+      "path": "SHEM/tests/documents.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5157d7c9c6e548a57f0d57d427252ad4f3965060",
+      "size": 1740,
+      "sha256": "e994d5e1374c2b64114c22d4841479c4d628e9d937461380839c9ecda37cbc8b"
+    },
+    {
+      "path": "SHEM/tests/embedded-logos.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f5acc6516934eb891d00af931f931ab227fa3c70",
+      "size": 933,
+      "sha256": "b53bdbfe6fb7e5ac74e8d685e7172eab2833c69ec48acf5adc6ba3a2c21822c3"
+    },
+    {
+      "path": "SHEM/tests/fixtures/demo-home.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fafbc59a119a169727ec7828a5e5a83aa051efb4",
+      "size": 4614,
+      "sha256": "c4a243a116525523e16bf14e1fee28d4a6ab6bd3c8d9c9f6057bad845064c243"
+    },
+    {
+      "path": "SHEM/tests/fixtures/demo-source.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c65b76672c5b461af076539c6eac3b676f869eee",
+      "size": 1703,
+      "sha256": "085ff1c18a444862241f5f4469f6f4124ef032d9cbcd933b3383752896d1c878"
+    },
+    {
+      "path": "SHEM/tests/invoice-registration.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "04576c3baf1a38cc8626bed65909b92cd39e0c9c",
+      "size": 1890,
+      "sha256": "2e39cdba6cf9f850cd02ed06458b6fa131b46dadff8e0b1c90122eaf9147d2dc"
+    },
+    {
+      "path": "SHEM/tests/management.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5ce8410aa3e76f540587aad115e10a626c898140",
+      "size": 17904,
+      "sha256": "037aa8d5aa564ab1d8360cbd08ac6384ca7da6bb4b19c4845d420d033b8721a4"
+    },
+    {
+      "path": "SHEM/tests/mobile-admin.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9c0cfcb934748d4e0eaa044bcb9471567ecec79",
+      "size": 351,
+      "sha256": "ecd8c15c996de2142088213714cd7e9d257bae892ef80d1dd0d4371453cd5cb9"
+    },
+    {
+      "path": "SHEM/tests/mobile-preview.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3ed0ed1082c60c62954de55cb736ce1cb411fab",
+      "size": 332,
+      "sha256": "80d1b48ec479b974af05314121ee1ee4c86924010df2e64f347932d058cde4d9"
+    },
+    {
+      "path": "SHEM/tests/operations.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b2aeb852d4925761eefec1b0c176889525b24b7f",
+      "size": 5934,
+      "sha256": "5ece1f984d717888f7216087f99d8bf77bc6c6d4fc598c471554ee91a756376f"
+    },
+    {
+      "path": "SHEM/tests/sites-worker.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "49a17909d5c3416cfd2506efd81e2d09306e8479",
+      "size": 2293,
+      "sha256": "2f3d609585d8d0d008762cfa6ac78febbfc4ffb29b83556769f62b5f9faf0bdb"
+    },
+    {
+      "path": "SHEM/tests/store-identity.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f034e8875dd25c24d8e759ec86b9ff0cfbb70266",
+      "size": 2416,
+      "sha256": "ca8732f37afac31b48d493cf15fbfec6a41d814ad008e7a3bc4d3955863e250c"
+    },
+    {
+      "path": "SHEM/vite.config.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66d4a9fec967f97a604cbd4b6586d3d936ac5a29",
+      "size": 476,
+      "sha256": "8c6e84dcf6d08e99d7a174d3446b926f736cf229f545ea3efa74524e937a38dc"
+    },
+    {
+      "path": "SHEM/worker/api.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fea0d619fac39530dfda32af5db4ea96a5d85258",
+      "size": 27992,
+      "sha256": "cac50811abbe81e5de82a0eae084fcef03b2897ac4b21a7bb1ca0df4ac50455b"
+    },
+    {
+      "path": "SHEM/worker/channel.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "944db1dfd00aa6d965197585dc5cb22f8737afa6",
+      "size": 51749,
+      "sha256": "a0a9fd24803d7d8ea73aba91160b3b511df5264af602dbcee51d93658886edcd"
+    },
+    {
+      "path": "SHEM/worker/customer-experience.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7714f34f78cc8ac98243afc26f7be7dcd78fea5d",
+      "size": 26132,
+      "sha256": "c6ccc3e66a877de16d68f11bfac4cf87b6e6ae42a5e1c0fc55267ff75ae778af"
+    },
+    {
+      "path": "SHEM/worker/document-assets/DejaVuSans-Bold.ttf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "426812b9b0ce12f20285adf46d8acc0dd40dfba5",
+      "size": 708920,
+      "sha256": "5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895"
+    },
+    {
+      "path": "SHEM/worker/document-assets/DejaVuSans.ttf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb0bd945a4f5aa716dcb8d9b7476bfa30e365a1e",
+      "size": 759720,
+      "sha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280"
+    },
+    {
+      "path": "SHEM/worker/document-assets/FONT-LICENSE.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3d93a1235a82213fbc451853317c40e62ed9272",
+      "size": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+    },
+    {
+      "path": "SHEM/worker/document-assets.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a19cd8a32224155e1b5ec3fd31e8dce173e998f",
+      "size": 1976499,
+      "sha256": "094ef2dce4dbc84d01862500046bad4fe12e2f0647cbd0d22849a8cde643ff89"
+    },
+    {
+      "path": "SHEM/worker/documents.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5cbed25319f1f14d254357ec77094c0434164a25",
+      "size": 14152,
+      "sha256": "e549c75bf6f1114b9922f53d0f7cf5ccb7428c7e1ef9ed5ca7797ead552e5d42"
+    },
+    {
+      "path": "SHEM/worker/index.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ba6aac39779982b3a22d50c34f1c2bac3c56db3",
+      "size": 1392,
+      "sha256": "9c79eeb5c09c2470834378b8b0f0a019f2abc683fc9623e116c6ea5fb117a3e5"
+    },
+    {
+      "path": "SHEM/worker/management.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5918930e7392170b872f38b4ad27e6a1a4f4c7f4",
+      "size": 61364,
+      "sha256": "939d11d8f4e55866b2fc32ec229ac2a3b651ab915c18c1bc19d9e4bc73e3d0ba"
+    },
+    {
+      "path": "SHEM/worker/operations.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0804637844313c457f1743973f37064595b596c6",
+      "size": 12230,
+      "sha256": "87ff32110cb6b11a4be2de6287506167249f7e974d0ef07df0acd51afc38c366"
+    },
+    {
+      "path": "SHEM/worker/qa-fixtures.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65246a6f53df8af6f53ea0d8f1de00e1876cc082",
+      "size": 3417,
+      "sha256": "c5eda29e95c4d1b3ad9350a520ec6978be709c1ddd89849868209d8268245c22"
+    },
+    {
+      "path": "SHIMI/.env.example",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5de494841267eb10cdced7b6afd2a441e6c0e3a6",
+      "size": 187,
+      "sha256": "e6ab00c904b541744f5ee1a0e94eb9520a79242bc4d8597a5c198cfcf8fed51c"
+    },
+    {
+      "path": "SHIMI/.gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a796782575d82947baa944c92967283e57be4206",
+      "size": 87,
+      "sha256": "afab5e3d19df6dbc0b6c433168576a1d88d749d40a5833bd4549cb4f6d93bb06"
+    },
+    {
+      "path": "SHIMI/.npmrc",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1223b5c7deb2b1053be942740dbac26b7f0954c5",
+      "size": 23,
+      "sha256": "f7dbda001b627b3a792fb6929303b517f047f03916f2c55227e81216d38a2008"
+    },
+    {
+      "path": "SHIMI/.openai/hosting.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4412b9db1e969f405db4a134594572847cfdede",
+      "size": 95,
+      "sha256": "e53586fd2fe45ae0ccb454e5ee45627666b1cc5ac53493fb4221675714cc8db2"
+    },
+    {
+      "path": "SHIMI/AGENTS.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "06a34e0f6d44f3a0d1a79cb35182aa2a7f54a95d",
+      "size": 3502,
+      "sha256": "61970f7ad76d7559b3835d1a2549dd0556e8bdff9238c958627a9cc3694fe03c"
+    },
+    {
+      "path": "SHIMI/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "46dfa86968adba39868f39c4328178457c4f1e11",
+      "size": 1287,
+      "sha256": "27906f915bb03f0224e683dce73d2dc05ff942e961efcdef99a5f2da9338d686"
+    },
+    {
+      "path": "SHIMI/db/schema.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5d3f1591dcd33ca7a0bfb293b48ecc2e5c0dbc37",
+      "size": 4072,
+      "sha256": "6df93f228e687dc3d7fcbee86e160273d6bb1c98db1f0d2a3fd2f047201c674e"
+    },
+    {
+      "path": "SHIMI/docs/demo-catalogue.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c9968aa308f94c184fc4e14bbc2f99626a7b0ac9",
+      "size": 2812,
+      "sha256": "b8cb3ac86f1823ebbd3ef58f6321cff0278c8243846d1f99cbdacd735ca24a5f"
+    },
+    {
+      "path": "SHIMI/docs/home-site-protocol.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "76b32b362bea9e6d97e4142d68502e5f0479cc5f",
+      "size": 6034,
+      "sha256": "7ccf80d511a7966ccaa058e0fdec92cd1d4a8fdef9c4c618ca8d47f9d21959ed"
+    },
+    {
+      "path": "SHIMI/docs/prepayment-review.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a79c85f8de8190a5523bc8663b82aed66cead67",
+      "size": 2340,
+      "sha256": "257434d7ab846d4610f625676bb050ca57fedc56951a297347f9c0f6f625c7e3"
+    },
+    {
+      "path": "SHIMI/docs/qa-fixtures.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a419f62f7e9ab62b3168387f4dbc3d8f6b294c58",
+      "size": 1039,
+      "sha256": "9a987abf900cad33ea25f2e5a8d829d8206aa7f43478a352e1504b67b0188064"
+    },
+    {
+      "path": "SHIMI/docs/shop-channel.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3e9928e0690f1a85056eedda5e7abedcfc6c84f",
+      "size": 5032,
+      "sha256": "ed8584d5fe46513945ba2e151c68880e4b04e255e752514174f1e022a800a09d"
+    },
+    {
+      "path": "SHIMI/drizzle/0000_loose_colleen_wing.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6436d3851fe6f55a3db46435cd1256951e048840",
+      "size": 829,
+      "sha256": "8cc164bfd07abe7a5b90cd7ec15df1fc82d1fd40baabd8ba5e4510ffaf51b407"
+    },
+    {
+      "path": "SHIMI/drizzle/0001_abnormal_vengeance.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a18359fb04062725165076e7e596629e4f8358af",
+      "size": 699,
+      "sha256": "4cc7323ddd226fc30355e418012c98a7024a25ade94f1ffe527b68ba43f94cd9"
+    },
+    {
+      "path": "SHIMI/drizzle/0002_tan_felicia_hardy.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2d39125ff38deb612279e36e663c1f12e208e6da",
+      "size": 1126,
+      "sha256": "dad5e13f6b3910dc957f9e8e644c586cb3fab26c9c6b4d0eccef6837d0ecd3a9"
+    },
+    {
+      "path": "SHIMI/drizzle/0003_shop_channel.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0974ef4c478a7769d6be66e7a561bdae646ac979",
+      "size": 1081,
+      "sha256": "52359617165acafb2802549f2f87c5b7ccf933130e7702bf45669c947b6c75a5"
+    },
+    {
+      "path": "SHIMI/drizzle/0004_demo_catalogue.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fafbc59a119a169727ec7828a5e5a83aa051efb4",
+      "size": 4614,
+      "sha256": "c4a243a116525523e16bf14e1fee28d4a6ab6bd3c8d9c9f6057bad845064c243"
+    },
+    {
+      "path": "SHIMI/drizzle/0005_terms_registration_number.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ffb1347a912788d7845b35f85490fcb7ac2dcfee",
+      "size": 275,
+      "sha256": "657b4fd9f6ea6705d479c88d711d378442b8db5abed253737fb077c02c78ef32"
+    },
+    {
+      "path": "SHIMI/drizzle/meta/0000_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "98108fcab0ef32a126c44584370116148a966634",
+      "size": 4581,
+      "sha256": "6d16d145f1e83c0bb3820fa17f84df2a50d62254f45ea3bd0113924fd5d2879a"
+    },
+    {
+      "path": "SHIMI/drizzle/meta/0001_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c7e3d6da69e44b5da3baf9bd0b4acd2d67517d5e",
+      "size": 8480,
+      "sha256": "ac6509ac36c35eb87ba1cb48d1828efcd45268f61ebcda2fe56df363e82c7daf"
+    },
+    {
+      "path": "SHIMI/drizzle/meta/0002_snapshot.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "708702fb10abba482fb237a4f2b618d463f77fee",
+      "size": 14121,
+      "sha256": "e6d5b3dfbd42c2ae955790f2848f98e4da3e30e5d0c3aad906116e1e3324d706"
+    },
+    {
+      "path": "SHIMI/drizzle/meta/_journal.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f135191036a8df5034ca10f9b0e8b3aa513a5b63",
+      "size": 935,
+      "sha256": "87db02b82e5e4d444f214e85340e07fce9bcf59c5950bd2a3e9b6585b5f385bd"
+    },
+    {
+      "path": "SHIMI/drizzle.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb8c39271e5bc8c68674f9e5f341a72e252b7f24",
+      "size": 133,
+      "sha256": "39966f3818721bb8bbc31f33ed0eeeaa35878d81a330127a1936b1b334e39ab8"
+    },
+    {
+      "path": "SHIMI/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4adee6f777a5283d03c296a7b48c6d506e9558f",
+      "size": 406,
+      "sha256": "8e1f173a2f49a8ae67a9b0f28910cff02e161f84e482b92623526051613b9fee"
+    },
+    {
+      "path": "SHIMI/package-lock.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "082f3c9964a1199e9b77c406dd02f20ec95a8879",
+      "size": 169546,
+      "sha256": "5c19518c2b6f6b14acd8324d489caa87e28942f8ef059dbeb4b3ad02c148a38a"
+    },
+    {
+      "path": "SHIMI/package.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2f3c69209fa252b1944d7e3e2292707bbedc82fe",
+      "size": 1262,
+      "sha256": "738ef3258290dfdce30a6bb1041b1132cfb61ebfee046c481f8b8e6915acc6fc"
+    },
+    {
+      "path": "SHIMI/public/assets/knit.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd11d2f988fadc6462dab35c430971e8d8daf339",
+      "size": 2067743,
+      "sha256": "98091da37bfa689b339ba4962a694c6934418cece282aca844db6e7aa009e3c7"
+    },
+    {
+      "path": "SHIMI/public/assets/loafers.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ece07867e86e124365ab214fe5f1134c815ed6d9",
+      "size": 1009664,
+      "sha256": "79967b91cee6f4c4752165a062d821f7b497fcb4eeef528ff6541d68cbe10009"
+    },
+    {
+      "path": "SHIMI/public/assets/shirt.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "452896f9b5340b18fd0b7a2024c32a690e08d738",
+      "size": 1481667,
+      "sha256": "94019f5dfc5c414ab608d8b315b297b0bac028f770ed249542ecb582d3c61204"
+    },
+    {
+      "path": "SHIMI/public/assets/trousers.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bbac93314fd8187cc7b08db2bac62cc06c22e1ac",
+      "size": 1391295,
+      "sha256": "765ac0c443871c5482eec71f8dbc01ac5d45c92cc36022403573516912fbc6ac"
+    },
+    {
+      "path": "SHIMI/public/favicon.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "861e61e65c46934faed0fb11ca223e6201370fe7",
+      "size": 232,
+      "sha256": "79bd4c94c59cbc19b9ae10afc2a440a22e0db440aa1d6a88c02bc632e746ab4d"
+    },
+    {
+      "path": "SHIMI/scripts/local-api-plugin.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4092c38308734bd93d2e531f9f692804ff374eb6",
+      "size": 3453,
+      "sha256": "62c1fc07f277dd5fe23c4a63c01e68e31b394dc9598165092dfb3538e7e777eb"
+    },
+    {
+      "path": "SHIMI/scripts/prepare-admin-share.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f7f89dcd0d6e000be98da28aae28482175c90e9",
+      "size": 763,
+      "sha256": "1f0b096ad21e79e4c98f8d77eaf7389eb34b1ea2af227437d086108e1d7488da"
+    },
+    {
+      "path": "SHIMI/scripts/prepare-sites-build.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "01c4c29e4976b656128c2bb4e87e4959bf689ebc",
+      "size": 1182,
+      "sha256": "96f0e84030d707da943d6057694d23a924698a46f7c86a44da1e2a5dc376315b"
+    },
+    {
+      "path": "SHIMI/src/ShimiApp.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0cddaba66ff0eca10567fcda59f3eb117eebaa25",
+      "size": 16172,
+      "sha256": "b453413af8df9f1499e34cc301755f7d6c37166a2fcd00fb5d728968dd0f9c60"
+    },
+    {
+      "path": "SHIMI/src/admin-api.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a4cadba503ce28abed748e307dcd4935b5ef81f",
+      "size": 447,
+      "sha256": "a5710d4713fb01deaa6b236bf60455c2926e4563aa06295d6c9cffed670dcf55"
+    },
+    {
+      "path": "SHIMI/src/catalogue.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c87a9d4fc6ff04862d51ed381bd622c2d8ebe92",
+      "size": 57,
+      "sha256": "78b8bad8fdcd69ee142b09349f5466a513598d1fdf943d38cb0d6103f3748f6c"
+    },
+    {
+      "path": "SHIMI/src/commerce.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65bf5034980b5797a406b61b6b7a5f524b03222f",
+      "size": 1781,
+      "sha256": "ddbb5f4c3846a32b5741d47a26d4570781b663e0f6b19f06046a460d3b80d316"
+    },
+    {
+      "path": "SHIMI/src/components/Admin.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6c2a2429586a944489f4c355b56d694fd7568a0",
+      "size": 57250,
+      "sha256": "85bb0284c2b868d342d3f49f9eed7ff321ab125c0d62ce0a30d3f5fa5b1626a2"
+    },
+    {
+      "path": "SHIMI/src/components/AdminOperations.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5feb32f869e20b862383bcd7864f83b0bfee15b4",
+      "size": 23404,
+      "sha256": "146d7cdf2188318e144b3766b776cee73f7614fdc71a7e062bd51dfd5ca3b63d"
+    },
+    {
+      "path": "SHIMI/src/components/ChannelManagement.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5d2350c018f1ae26c95b46f379d5b648262b7e56",
+      "size": 13878,
+      "sha256": "4814f893e6e0e27feb1fc2e2c033be5a389ddc7cc8d8ae6227d6962f25b1309c"
+    },
+    {
+      "path": "SHIMI/src/components/Club.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b9e2081cbd9649ae65198420eef6d08d98e8f39",
+      "size": 4373,
+      "sha256": "94b7ed0bfd146ec2a0acb5adbb3d6fa39fa9fdd5b27e2b2ece9ede9ecd3f72ed"
+    },
+    {
+      "path": "SHIMI/src/components/CouponQuote.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3581aa6241b62b7bdd1ae105fc8a3888a37d62f6",
+      "size": 2292,
+      "sha256": "e884af71a2529c2b4e79343202576e16d8deecd180ae70030903d6c62f6a5ca3"
+    },
+    {
+      "path": "SHIMI/src/components/HeroCarousel.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e7e48dd60a48fc99f3d7edda4c0797a6653a76de",
+      "size": 4303,
+      "sha256": "5fb61539a169b1a2a4350bf6bf078aaa60a71c600da1fa478b5b0558153d637e"
+    },
+    {
+      "path": "SHIMI/src/components/HomeCheckout.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5cf5f636383f17c8187e3c552bf84ebc9b06402a",
+      "size": 9462,
+      "sha256": "42b7f13900e416d2bfb6c99e813dd4809883da9b1beeec6cb53eba8f9903cfe6"
+    },
+    {
+      "path": "SHIMI/src/components/Integrations.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2adaddcd3da6cce7ce1db99e899adb9d6dbd3b22",
+      "size": 4306,
+      "sha256": "70f826d514dbd9938dfe1a9914d3c66904e987f1b51a551107ca3067a21ecfe5"
+    },
+    {
+      "path": "SHIMI/src/components/Management.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5859a09e43f8d3f8c591f765ef1844333adcda2c",
+      "size": 76404,
+      "sha256": "47ebe6a4e887159a494c803abfcd86d7d5a25b857dae5458a8c0192112f9202a"
+    },
+    {
+      "path": "SHIMI/src/components/OrderComplete.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6227b08fe5bc23d8749f6133b5ae3398cf2a4587",
+      "size": 3229,
+      "sha256": "3d712614a68add953d0143c027415685d00fab9a72f61fd18874aad1c3704883"
+    },
+    {
+      "path": "SHIMI/src/components/PolicyPages.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bd28402df276bede0749022f3aa1271eb8cfd5f4",
+      "size": 21174,
+      "sha256": "5b48d1cda40acebac6aa4c7fd2cc408c35119215aa82e084242251310a0a3710"
+    },
+    {
+      "path": "SHIMI/src/components/ProductCard.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c19f285bf6370bd12c494d1ae6847489e20dfdd9",
+      "size": 1079,
+      "sha256": "5f008e4aa61b9d240e1d3908db58d28369ce24374afdf00e30516af518382395"
+    },
+    {
+      "path": "SHIMI/src/components/ProductRail.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2503d9f0580dad4b448f9d63f4f6b4527ca1b18",
+      "size": 1091,
+      "sha256": "166330a7b089f68a222db1cb942452afa47ef801c04dd53caf7984663a8ea905"
+    },
+    {
+      "path": "SHIMI/src/components/admin.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1852b4f6aa45f0a8c65bdd94582598b8d4592c8f",
+      "size": 10281,
+      "sha256": "ea3051a0ef7658b6b0f4ec34b97c3a0ded29f2bab68ea178a6e9ee4247160196"
+    },
+    {
+      "path": "SHIMI/src/components/order-complete.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d03a30952cd1f2c8dcfb4f9ace06f5b4c501f120",
+      "size": 2185,
+      "sha256": "7012be7f38c57ff816b64dcf35a6bc1660ab6534f66f393c023b294ff5ee2e7d"
+    },
+    {
+      "path": "SHIMI/src/main.jsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c98bfd7cd895d31761fabf115a70519fe3451bcd",
+      "size": 352,
+      "sha256": "6484ae40e0b7b59cd8d710cb363ac59c14f185ae8e12046e33e4193c128e265e"
+    },
+    {
+      "path": "SHIMI/src/services/catalogueAdapter.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd0e2d50a2992cf5f3eaa2ce53e19e394f28865f",
+      "size": 1050,
+      "sha256": "931e9effe0fa8a89568a43d16ffb50afec0b4fd543d1415d837f1d82e5808132"
+    },
+    {
+      "path": "SHIMI/src/shimi.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf97ca7a9b8224f013060847dc0e8736669e5745",
+      "size": 7588,
+      "sha256": "9f4e3ec9fa8ebd8e2d175f223f3757715748480776b5e9eacb78db72f8891901"
+    },
+    {
+      "path": "SHIMI/src/styles.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "780f683ef7c0c5e8840f194f974bc7c7b356b848",
+      "size": 35059,
+      "sha256": "624268ed040b5ffde4e7b031db626efa852236752aa3730363b76403e4e51ab1"
+    },
+    {
+      "path": "SHIMI/tests/admin-api.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e37becbbfe548d8e7bc2805a3f0bdd833d5b5ad2",
+      "size": 7708,
+      "sha256": "093e109d31bcc5d86bce874057ef36612b2cf6f72719725ad093b4fbfac54a03"
+    },
+    {
+      "path": "SHIMI/tests/channel.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "425b15cf14dc9edab958cad84b6f1d03fa7e0dcb",
+      "size": 35424,
+      "sha256": "ba7995616904d754786b69db3af59e9029a51b2cf9fc249bf03de6b0e9d3afa2"
+    },
+    {
+      "path": "SHIMI/tests/commerce.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a0eca550b5291e562f459a02828fa7e76b2d70df",
+      "size": 1991,
+      "sha256": "f62ef194fffea5c8f0fb8cb6a1032910564b4f5abaa005d5b7dba3181cbd255e"
+    },
+    {
+      "path": "SHIMI/tests/customer-invoice.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9fa9e64f07ab8787d8766766a65b53ab1a9e8be1",
+      "size": 5163,
+      "sha256": "f8eed57b04914365ac99147188ba35a8a41091f378509ae607f339ab7d3caf19"
+    },
+    {
+      "path": "SHIMI/tests/documents.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5157d7c9c6e548a57f0d57d427252ad4f3965060",
+      "size": 1740,
+      "sha256": "e994d5e1374c2b64114c22d4841479c4d628e9d937461380839c9ecda37cbc8b"
+    },
+    {
+      "path": "SHIMI/tests/fixtures/demo-home.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fafbc59a119a169727ec7828a5e5a83aa051efb4",
+      "size": 4614,
+      "sha256": "c4a243a116525523e16bf14e1fee28d4a6ab6bd3c8d9c9f6057bad845064c243"
+    },
+    {
+      "path": "SHIMI/tests/fixtures/demo-source.sql",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c65b76672c5b461af076539c6eac3b676f869eee",
+      "size": 1703,
+      "sha256": "085ff1c18a444862241f5f4469f6f4124ef032d9cbcd933b3383752896d1c878"
+    },
+    {
+      "path": "SHIMI/tests/management.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "34783ffbd90e79874ab7456dd28638fc46c628e6",
+      "size": 17905,
+      "sha256": "f9dd8b8141508ea1d82357e939c3ddc3683998d3bdd9ad4212e46db481915d1b"
+    },
+    {
+      "path": "SHIMI/tests/operations.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b2aeb852d4925761eefec1b0c176889525b24b7f",
+      "size": 5934,
+      "sha256": "5ece1f984d717888f7216087f99d8bf77bc6c6d4fc598c471554ee91a756376f"
+    },
+    {
+      "path": "SHIMI/tests/sites-worker.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "49a17909d5c3416cfd2506efd81e2d09306e8479",
+      "size": 2293,
+      "sha256": "2f3d609585d8d0d008762cfa6ac78febbfc4ffb29b83556769f62b5f9faf0bdb"
+    },
+    {
+      "path": "SHIMI/tests/store-identity.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d4e812e74f20d70e648508fce41eaa64eaf726ca",
+      "size": 2417,
+      "sha256": "87cebbf7b98da719788371f7bee6a6047794a1c3866877e191824bc25de66867"
+    },
+    {
+      "path": "SHIMI/vite.config.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a384da9d87ad05da23de95f90bea5db1cf8008c4",
+      "size": 524,
+      "sha256": "edcf369f1b36d0609f476636c962db591cccf54ada341192b0d521d778898918"
+    },
+    {
+      "path": "SHIMI/worker/api.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "926aea869a0a00402f6f4918da7c8c72083926fc",
+      "size": 27262,
+      "sha256": "1aeab7b7b6c5c81a084ff3cf6989e96dfe6deb1fd6db89c78e4f7ec8d5774457"
+    },
+    {
+      "path": "SHIMI/worker/channel.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "944db1dfd00aa6d965197585dc5cb22f8737afa6",
+      "size": 51749,
+      "sha256": "a0a9fd24803d7d8ea73aba91160b3b511df5264af602dbcee51d93658886edcd"
+    },
+    {
+      "path": "SHIMI/worker/document-assets/DejaVuSans-Bold.ttf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "426812b9b0ce12f20285adf46d8acc0dd40dfba5",
+      "size": 708920,
+      "sha256": "5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895"
+    },
+    {
+      "path": "SHIMI/worker/document-assets/DejaVuSans.ttf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb0bd945a4f5aa716dcb8d9b7476bfa30e365a1e",
+      "size": 759720,
+      "sha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280"
+    },
+    {
+      "path": "SHIMI/worker/document-assets/FONT-LICENSE.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3d93a1235a82213fbc451853317c40e62ed9272",
+      "size": 3859,
+      "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+    },
+    {
+      "path": "SHIMI/worker/document-assets.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a19cd8a32224155e1b5ec3fd31e8dce173e998f",
+      "size": 1976499,
+      "sha256": "094ef2dce4dbc84d01862500046bad4fe12e2f0647cbd0d22849a8cde643ff89"
+    },
+    {
+      "path": "SHIMI/worker/documents.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "40842f66fea2107aac5470b5e4da1ebcb6662cbc",
+      "size": 13805,
+      "sha256": "f03333bc095890fcdc212cb6e69f027638efadbc58aa61c43dfa7c2fd5aea672"
+    },
+    {
+      "path": "SHIMI/worker/index.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ba6aac39779982b3a22d50c34f1c2bac3c56db3",
+      "size": 1392,
+      "sha256": "9c79eeb5c09c2470834378b8b0f0a019f2abc683fc9623e116c6ea5fb117a3e5"
+    },
+    {
+      "path": "SHIMI/worker/management.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a78a753035c99aafd517897ae65b3f0126c06dba",
+      "size": 60260,
+      "sha256": "d211a30a176598843c2779e21cc845feec58b8d6a2396105a31e91bd79128913"
+    },
+    {
+      "path": "SHIMI/worker/operations.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0804637844313c457f1743973f37064595b596c6",
+      "size": 12230,
+      "sha256": "87ff32110cb6b11a4be2de6287506167249f7e974d0ef07df0acd51afc38c366"
+    },
+    {
+      "path": "SHIMI/worker/qa-fixtures.js",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65246a6f53df8af6f53ea0d8f1de00e1876cc082",
+      "size": 3417,
+      "sha256": "c5eda29e95c4d1b3ad9350a520ec6978be709c1ddd89849868209d8268245c22"
+    },
+    {
+      "path": "SOURCE-VERSIONS.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "29a50104734cb3aad791b5738e54ff2402d22978",
+      "size": 550,
+      "sha256": "4bf945d3e91a7260b986af08d4dc6889126ba813b1c22799f0ef0e88ac21b8c5"
+    },
+    {
+      "path": "docs/previous-backup/SOURCE-VERSION.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "490ac3dafd516d5548fdfff38ca9debeb6da4936",
+      "size": 256,
+      "sha256": "ac27c11cea23bb5081be4f3a053991f246fa382bbdcdcfac39ec8962f2bcaa8b"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA/2026-10-12/QA-REPORT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "542cfda760fe4f470e6a8df2364b513e27a43dc0",
+      "size": 10839,
+      "sha256": "bac3363bab7e773aca2f79c831e70c659a16bd4ae27264f05829880e45c76b60"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA/2026-10-12/live-extended-results.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dfe7306352fe124b11d0b7babfcb56fd4fb65c6f",
+      "size": 13103,
+      "sha256": "5b36f861574137bf905af5f70551320583f56586f3d8a1560752e6edcef74bf6"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA/2026-10-12/live-results.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a25c593980d455cc447bab5f5fb17a6f88bd240",
+      "size": 28403,
+      "sha256": "a28597fb16dfdda3d5e8088dcbe1a504935e21aadca1ff768323405d845480a6"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA/2026-10-12/shem-tests.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "23e2a9b96d57cda152aa71fcf2292c39a6fc20fa",
+      "size": 2313,
+      "sha256": "b7c3471da2b6b8f2cb5323375f986b0563d588000f049ca1c70f7680cf27d870"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA/2026-10-12/shimi-tests.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a348c2d7e7d07a4e67ade14b8c835f1161d74202",
+      "size": 1917,
+      "sha256": "393afdea4c526aad7642f4d31abfb8fc3580a5f04ebdebce5e35cdd22520426d"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA-EVIDENCE.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8dcbddeeb78b251189f43c495219e17bd120acdd",
+      "size": 83819,
+      "sha256": "84fee6d006d33914abd062e9d09f7bb44dd8aaca5b44191b66f6267a93bf069e"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA-LIVE-EVIDENCE.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ecfbf0843f4dc8eab5aab0ce408f31340bc29d58",
+      "size": 29420,
+      "sha256": "ecdfdae56294adf70a639dcf3bfbc90ff8a781f99e183405b84dbf7c26ee4cd2"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA-LIVE-FINAL-CHECKS.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7989b34b8ca239756b69c709a7e42ee23354fb3e",
+      "size": 620,
+      "sha256": "f522c82e3046845828f989be83a0e5dfb359ea18d106e2e1e6b04fd8b759a72c"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA-LIVE-INITIAL-FAILURE.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a0d9fb84cbe45895a2a3cc94c6724a411448875",
+      "size": 682,
+      "sha256": "7f290522ba6dccaf381125659836190c600d7032b63273c493ac52b377650e57"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/QA-REPORT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d4751925c6cf730eace4fe058f2729132231831b",
+      "size": 7912,
+      "sha256": "5370e68a2300d126e823130eecc2b59e4d8a82064958856afbd5b54589c92e3f"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/RELEASES/2026-10-12-invoice-download/DNS-CONFIG.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ede6cccdbf33e1b43e9a63385394f6e4dff2843b",
+      "size": 931,
+      "sha256": "5938b757c0e4e90092e2455e707b5d71f46cd404612b92638dc904b5fb6d3ba3"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/RELEASES/2026-10-12-invoice-download/RELEASE-NOTES.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "76e9594f39baf0c8fca552342ace45c990297621",
+      "size": 2682,
+      "sha256": "51b19299dc8f21221e73506e63dfb85ef3b8a097990f640a440e0a357f2f8866"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/RELEASES/2026-10-12-invoice-download/shem-domain-tests.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a3b7ef1d51f65e301ce186f7fc1916be283b2df",
+      "size": 237,
+      "sha256": "c796e7d5af0359e1f4d87fe95340cd023a4dde9d2e753e0ea2096072702c7700"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/RELEASES/2026-10-12-invoice-download/shem-tests.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f8bf9c05554801bffbe057ea0c58d1c5be72fd4c",
+      "size": 2425,
+      "sha256": "60e3b77994961cc3c10c81733df5ae46b7aca309e2775d5696fbeea6e2492c18"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/RELEASES/2026-10-12-invoice-download/shimi-domain-tests.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ab75ad0f6e096d39d115447cb244a1a958a427c",
+      "size": 237,
+      "sha256": "418ad07488f4ba5d452b98884ae02d411023e76d09566aebbaa1c12bc54c48b1"
+    },
+    {
+      "path": "docs/previous-backup/docs/project-history/RELEASES/2026-10-12-invoice-download/shimi-tests.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d023ed2284f3166ddb3c8bb9b9f5bb3d5c355e73",
+      "size": 2022,
+      "sha256": "2fc09983d2dd9ee0ee08446df831994f9329bf64151923eceb5c47a63f5e3f35"
+    }
+  ],
+  "note": "This manifest and CHECKSUMS.sha256 are excluded from self-checks."
+}

@@ -1,0 +1,18 @@
+{
+  "snapshot_date": "2026-10-13",
+  "scope": "source code only; no production database, uploaded R2 files or runtime secrets",
+  "stores": {
+    "SHEM": {
+      "source_commit": "f9a87d5f837c22d61fbebf6767d2a04bce6dffaf",
+      "site_version": 31,
+      "site_project_id": "appgprj_6ac52074bd4c8191adf9dc1f106309a8",
+      "files": 150
+    },
+    "SHIMI": {
+      "source_commit": "ddcdcd31720802b37a712997a4518d8290a05efc",
+      "site_version": 8,
+      "site_project_id": "appgprj_6ac7cb86693c8191ac07e142f8b22731",
+      "files": 80
+    }
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "shop": "shem",
+    "path": "/api/channel/qa-fixtures",
+    "status": 404,
+    "bytes": 21
+  },
+  {
+    "shop": "shem",
+    "path": "/assets/knit.png",
+    "status": 200,
+    "bytes": 2067743
+  },
+  {
+    "shop": "shem",
+    "path": "/assets/shirt.png",
+    "status": 200,
+    "bytes": 1481667
+  },
+  {
+    "shop": "shimi",
+    "path": "/api/channel/qa-fixtures",
+    "status": 404,
+    "bytes": 21
+  },
+  {
+    "shop": "shimi",
+    "path": "/assets/knit.png",
+    "status": 200,
+    "bytes": 2067743
+  },
+  {
+    "shop": "shimi",
+    "path": "/assets/shirt.png",
+    "status": 200,
+    "bytes": 1481667
+  }
+]

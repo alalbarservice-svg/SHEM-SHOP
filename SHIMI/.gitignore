@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.sites-runtime/
+.wrangler/
+.env
+.env.*
+!.env.example
+
+node_modules

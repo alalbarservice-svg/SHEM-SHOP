@@ -1,0 +1,32 @@
+✔ protected persistent catalogue and club enforce identity, validation and same-origin writes (4418.900329ms)
+✔ manual product links synchronize only SKU/prices, require identity, preserve copy, and honor central stock (4749.722747ms)
+✔ SHEM final totals are authoritative; masked signed payment is idempotent; mixed SHIMI carts deduct central/local stock once (3420.058727ms)
+✔ persisted demo catalogue stays separate and its prepared link synchronizes actual source edits (1816.072089ms)
+✔ pre-payment review selects exact linked variants and mirrors discounts, sale prices, VAT and shipping without creating orders (13098.24227ms)
+✔ authorized temporary QA fixtures are signed, bounded, idempotent and removable (1470.970333ms)
+✔ same product and size merge while different sizes remain separate (7.369852ms)
+✔ delivery totals use the specified rates and empty bag has no shipping charge (0.237671ms)
+✔ invalid size and delivery cannot enter checkout calculation (0.59639ms)
+✔ discard stale or malformed stored lines rather than breaking the app (0.371759ms)
+✔ end-of-season cart uses the discounted SKU price (1.429982ms)
+✔ personal invoice requires paid order and its token, downloads the same A4 PDF without mail (3446.661582ms)
+✔ brand collections isolate brands, normalize supported labels and exclude unpublished products (5.84498ms)
+✔ manager product type takes precedence and unknown items stay in a neutral category (0.425218ms)
+✔ all six brand pages have original high-resolution black and white PNG assets (19.090067ms)
+✔ A4 pagination and embedded VAT retain totals and Hebrew document layout (1150.048306ms)
+✔ production app embeds all thirteen logos without separate logo image URLs (150.182018ms)
+✔ CRUD, archive, size/color stock, manual paid order, immutable invoice, signed callback and loyalty are real and isolated (4443.297987ms)
+✔ manager operations persist collections, profiles, requests, canonical quotes and audit without exposing personal data (2804.005723ms)
+✔ serves existing static assets without a fallback (31.914043ms)
+✔ falls back to index.html for an unknown app route (16.391893ms)
+✔ does not turn missing API or write requests into the app shell (2.129475ms)
+✔ emits the files required by Sites packaging (25.852842ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25992.602569
+

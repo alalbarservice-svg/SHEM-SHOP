@@ -1,0 +1,21 @@
+DNS records for the two store domains. These domains are pending validation. Preserve existing MX/mail records. If Cloudflare manages DNS, start these web records as DNS-only during validation. Use the full hostnames below, or the relative labels required by the registrar.
+
+shem-shop.com
+A @ 162.159.143.30
+A @ 172.66.3.26
+TXT _openai-site-verification.shem-shop.com openai-site-verification=gT2LYtBVV-Eesi9iLcB8Ox99QSc08OVlb73C2omMts0
+TXT _cf-custom-hostname.shem-shop.com f6852f0f-c4b3-4b9c-b87e-c45de04f85c8
+
+shimishop.co
+A @ 162.159.143.30
+A @ 172.66.3.26
+TXT _openai-site-verification.shimishop.co openai-site-verification=_AwwmWWxJ945Gp9JVeEj4sUVdKGZDgG0BjzsZrol560
+TXT _cf-custom-hostname.shimishop.co a4adf0ae-b22c-4d08-8e1a-9b535f87e7ac
+
+Store management paths after activation:
+https://shem-shop.com/admin.html
+https://shimishop.co/admin.html
+
+The admin routes remain protected and are not linked from the storefront.
+
+

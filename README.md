@@ -48,3 +48,7 @@ sha256sum -c CHECKSUMS.sha256
 ```
 
 בדיקת האריזה מאמתת שהקבצים הועתקו במדויק ושה-ZIP ניתן לפתיחה. היא אינה בדיקת רכישה חיה חדשה.
+
+## Runtime data backup added
+
+Encrypted live application-data snapshot, local restoration checks, dependencies, restoration instructions and exact backup limitations are in `backups/`. See `backups/EXECUTION-REPORT.md` for the plain-language report. Keep the decryption key outside this public repository. This snapshot is not a complete export of server secrets or all R2 objects, and it does not enable currently unconnected payment/carrier providers.

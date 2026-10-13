@@ -1,0 +1,78 @@
+{
+  "snapshot_utc": "2026-10-13T17:24:37.220Z",
+  "format": "AES-256-GCM; SHEMBKP1 header (8 bytes), nonce (12 bytes), authenticated ciphertext; AAD: SHEM-SHOP runtime backup v1",
+  "sha256": "3c2f9de20caa41cf34a89fbcd4278f32a388607d0bb779f063ee2762291247de",
+  "size_bytes": 26680,
+  "source_versions": {
+    "SHEM": 31,
+    "SHIMI": 8
+  },
+  "table_row_counts": {
+    "SHEM": {
+      "customers": 0,
+      "channel_reservations": 0,
+      "cx_events": 0,
+      "audit": 6,
+      "collections": 0,
+      "activities": 0,
+      "loyalty_ledger": 0,
+      "cx_preferences": 0,
+      "cx_watches": 0,
+      "cx_shipment_events": 0,
+      "document_sequences": 0,
+      "invoice_documents": 0,
+      "mail_jobs": 0,
+      "member_profiles": 0,
+      "payment_sessions": 0,
+      "orders": 0,
+      "operation_guards": 0,
+      "members": 0,
+      "promotions": 1,
+      "payment_transactions": 0,
+      "product_links": 3,
+      "settings": 3,
+      "requests": 0,
+      "products": 10,
+      "stock_movements": 0
+    },
+    "SHIMI": {
+      "audit": 3,
+      "customers": 0,
+      "collections": 1,
+      "activities": 0,
+      "channel_reservations": 0,
+      "member_profiles": 0,
+      "document_sequences": 0,
+      "mail_jobs": 0,
+      "loyalty_ledger": 0,
+      "invoice_documents": 0,
+      "members": 0,
+      "orders": 0,
+      "payment_transactions": 0,
+      "operation_guards": 0,
+      "payment_sessions": 0,
+      "products": 6,
+      "product_links": 3,
+      "promotions": 0,
+      "stock_movements": 0,
+      "requests": 0,
+      "settings": 2
+    }
+  },
+  "validation": [
+    "SHEM: schema creation, exact row comparison, integrity check, foreign-key check passed",
+    "SHIMI: schema creation, exact row comparison, integrity check, foreign-key check passed",
+    "Authenticated encryption round-trip passed",
+    "Encrypted ZIP CRC verified after decryption",
+    "SQL restored from encrypted ZIP into new databases and all rows compared",
+    "Hosting metadata included; source credentials/bypass tokens excluded"
+  ],
+  "data_export_issues": [],
+  "limitations": [
+    "Read-only table pages collected sequentially; not a point-in-time transactional database dump.",
+    "All returned user tables exported with no truncated rows, columns or values. Internal migration history is not exported; schema migrations are in each store code.",
+    "Secret environment values are not exported; secret names are recorded for manual restoration.",
+    "No R2 media references or issued invoices found in application rows. Bucket inventory/unused objects could not be enumerated with available tools.",
+    "Production hosting identity, domains and provider permissions require restoration/configuration in their respective services."
+  ]
+}

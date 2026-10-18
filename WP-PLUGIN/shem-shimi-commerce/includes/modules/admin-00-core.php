@@ -251,10 +251,14 @@ add_action('init', function () {
 
 // Compatibility shim: the compiled admin bundle (src/admin-api.js) sends plain same-origin fetch() calls and no nonce.
 // For logged-in managers we add X-WP-Nonce to /api/admin/* requests (and refresh it once on a 401). No bundle change needed.
-add_action('wp_head', function () {
+function scc_admin_nonce_shim(): void {
+    static $done = false; if ($done) return; $done = true;
     if (!is_user_logged_in() || !current_user_can('manage_options')) return;
     $n = wp_create_nonce('wp_rest');
     echo '<script id="scc-admin-nonce">(function(){var N=' . wp_json_encode($n) . ',F=window.fetch;if(!F)return;function adm(i){try{var u=new URL(typeof i==="string"?i:(i&&i.url)||"",location.href);return u.origin===location.origin&&u.pathname.indexOf("/api/admin/")===0}catch(e){return false}}'
         . 'window.fetch=function(i,o){if(!adm(i))return F.call(this,i,o);function go(){o=Object.assign({},o||{});var h=new Headers(o.headers||(i&&i.headers)||{});h.set("X-WP-Nonce",N);o.headers=h;return F.call(window,i,o)}'
         . 'return go().then(function(r){if(r.status!==401)return r;return F.call(window,"/api/admin/session",{credentials:"same-origin"}).then(function(s){return s.ok?s.json():null}).then(function(j){if(j&&j.nonce){N=j.nonce;return go()}return r})})}})();</script>' . "\n";
-}, 1);
+}
+// The migrated themes render the React shell through do_action('storefront_shell_head') and never call wp_head, so hook both.
+add_action('wp_head', 'scc_admin_nonce_shim', 1);
+add_action('storefront_shell_head', 'scc_admin_nonce_shim', 1);

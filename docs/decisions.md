@@ -16,3 +16,6 @@
 - Issued documents are immutable; corrections only via linked credit documents (off by default, needs accountant approval).
 - Documents issued only from a verified signed SHIMI paid callback; automation and customer email off by default.
 - Backed up on branch feature/shem-dok-1.1-staging-verified (not merged).
+
+## 18.10.2026 - PDF design decision
+- Owner approved keeping the new SHEM DOK PDF design as is (not restyled to the old black/gold generator look). Reference: SHEM-DOK/tests/pdf-compare/compare.png.

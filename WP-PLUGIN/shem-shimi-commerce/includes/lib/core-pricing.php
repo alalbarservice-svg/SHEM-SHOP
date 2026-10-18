@@ -4,7 +4,7 @@ require_once __DIR__ . '/core-util.php';
 require_once __DIR__ . '/core-products.php';
 
 /**
- * Pricing and cart rules - 1:1 port of operations.js (quote), channel.js (reviewSummary, validateReviewToken) and
+ * Pricing and cart rules - 1:1 port of operations.js (quote) and
  * management.js (makeOrder, cleanCustomer). All money is integer agorot until the very last division, exactly like the worker.
  */
 final class Scc_Core_Pricing {
@@ -94,60 +94,6 @@ final class Scc_Core_Pricing {
             'quotedAt' => Scc_Core_Util::now_iso(),
             'paymentConnected' => false,
         ];
-    }
-
-    /* ------------------------------------------------------------------ review summary (channel.js) */
-    public static function review_summary(array $quote, array $products, mixed $shipping, mixed $code): array {
-        $cents = fn($v) => Scc_Core_Util::amount($v);
-        $items = [];
-        foreach ($quote['items'] as $line) {
-            $p = null; foreach ($products as $x) if (($x['id'] ?? null) === ($line['id'] ?? null)) { $p = $x; break; }
-            $v = null; foreach ((is_array($p['variants'] ?? null) ? $p['variants'] : []) as $x) if (($x['id'] ?? null) === ($line['variantId'] ?? null)) { $v = $x; break; }
-            $items[] = [
-                'productId' => $p['id'], 'variantId' => $v['id'] ?? '', 'name' => $p['he'] ?? null, 'sku' => $v['sku'] ?? ($p['sku'] ?? null),
-                'size' => $line['size'], 'color' => $v['color'] ?? ($p['color'] ?? null), 'qty' => $line['qty'],
-                'priceCents' => $cents($line['price']), 'lineCents' => $cents($line['price']) * (int) $line['qty'],
-            ];
-        }
-        $items = array_map(fn($r) => array_filter($r, fn($x) => $x !== null), $items); // JSON.stringify drops undefined
-        return [
-            'items' => $items, 'currency' => 'ILS',
-            'subtotalCents' => $cents($quote['subtotal']), 'discountCents' => $cents($quote['discount']), 'shippingCents' => $cents($quote['shipping']),
-            'vatCents' => $cents($quote['vatIncluded']), 'netSubtotalCents' => $cents($quote['netSubtotal']), 'totalCents' => $cents($quote['total']),
-            'shippingMethod' => Scc_Core_Util::truthy($shipping) ? $shipping : 'standard',
-            'couponCode' => mb_strtoupper(Scc_Core_Util::clean(is_scalar($code) ? (string) $code : '', 1000)),
-            'vatRate' => 18,
-        ];
-    }
-    /** summaryFromQuote: product documents are re-read (WooCommerce truth, no holds) and prices must not have moved. */
-    public static function summary_from_quote(array $data, array $quote): array {
-        $ids = []; foreach ((array) ($data['items'] ?? []) as $i) if (is_array($i) && isset($i['id'])) $ids[(string) $i['id']] = true;
-        $ids = array_keys($ids);
-        $products = $ids ? Scc_Core::overlaid($ids) : [];
-        foreach ($ids as $id) {
-            $p = null; foreach ($products as $x) if ($x['id'] === $id) { $p = $x; break; }
-            if (!$p || Scc_Core_Util::truthy($p['archived'] ?? false) || ($p['active'] ?? true) === false) self::fail('מוצר אינו זמין.', 409);
-            $line = null; foreach ($quote['items'] as $x) if (($x['id'] ?? null) === $id) { $line = $x; break; }
-            if (Scc_Core_Util::amount($p['price']) !== Scc_Core_Util::amount($line['price'])) self::fail('מחיר השתנה במהלך הבדיקה. רעננו את הסיכום.', 409);
-        }
-        return self::review_summary($quote, $products, $data['shipping'] ?? null, $data['code'] ?? null);
-    }
-    public static function review_secret(): string { return class_exists('Scc_Channel') ? Scc_Channel::secret() : (defined('SCC_CHANNEL_SECRET') ? (string) SCC_CHANNEL_SECRET : ''); }
-    public static function review_token(array $summary, ?int $now_ms = null): string {
-        $expires = (string) (($now_ms ?? (int) floor(microtime(true) * 1000)) + 300000);
-        return $expires . '.' . Scc_Core_Util::sign(self::review_secret(), $expires . '.' . Scc_Core_Util::enc($summary));
-    }
-    /** validateReviewToken */
-    public static function validate_review_token(array $data, array $quote, ?int $now_ms = null): void {
-        if (!Scc_Core_Util::truthy($data['reviewToken'] ?? null)) return;
-        $parts = explode('.', (string) $data['reviewToken']);
-        $expires = $parts[0]; $digest = $parts[1] ?? '';
-        $now = $now_ms ?? (int) floor(microtime(true) * 1000);
-        if (!preg_match('/^\d+\z/', $expires) || (float) $expires < $now || (float) $expires > $now + 301000) self::fail('סיכום ההזמנה פג. יש לאמת שוב את ההזמנה.', 409);
-        $summary = self::summary_from_quote($data, $quote);
-        $secret = self::review_secret();
-        if ($secret === '' || !hash_equals(Scc_Core_Util::sign($secret, $expires . '.' . Scc_Core_Util::enc($summary)), $digest))
-            self::fail('פרטי הסל או המחיר השתנו. יש לאמת שוב את סיכום ההזמנה.', 409);
     }
 
     /* ------------------------------------------------------------------ order draft (management.js makeOrder) */

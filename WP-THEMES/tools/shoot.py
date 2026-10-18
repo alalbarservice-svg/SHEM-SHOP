@@ -6,6 +6,7 @@ import sys, json, re, os
 from playwright.sync_api import sync_playwright
 site, base, out = sys.argv[1:4]
 reduced = "--reduced" in sys.argv
+settle = "--settle" in sys.argv
 only_vp = next((a.split("=")[1] for a in sys.argv if a.startswith("--vp=")), None)
 os.makedirs(out, exist_ok=True)
 EXP = "/home/claude/export-2026-10-18/"
@@ -45,6 +46,13 @@ with sync_playwright() as p:
             fn = f"{out}/{site}-{slug}-{vp}.png"
             try:
                 pg.goto(base + r, wait_until="networkidle", timeout=45000); pg.wait_for_timeout(1200)
+                if settle:  # identical on every target: eager-load images and wait for fonts + decode, so late-painting logos do not read as diffs
+                    pg.evaluate("""async()=>{document.querySelectorAll('img[loading=lazy]').forEach(i=>{i.loading='eager'});
+                      const t=new Promise(r=>setTimeout(r,8000));
+                      await Promise.race([t,(async()=>{await document.fonts.ready;
+                      await Promise.all([...document.images].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r})));
+                      await Promise.all([...document.images].map(i=>i.decode?i.decode().catch(()=>{}):0));})()]);}""")
+                    pg.wait_for_timeout(800)
                 pg.screenshot(path=fn, full_page=True)
             except Exception as e:
                 print("FAIL", site, r, vp, str(e)[:100])

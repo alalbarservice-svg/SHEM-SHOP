@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) exit;
  *   SCC_CHANNEL_INLINE    false = never try an inline delivery at shutdown (queue only)
  */
 final class Scc_Channel {
-    public static function is_home(): bool { return defined('SCC_ROLE') && SCC_ROLE === 'shimi'; }
+    public static function is_home(): bool { return (bool) apply_filters('scc_channel_is_home', defined('SCC_ROLE') && SCC_ROLE === 'shimi'); } // filter exists for tests only
     public static function role(): string { return self::is_home() ? 'home' : 'source'; }
     public static function secret(): string { return defined('SCC_CHANNEL_SECRET') && is_string(SCC_CHANNEL_SECRET) ? SCC_CHANNEL_SECRET : ''; }
     public static function peer_url(): string {

@@ -326,4 +326,27 @@ final class Scc_Core {
         class_exists('Scc_Channel_Catalog') ? Scc_Channel_Catalog::quietly($run) : $run();
         return true;
     }
+
+    /* ---- order seam used by the customer-experience module (implemented in core-order-store.php) ---- */
+    private static function orders(): string { require_once __DIR__ . '/core-order-store.php'; return 'Scc_Core_Orders'; }
+    public static function order_doc(string $id): ?array { return call_user_func([self::orders(), 'doc'], $id); }
+    public static function order_docs_by_email(string $email, int $limit = 100): array { return call_user_func([self::orders(), 'docs_by_email'], $email, $limit); }
+    public static function save_order_doc(string $id, array $doc, string $expected, ?string $t = null): ?string { return call_user_func([self::orders(), 'save_doc'], $id, $doc, $expected, $t); }
+    public static function wc_order_id(string $legacy_id): int { return call_user_func([self::orders(), 'wc_id'], $legacy_id); }
+
+    /* ---- seams used by the channel module (pricing engine, payment details cleaning) ---- */
+    /** /api/quote engine. @param array $payload {items, shipping, code}. @throws Scc_Http_Exception with the Hebrew business error. */
+    public static function quote(array $payload): array { require_once __DIR__ . '/core-pricing.php'; return Scc_Core_Pricing::quote($payload); }
+    /** management.js cleanPayment(). */
+    public static function clean_payment(array $d): array {
+        require_once __DIR__ . '/core-util.php';
+        $method = in_array($d['method'] ?? null, ['card', 'bank-transfer', 'cash', 'other'], true) ? $d['method'] : 'other';
+        $last4 = $d['last4'] ?? null;
+        if (Scc_Core_Util::truthy($last4) && !preg_match('/^\d{4}\z/', (string) (is_scalar($last4) ? $last4 : ''))) throw new Scc_Http_Exception('יש להזין ארבע ספרות אחרונות בלבד.', 400);
+        $raw = Scc_Core_Util::truthy($d['installments'] ?? null) ? $d['installments'] : 1;
+        $inst = is_numeric($raw) ? $raw + 0 : NAN;
+        if (!is_int($inst) && !(is_float($inst) && is_finite($inst) && floor($inst) == $inst) || $inst < 1 || $inst > 36) throw new Scc_Http_Exception('מספר תשלומים לא תקין.', 400);
+        return ['method' => $method, 'last4' => Scc_Core_Util::clean(is_scalar($last4 ?? '') ? (string) ($last4 ?: '') : '', 4), 'cardholderName' => Scc_Core_Util::clean($d['cardholderName'] ?? null, 150),
+            'brand' => Scc_Core_Util::clean($d['brand'] ?? null, 40), 'authorizationCode' => Scc_Core_Util::clean($d['authorizationCode'] ?? null, 60), 'installments' => (int) $inst];
+    }
 }

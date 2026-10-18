@@ -38,6 +38,7 @@ final class Scc_Channel_Review {
             $p = Scc_Channel_Catalog::get($id);
             if (!$p || !empty($p['archived']) || ($p['active'] ?? true) === false) Scc_Channel::fail('מוצר אינו זמין.', 409);
             $line = null; foreach ($quote['items'] as $x) if ($x['id'] === $id) { $line = $x; break; }
+            if (!$line) Scc_Channel::fail('מוצר אינו זמין.', 409);
             if (self::cents($p['price']) !== self::cents($line['price'])) Scc_Channel::fail('מחיר השתנה במהלך הבדיקה. רעננו את הסיכום.', 409);
             $products[] = $p;
         }

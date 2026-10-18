@@ -94,7 +94,7 @@ final class ShemDok {
 
  /* ---------- settings ---------- */
  static function defaults(){return ['business'=>'SHEM מותגים','businessId'=>'516067873','address'=>'דרך מצדה 259 באר שבע','phone'=>'052-958-6766','email'=>'','title'=>'חשבונית עסקה','vat'=>18,'supply1'=>"תנאי משלוח:\nשליח עד הבית 5-7 ימי עסקים 49₪\nשליח עד הבית 1 יום עסקים 199₪",'supply2'=>"החלפות והחזרות: תוך 14 ימים מיום קבלת המשלוח \nעל ידי איסוף שליח עד הבית."];}
- static function base_settings(){return ['defaults'=>self::defaults(),'auto'=>false,'email_customer'=>false,'email_subject'=>'חשבונית עסקה מספר {number} להזמנה {order}','email_body'=>"שלום {name},\nמצורפת חשבונית עסקה מספר {number} להזמנה {order}.",'allow_credit'=>false,'thankyou'=>true,'thankyou_title'=>'חשבונית עסקה','thankyou_button'=>'הורדת חשבונית עסקה','thankyou_pending'=>'החשבונית בהפקה. הכפתור יופיע כאן בעוד רגע.','alert_email'=>''];}
+ static function base_settings(){return ['defaults'=>self::defaults(),'auto'=>false,'email_customer'=>false,'email_subject'=>'חשבונית עסקה מספר {number} להזמנה {order}','email_body'=>"שלום {name},\nמצורפת חשבונית עסקה מספר {number} להזמנה {order}.",'allow_credit'=>false,'thankyou'=>true,'thankyou_heading'=>'לקוח יקר, תודה שרכשת בSHEM מותגים','thankyou_sub'=>'הזמנתך נקלטה, והתשלום בוצע!','thankyou_title'=>'חשבונית עסקה','thankyou_button'=>'הורדת חשבונית עסקה','thankyou_pending'=>'החשבונית בהפקה. הכפתור יופיע כאן בעוד רגע.','alert_email'=>''];}
  static function settings(){return array_merge(self::base_settings(),get_option('shem_dok_settings',[]));}
  static function allowed(){return current_user_can('manage_woocommerce');}
  static function engine_ready(){return is_file(__DIR__.'/vendor/autoload.php')&&extension_loaded('gd')&&extension_loaded('mbstring');}
@@ -160,7 +160,7 @@ final class ShemDok {
   $s['defaults']=$defs;
   $s['auto']=!empty($body['auto']);
   foreach(['email_customer','allow_credit','thankyou'] as $k)if(array_key_exists($k,$body))$s[$k]=!empty($body[$k]);
-  foreach(['email_subject','email_body','thankyou_title','thankyou_button','thankyou_pending'] as $k)if(isset($body[$k]))$s[$k]=sanitize_textarea_field(mb_substr((string)$body[$k],0,500));
+  foreach(['email_subject','email_body','thankyou_heading','thankyou_sub','thankyou_title','thankyou_button','thankyou_pending'] as $k)if(isset($body[$k]))$s[$k]=sanitize_textarea_field(mb_substr((string)$body[$k],0,500));
   if(isset($body['alert_email'])){$e=trim((string)$body['alert_email']);if($e!==''&&!is_email($e))throw new Exception('כתובת מייל להתראות אינה תקינה');$s['alert_email']=$e;}
   if(($s['auto']||$s['email_customer'])&&(!self::engine_ready()||!function_exists('wc_get_order')))throw new Exception('יש להשלים התקנת מנוע PDF לפני הפעלת אוטומציה');
   if(!update_option('shem_dok_settings',$s,false)&&get_option('shem_dok_settings')!==$s)throw new Exception('שמירת ההגדרות נכשלה. נסו שוב.');

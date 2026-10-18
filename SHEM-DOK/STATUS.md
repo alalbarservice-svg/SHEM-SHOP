@@ -24,3 +24,8 @@ Open finding: /api/admin/manage/status is unauthenticated on both live sites (un
 - PDF: heading "זמני אספקה, משלוחים ותנאי החזרות" with fixed default shipping and returns text (owner decision).
 - Test fixtures (mu-plugin e2e-mailcap, users buyer1/shopmgr, local password files) removed from staging. Restore with tests/fixtures/staging-fixtures.sh setup (verified: setup from clean state, s1 43/43). woocommerce_coming_soon left as is (needed for thank-you checks).
 - UI screenshots removed from repo (staging data) and ignored. They remain in git history.
+
+## 18.10.2026 (evening) - thank-you greeting
+- Added greeting heading and sub-line to the thank-you page (paid orders only), RTL block. Wording per owner decision in docs/decisions.md. Checks in tests/thankyou/.
+- Full e2e after the change: 193/193 (s4 T1 log check now ignores WordPress.org connectivity warnings, which staging cannot reach; log archived, see e2e-greeting.log for the first run where T1 flagged those).
+- Not done: "הזמנתך התקבלה" above payment options (page not built yet).

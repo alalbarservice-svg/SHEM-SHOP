@@ -28,6 +28,7 @@ add_action('admin_post_shem_dok_order_issue',['ShemDok_Customer','order_issue'])
 add_action('woocommerce_payment_complete',['ShemDok','paid'],30);
 add_action('shem_dok_retry',['ShemDok','paid'],10,2);
 add_action('woocommerce_order_refunded',['ShemDok','on_refund'],10,2);
+add_action('woocommerce_thankyou',['ShemDok_Customer','greeting'],10);
 add_action('woocommerce_thankyou',['ShemDok_Customer','thankyou'],20);
 add_action('woocommerce_order_details_after_order_table',['ShemDok_Customer','account_link'],20);
 add_action('add_meta_boxes',['ShemDok_Customer','metabox']);

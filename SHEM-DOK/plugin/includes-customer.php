@@ -63,12 +63,18 @@ final class ShemDok_Customer {
  }
 
  /* ---------- thank-you page ---------- */
+ static function greeting($order_id){
+  $o=wc_get_order($order_id);if(!$o||!$o->is_paid())return;
+  $s=ShemDok::settings();
+  echo '<style>.shem-greeting{text-align:center;margin:1.5em 0 2em}.shem-greeting h1{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:700;line-height:1.25;margin:0 0 .4em}.shem-greeting p{font-size:clamp(1.3rem,3vw,1.75rem);font-weight:600;line-height:1.4;margin:0}</style>';
+  echo '<section class="shem-greeting" dir="rtl" lang="he"><h1>'.esc_html($s['thankyou_heading']).'</h1><p>'.esc_html($s['thankyou_sub']).'</p></section>';
+ }
  static function thankyou($order_id){
   $s=ShemDok::settings();if(!$s['auto']||!$s['thankyou'])return;
   $o=wc_get_order($order_id);if(!$o||!$o->is_paid())return;
   try{ShemDok::method_for_order($o);}catch(Throwable $e){return;}
   $doc=ShemDok::invoice_for_order($o->get_id());
-  echo '<section class="shem-dok-thankyou" data-shem-dok="1"><h2>'.esc_html($s['thankyou_title']).'</h2>';
+  echo '<section class="shem-dok-thankyou" data-shem-dok="1" dir="rtl" lang="he"><h2>'.esc_html($s['thankyou_title']).'</h2>';
   if($doc){
    echo '<p><a class="button shem-dok-download" href="'.esc_url(self::dl_url($o->get_id())).'">'.esc_html($s['thankyou_button']).'</a></p>';
   }else{

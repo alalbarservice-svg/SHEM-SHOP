@@ -25,3 +25,7 @@
 
 ## 18.10.2026 - cleanup of test components
 - Owner approved removing test components that are no longer needed, provided everything is backed up. Done after backup (local DB dumps and files). Reversible via SHEM-DOK/tests/fixtures/staging-fixtures.sh.
+
+## 18.10.2026 (16:36) - Order status wording (owner decision)
+- Payment options page (PayPal or card), above the options, in large type: "הזמנתך התקבלה". NOT implemented yet: this page does not exist on staging (default WordPress theme, no PayPal/card gateway). Goes to the theme and payments work. It may only show once the order actually exists (to verify when the gateway is built).
+- Thank-you page after payment: large heading "לקוח יקר, תודה שרכשת בSHEM מותגים", below it slightly smaller but still large and clear "הזמנתך נקלטה, והתשלום בוצע!", then the invoice section. Implemented in SHEM DOK (settings thankyou_heading, thankyou_sub). Shown only for orders confirmed as paid (verified: hidden on unpaid order).

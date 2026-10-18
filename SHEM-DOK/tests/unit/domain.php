@@ -23,7 +23,7 @@ $q=$p;$q['discount']=200;rejects(fn()=>ShemDok::clean($q),'reject excessive disc
 $q=$p;$q['last4']='1234567890123456';rejects(fn()=>ShemDok::clean($q),'reject full card number');
 $q=$p;$q['orderDate']='2026-02-31';rejects(fn()=>ShemDok::clean($q),'reject invalid calendar date');
 $q=$p;$q['method']='paypal';$q['paypalEmail']='payer@example.test';$q=ShemDok::clean($q);check($q['last4']===''&&$q['paypalEmail']==='payer@example.test','PayPal replaces card details');
-$html=ShemDok::html($p,7001);check(str_contains($html,'7001')&&str_contains($html,'חשבונית עסקה')&&str_contains($html,'זמני אספקה ומשלוחים'),'document template and numbering');
+$html=ShemDok::html($p,7001);check(str_contains($html,'7001')&&str_contains($html,'חשבונית עסקה')&&str_contains($html,'זמני אספקה, משלוחים ותנאי החזרות'),'document template and numbering');
 $pdf=ShemDok::pdf($p,7001);check(str_starts_with($pdf,'%PDF-'),'real PDF generated');file_put_contents(sys_get_temp_dir().'/shem-dok-sample.pdf',$pdf);
 $p['items']=array_fill(0,65,['name'=>'פריט בדיקה ארוך לבדיקה של טבלה מרובת עמודים','sku'=>'TEST-LONG','qty'=>1,'price'=>118,'lineGross'=>null]);file_put_contents(sys_get_temp_dir().'/shem-dok-long.pdf',ShemDok::pdf($p,7002));echo 'PDF samples: '.sys_get_temp_dir()."\n";
 

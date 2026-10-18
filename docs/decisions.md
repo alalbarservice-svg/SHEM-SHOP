@@ -19,3 +19,6 @@
 
 ## 18.10.2026 - PDF design decision
 - Owner approved keeping the new SHEM DOK PDF design as is (not restyled to the old black/gold generator look). Reference: SHEM-DOK/tests/pdf-compare/compare.png.
+
+## 18.10.2026 - PDF delivery and returns section
+- Owner rejected hiding the empty heading. Heading is now "זמני אספקה, משלוחים ותנאי החזרות" with fixed default text: shipping terms (courier 5-7 business days 49 ILS, courier 1 business day 199 ILS) and returns (14 days from delivery, courier pickup). Applies to new documents only; issued documents are immutable.

@@ -93,7 +93,7 @@ final class ShemDok {
  }
 
  /* ---------- settings ---------- */
- static function defaults(){return ['business'=>'SHEM מותגים','businessId'=>'516067873','address'=>'דרך מצדה 259 באר שבע','phone'=>'052-958-6766','email'=>'','title'=>'חשבונית עסקה','vat'=>18,'supply1'=>'','supply2'=>''];}
+ static function defaults(){return ['business'=>'SHEM מותגים','businessId'=>'516067873','address'=>'דרך מצדה 259 באר שבע','phone'=>'052-958-6766','email'=>'','title'=>'חשבונית עסקה','vat'=>18,'supply1'=>"תנאי משלוח:\nשליח עד הבית 5-7 ימי עסקים 49₪\nשליח עד הבית 1 יום עסקים 199₪",'supply2'=>"החלפות והחזרות: תוך 14 ימים מיום קבלת המשלוח \nעל ידי איסוף שליח עד הבית."];}
  static function base_settings(){return ['defaults'=>self::defaults(),'auto'=>false,'email_customer'=>false,'email_subject'=>'חשבונית עסקה מספר {number} להזמנה {order}','email_body'=>"שלום {name},\nמצורפת חשבונית עסקה מספר {number} להזמנה {order}.",'allow_credit'=>false,'thankyou'=>true,'thankyou_title'=>'חשבונית עסקה','thankyou_button'=>'הורדת חשבונית עסקה','thankyou_pending'=>'החשבונית בהפקה. הכפתור יופיע כאן בעוד רגע.','alert_email'=>''];}
  static function settings(){return array_merge(self::base_settings(),get_option('shem_dok_settings',[]));}
  static function allowed(){return current_user_can('manage_woocommerce');}

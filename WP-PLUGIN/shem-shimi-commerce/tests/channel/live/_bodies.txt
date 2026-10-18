@@ -1,0 +1,8 @@
+{"reservationId":"shimi:t-channel-live-b0","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b1","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b2","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b3","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b4","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b5","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b6","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}
+{"reservationId":"shimi:t-channel-live-b7","items":[{"productId":"t-channel-live-big","variantId":"","size":"","qty":1}]}

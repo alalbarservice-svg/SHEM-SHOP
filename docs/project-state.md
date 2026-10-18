@@ -14,3 +14,8 @@ SHEM DOK 1.1 verified on local staging (unit, 193 e2e, 12 ui). Branch feature/sh
 
 ## Update 18.10.2026 (payment flow)
 Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed callback, retry/reconcile) and SHEM-PAY/shem-pay-gateway (gateway, "הזמנתך התקבלה" page, iframe). Tests: SHIMI-PAY/tests/e2e_pay.py 42/42 (capture response mocked in section E; order creation against real PayPal Sandbox). DOK verify: 316 documents OK. Not verified: real wallet approval and capture (needs buyer login), card/ACDC, live-theme look (themes not built yet), real PayPal webhook delivery (reconcile polling built and tested with mocked PayPal responses). Tests now 49/49. Waiting for owner: payment provider decision.
+
+## Update 19.10.2026
+- Round 2 final fixes executed on staging: customer E2E 42/0 x3, import 121/0 and 73/0, live sync 49/49, SHEM admin 333 pass, SHIMI admin 322 pass (1 blocked payment link, 1 not-run), DOK s1 43/0, s2 54/0, s3 52 pass + 2 blocked (theme routing), s4 42/0, ui 12/0, ui3 16/0, wp shem-dok verify 472 documents.
+- Open: SHIMI admin payment link needs a provider adapter; non-manager 403 vs 401; theme order-received page; mPDF packaging for SHIMI; staging HMAC secret rotation; payment suite not rerun (blocked).
+- Next: owner decisions listed in the final report, then go-live preparation only after approval.

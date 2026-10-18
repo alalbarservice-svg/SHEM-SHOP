@@ -48,3 +48,14 @@
 - PayPal reconcile: polling (hourly, `wp shimi-pay reconcile`) for sessions left at pp_created for over 15 minutes; verifies at PayPal (COMPLETED, or captures if APPROVED) and sends the signed callback. Chosen over a webhook because staging has no public URL; a webhook can be added at go-live as a second trigger of the same function.
 
 - 2026-10-18: Gateway enable switch in SHEM-PAY was ignored (found by test G9); fixed (init_form_fields, enabled option). Payment suite now 58/58 on staging (incl. block checkout: 1 h1, 1 iframe). Not verified: real wallet approval, card (ACDC), real webhook, real theme look.
+
+## 19.10.2026 - Final fixes round: root causes and findings
+- Nonce in admin (item 9): root cause was the nonce shim hooked only to wp_head while the migrated theme shell fires storefront_shell_head; writes returned 401. Fixed (both hooks). Browser PASS 3 cycles on both sites, writes and GETs carry X-WP-Nonce, no nonce console errors.
+- Thank-you screen: the real customer screen is the SPA /order-complete.html. The WooCommerce order-received page renders the SPA home under the migrated theme (woocommerce_thankyou hooks never run). DOK tests I1 and I14 are recorded as BLOCKED, never as pass. Owner decision pending: align the SPA wording with the approved DOK wording.
+- Emails: invoice email stays OFF by default; invoices download from the thank-you screen (SCC_INVOICE_DELIVERY_MODE=download, mail_jobs 0).
+- Live sync regression (49 to 46/3 then 49/49): Action Scheduler ran as ActionScheduler_HybridStore because the data store migration status was never set to complete; the CLI claim with --group then raised "group does not exist". Fixed on staging with the official `wp action-scheduler migrate` (0 actions moved). What reset or never set the status is not proven. Production queue runners do not filter by group, the CLI test does.
+- SHIMI admin documents: 3 BLOCKED items were a missing mPDF vendor on SHIMI (fallback to the SHEM-DOK vendor only works on SHEM). mPDF copied to the SHIMI plugin vendor dir on staging, 3 items now PASS. Packaging of mPDF for production SHIMI remains an owner decision.
+- Application Passwords are unavailable under WP_ENVIRONMENT_TYPE=staging over http; test mu-plugin enables them for tests only.
+- UI test harness: one login navigation timeout in 4 ui.js runs (server login measured 12 times at about 0.3 s). Harness changed to waitForURL; cause of the single timeout not proven.
+- Test logs: T1 now reads only debug.log lines written during the run.
+- acceptance status: docs/acceptance-status-2026-10-19.csv (34 pass, 23 partial, 16 not-run, 9 blocked). Payment-provider scenarios are blocked by the owner decision to skip the provider for now.

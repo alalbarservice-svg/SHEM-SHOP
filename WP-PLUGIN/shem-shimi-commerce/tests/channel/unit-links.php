@@ -94,7 +94,7 @@ throws('source without SKU', fn() => $link('t-channel-hn', ['sourceUrl' => $src(
 mkp('t-channel-hs', ['sizes' => ['XL'], 'sizeStock' => ['XL' => 0]]);
 throws('sizes must match', fn() => $link('t-channel-hs', ['sourceUrl' => $src('t-channel-src')]), 'המידות אינן תואמות למקור.');
 mkp('t-channel-hnv', ['sizes' => ['M', 'L'], 'sizeStock' => ['M' => 0, 'L' => 0]]);
-throws('source has variants but the card has none', fn() => $link('t-channel-hnv', ['sourceUrl' => $src('t-channel-v')]), 'למקור יש גרסאות. יש ליצור גרסאות בכרטיס SHIMI.');
+throws('source has variants but the card has none (1:1 with the worker: the one-to-one check fires first)', fn() => $link('t-channel-hnv', ['sourceUrl' => $src('t-channel-v')]), 'נדרש מיפוי חד ערכי לכל גרסאות המקור.');
 mkp('t-channel-hv', ['sizes' => ['M', 'L'], 'sizeStock' => ['M' => 0, 'L' => 0], 'variants' => [['id' => 't-channel-hvm', 'size' => 'M', 'color' => 'black', 'sku' => 'H-M', 'stock' => 0], ['id' => 't-channel-hvl', 'size' => 'L', 'color' => 'black', 'sku' => 'H-L', 'stock' => 0]]]);
 throws('variant map required', fn() => $link('t-channel-hv', ['sourceUrl' => $src('t-channel-v'), 'variantMap' => []]), 'נדרש מיפוי ידני לכל גרסה באותה מידה.');
 throws('variant map must keep the size', fn() => $link('t-channel-hv', ['sourceUrl' => $src('t-channel-v'), 'variantMap' => ['t-channel-hvm' => 't-channel-vl', 't-channel-hvl' => 't-channel-vm']]), 'נדרש מיפוי ידני לכל גרסה באותה מידה.');
@@ -114,8 +114,8 @@ eq('source side holds the registration', Scc_Docs::get('product_links', 't-chann
 throws('second link on the same card', fn() => $link('t-channel-home', ['sourceUrl' => $src('t-channel-src')]), 'יש לנתק את החיבור הקיים לפני החלפת המקור.');
 mkp('t-channel-home2', ['sizes' => ['M'], 'sizeStock' => ['M' => 0]]);
 throws('source already feeds another card', fn() => $link('t-channel-home2', ['sourceUrl' => $src('t-channel-src')]), 'מוצר המקור כבר מקושר לכרטיס אחר.');
-$owner1 = Scc_Channel_Links::claim('t-channel-race', 'link-A'); $owner2 = as_home(true, fn() => Scc_Channel_Links::claim('t-channel-race', 'link-B'));
-eq('unique key: the first claim wins, the second sees the owner', [$owner1, $owner2], ['link-A', 'link-A']);
+$owner1 = as_home(true, fn() => Scc_Channel_Links::claim('t-channel-race', 'link-A')); $owner2 = as_home(true, fn() => Scc_Channel_Links::claim('t-channel-race', 'link-B')); $owner3 = as_home(false, fn() => Scc_Channel_Links::claim('t-channel-race', 'link-C'));
+eq('unique key per side: the first claim wins, the second sees the owner, the other side is independent', [$owner1, $owner2, $owner3], ['link-A', 'link-A', 'link-C']);
 
 section('4b. one-way sync SHEM -> SHIMI');
 Scc_Docs::put('products', 't-channel-src', array_merge(pget('t-channel-src'), ['price' => 80, 'previousPrice' => 120, 'sku' => 'SRC-2']));

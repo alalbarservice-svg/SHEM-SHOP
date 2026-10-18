@@ -265,7 +265,7 @@ final class Scc_Import_Command {
                     $extra['images'] = $img['rows']; if ($img['error']) $extra['error'] = $img['error'];
                     $extra['warnings'] = array_merge($extra['warnings'], $img['warnings']);
                 } else $extra['images'] = 'skipped (--skip-images)';
-                $this->rec('product', $sid, $res['action'], $extra);
+                $this->rec('product', $sid, empty($extra['error']) ? $res['action'] : 'ERROR', $extra + ['action_before_error' => $res['action']]);
             } catch (Throwable $e) {
                 $this->rec('product', $sid, 'ERROR', ['error' => $e->getMessage(), 'sha256' => isset($raw[$idx]) ? self::sha($raw[$idx]) : null]);
             }

@@ -355,7 +355,7 @@ def run():
     r = st('business (manage) PUT', call('manage/settings/business', 'PUT', {'legalName': 'Test company', 'phone': '0500000000', 'junk': 'x'}), 200)
     ok('business: unknown keys dropped', 'junk' not in (r.j or {}))
     st('manage/settings/<unknown> -> 404', call('manage/settings/other'), 404)
-    st('manage/settings DELETE -> 405-ish', call('manage/settings/loyalty', 'DELETE', {}), 405, 'פעולה לא נתמכת.')
+    st('manage/settings DELETE -> 404 (only GET/PUT exist)', call('manage/settings/loyalty', 'DELETE', {}), 404)
 
     # club settings (api.js)
     st('settings club enabled without privacyUrl -> 400', call('settings', 'PUT', {'key': 'club', 'value': {'enabled': True, 'title': 'Club', 'privacyUrl': ''}}), 400, 'כדי להפעיל הרשמה יש להזין קישור למדיניות פרטיות.')
@@ -400,7 +400,7 @@ def run():
         st('trackingUrl credentials rejected', call('manage/orders/' + o['id'], 'PUT', {**PAY, 'trackingUrl': 'https://u:p@x.test/t'}), 400, 'קישור המעקב חייב להיות כתובת HTTPS תקינה.')
         st('estimatedDelivery invalid', call('manage/orders/' + o['id'], 'PUT', {**PAY, 'estimatedDelivery': '2026-99-99'}), 400, 'תאריך אספקה אינו תקין.')
         r = st('carrier/tracking/ETA saved', call('manage/orders/' + o['id'], 'PUT', {**PAY, 'carrier': 'UPS', 'trackingUrl': 'https://x.test/t', 'estimatedDelivery': '2026-12-01', 'status': 'new'}), 200); o = r.j or {}
-        eq('shipment fields', (o.get('carrier'), o.get('trackingUrl'), o.get('estimatedDelivery'), [h['status'] for h in o.get('shipmentHistory', [])]), ('UPS', 'https://x.test/t', '2026-12-01', ['draft', 'new']))
+        eq('shipment fields', (o.get('carrier'), o.get('trackingUrl'), o.get('estimatedDelivery'), [h['status'] for h in o.get('shipmentHistory', [])]), ('UPS', 'https://x.test/t', '2026-12-01', ['draft', 'new', 'draft', 'new']))
     else:
         r = st('SHIMI order has no shipment fields', call('manage/orders/' + o['id'], 'PUT', {**PAY, 'carrier': 'UPS'}), 200); o = r.j or {}
         ok('no carrier/shipmentHistory on SHIMI', 'carrier' not in o and 'shipmentHistory' not in o)
@@ -459,7 +459,7 @@ def run():
         if oo.get('status') == 'cancelled' and oo.get('customer', {}).get('email') == cust['email']: track('orders', oo['id'])
     # redeem / release
     r = st('create second order', call('manage/orders', 'POST', {**PAY, 'items': [PAY['items'][0] | {'qty': 1}]}), 201); small = r.j or {}; track('orders', small.get('id'))
-    st('redeem above cap -> 400', call('manage/orders/' + small['id'] + '/redeem', 'POST', {'memberId': card['id'], 'amount': 6}), 400, 'סכום המימוש אינו עומד במינימום או בתקרה.')
+    st('redeem above available balance -> 400', call('manage/orders/' + small['id'] + '/redeem', 'POST', {'memberId': card['id'], 'amount': 6}), 400, 'אין יתרת הטבה זמינה בסכום המבוקש.')
     st('redeem unknown member', call('manage/orders/' + small['id'] + '/redeem', 'POST', {'memberId': 'nope', 'amount': 5}), 400, 'חבר, הזמנה או סכום הטבה אינם תקינים.')
     r = st('redeem 5', call('manage/orders/' + small['id'] + '/redeem', 'POST', {'memberId': card['id'], 'amount': 5}), 200); rd = r.j or {}
     eq('redeemed totals', (rd.get('totalCents'), rd.get('discountCents'), rd.get('loyaltyDiscountCents'), bool(rd.get('redemptionId'))), (small['totalCents'] - 500, 500, 500, True))

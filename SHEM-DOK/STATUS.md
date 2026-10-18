@@ -18,3 +18,9 @@ Open finding: /api/admin/manage/status is unauthenticated on both live sites (un
 - ui3: 16/16 pass (archive, issued read-only view, alerts dialog; desktop+mobile).
 - PDF comparison old (pdf-lib, SHEM/worker/documents.js) vs new: amounts identical; design differs (see tests/pdf-compare/compare.png) - awaiting owner decision.
 - The 1 open alert on staging is a leftover of the intentional tamper test; wp shem-dok verify: 193 documents intact.
+
+## 18.10.2026 - update
+- HPOS off (legacy order storage): all 4 e2e suites run. 192 of 193 checks passed. The one failure (T1, debug.log) is explained: 3 entries are staging having no access to WordPress.org (update check), 1 is a missing-field warning from a manual sample render I did, 1 is my own failed attempt to switch storage mode. None came from normal plugin operation. Log: tests/e2e/e2e-hpos-off.log. Storage was restored to HPOS on afterwards, 239 documents verified intact.
+- PDF: heading "זמני אספקה, משלוחים ותנאי החזרות" with fixed default shipping and returns text (owner decision).
+- Test fixtures (mu-plugin e2e-mailcap, users buyer1/shopmgr, local password files) removed from staging. Restore with tests/fixtures/staging-fixtures.sh setup (verified: setup from clean state, s1 43/43). woocommerce_coming_soon left as is (needed for thank-you checks).
+- UI screenshots removed from repo (staging data) and ignored. They remain in git history.

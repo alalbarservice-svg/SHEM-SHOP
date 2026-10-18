@@ -22,3 +22,6 @@
 
 ## 18.10.2026 - PDF delivery and returns section
 - Owner rejected hiding the empty heading. Heading is now "זמני אספקה, משלוחים ותנאי החזרות" with fixed default text: shipping terms (courier 5-7 business days 49 ILS, courier 1 business day 199 ILS) and returns (14 days from delivery, courier pickup). Applies to new documents only; issued documents are immutable.
+
+## 18.10.2026 - cleanup of test components
+- Owner approved removing test components that are no longer needed, provided everything is backed up. Done after backup (local DB dumps and files). Reversible via SHEM-DOK/tests/fixtures/staging-fixtures.sh.

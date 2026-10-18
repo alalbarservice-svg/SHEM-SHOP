@@ -11,3 +11,6 @@
 
 ## Update 18.10.2026
 SHEM DOK 1.1 verified on local staging (unit, 193 e2e, 12 ui). Branch feature/shem-dok-1.1-staging-verified awaits review. Not done: sandbox charges, HPOS-off run, PDF visual approval.
+
+## Update 18.10.2026 (payment flow)
+Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed callback, retry/reconcile) and SHEM-PAY/shem-pay-gateway (gateway, "הזמנתך התקבלה" page, iframe). Tests: SHIMI-PAY/tests/e2e_pay.py 42/42 (capture response mocked in section E; order creation against real PayPal Sandbox). DOK verify: 316 documents OK. Not verified: real wallet approval and capture (needs buyer login), card/ACDC, block checkout, live-theme look, PayPal webhook reconciliation (not built). Waiting for owner: payment provider decision.

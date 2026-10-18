@@ -29,3 +29,9 @@
 ## 18.10.2026 (16:36) - Order status wording (owner decision)
 - Payment options page (PayPal or card), above the options, in large type: "הזמנתך התקבלה". NOT implemented yet: this page does not exist on staging (default WordPress theme, no PayPal/card gateway). Goes to the theme and payments work. It may only show once the order actually exists (to verify when the gateway is built).
 - Thank-you page after payment: large heading "לקוח יקר, תודה שרכשת בSHEM מותגים", below it slightly smaller but still large and clear "הזמנתך נקלטה, והתשלום בוצע!", then the invoice section. Implemented in SHEM DOK (settings thankyou_heading, thankyou_sub). Shown only for orders confirmed as paid (verified: hidden on unpaid order).
+
+## 18.10.2026 - Payment flow on staging (owner approved: "מאושר")
+- PayPal button shows only in SHEM. The whole customer journey stays in SHEM; only the payment itself runs on SHIMI, embedded as an iframe. SHIMI holds the PayPal secret, creates and captures the order, then sends the signed paid callback (HMAC, shem-home-v1) to SHEM. SHEM issues the invoice only after that callback. Browser redirects and iframe messages never mark an order paid.
+- The large "הזמנתך התקבלה" heading is now implemented above the payment options (SHEM order-pay/receipt page, option shem_pay_received_heading). Staging, default theme only; the live theme look is not verified.
+- Card (ACDC) is not enabled on the PayPal Sandbox business account (PAYEE_NOT_ENABLED_FOR_CARD_PROCESSING). The card button appears in the PayPal SDK but a card capture was not tested.
+- Staging-only scoped forwarder (CONNECT to *.paypal.com / *.paypalobjects.com:443 only) gives the SHIMI container internet access to PayPal. Not part of go-live.

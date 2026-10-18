@@ -438,8 +438,8 @@ def run():
         d = docs[0]
         ok('document fields', d.get('totalCents') == 64870 and d['customer']['name'] == cust['name'] and re.fullmatch(r'T_ADMIN-\d{6}', d.get('number', '')) and d.get('paymentReference') == 'EXTERNAL-TEST-1' and d.get('vatCents') == round(64870 * 18 / 118) and d.get('orderId') == o['id'], d)
     ml = call('manage/mail').j or []
-    ok('customer mail job queued (pending)', any(j['id'] == o['id'] and j['status'] == 'pending' and j['documentId'] == o['id'] for j in ml), [j['id'] for j in ml][:5])
-    ok('manager mail job queued', any(j.get('kind') == 'manager-order' and j.get('orderId') == o['id'] and j['recipient'] == 'your.shem88@gmail.com' for j in ml))
+    ok('download mode: no customer mail job created', not any(j.get('documentId') == o['id'] for j in ml), [j['id'] for j in ml][:5])
+    ok('download mode: no manager mail job created', not any(j.get('kind') == 'manager-order' and j.get('orderId') == o['id'] for j in ml))
     st('payment-details invalid last4', call('manage/orders/' + o['id'] + '/payment-details', 'POST', {'paymentDetails': {'method': 'card', 'last4': '1234567812345678'}}), 400, 'יש להזין ארבע ספרות אחרונות בלבד.')
     st('payment-details installments invalid', call('manage/orders/' + o['id'] + '/payment-details', 'POST', {'paymentDetails': {'installments': 99}}), 400, 'מספר תשלומים לא תקין.')
     st('payment-details update', call('manage/orders/' + o['id'] + '/payment-details', 'POST', {'paymentDetails': {'method': 'card', 'last4': '4321', 'cardholderName': 'Updated holder'}}), 200)
@@ -475,8 +475,12 @@ def run():
     st('release twice -> 409', call('manage/orders/' + small['id'] + '/release-credit', 'POST', {}), 409, 'אין מימוש פתוח לביטול.')
     eq('release ledger entry present', len([l for l in (call('manage/loyalty').j or []) if l.get('type') == 'released' and l.get('orderId') == small['id']]), 1)
     st('issue-document on unpaid order -> 409', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 409, 'מסמך מופק רק להזמנה ששולמה.')
-    st('payment-link without connection -> blocked', call('manage/orders/' + small['id'] + '/payment-link', 'POST', {}), 501)
-    blocked('manage/orders/:id/payment-link', 'needs the payments module filter scc_admin_payment_link (returns 501 until it exists)')
+    if BRAND == 'SHEM':
+        r = st('payment-link on unpaid order -> sandbox gateway session', call('manage/orders/' + small['id'] + '/payment-link', 'POST', {}), 200)
+        ok('payment-link returns embedUrl + orderId', bool((r.j or {}).get('embedUrl', '').startswith('http')) and (r.j or {}).get('orderId') == small['id'], r.j)
+    else:
+        st('payment-link on SHIMI (home, no provider connected) -> 501', call('manage/orders/' + small['id'] + '/payment-link', 'POST', {}), 501)
+        blocked('manage/orders/:id/payment-link (SHIMI)', 'SHIMI is the home store; its own checkout stays disabled until a provider adapter is connected (owner decision: no provider now)')
     # issue-document on a paid order without a document (business details were incomplete)
     sv = call('manage/settings/invoice').j; call('manage/settings/invoice', 'PUT', {**inv_s, 'legalName': ''})
     r = st('second order paid while invoice details incomplete', call('manage/orders/' + small['id'] + '/paid', 'POST', {'reference': 'EXTERNAL-TEST-2'}), 200)
@@ -489,7 +493,7 @@ def run():
     eq('document count after issue', len([d for d in (call('manage/documents').j or []) if d['id'] in (o['id'], small['id'])]), 2)
     r2 = st('issue-document again returns the same document (200)', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 200)
     eq('same number', (r2.j or {}).get('document', {}).get('number'), (r.j or {}).get('document', {}).get('number'))
-    eq('invoiceStatus queued', (call('manage/orders/' + small['id']).j or {}).get('invoiceStatus'), 'queued')
+    eq('invoiceStatus available (download mode)', (call('manage/orders/' + small['id']).j or {}).get('invoiceStatus'), 'available')
     eq('stock after both payments', (call('products/' + v['id']).j or {}).get('stock'), 4)
     # documents render (documents module)
     for path, what in [('manage/documents/%s/html', 'html'), ('manage/documents/%s/pdf', 'pdf'), ('manage/orders/%s/order-pdf', 'order-pdf'), ('manage/template-preview', 'template-preview'), ('manage/template-preview.pdf', 'template-preview.pdf')]:
@@ -498,7 +502,7 @@ def run():
         else: st('GET ' + path, r, 200)
     st('documents html for unknown id -> 404', call('manage/documents/nope/html'), 404, 'מסמך לא נמצא.')
     st('documents pdf anonymous -> 401', call('manage/documents/' + o['id'] + '/pdf', anon=True), 401)
-    ml = call('manage/mail/process', 'POST', {}); st('mail/process (mail not configured)', ml, 200); eq('blocked message', ml.j, {'sent': 0, 'blocked': 'נדרשים שירות מייל ודומיין שולח מאומת.'})
+    ml = call('manage/mail/process', 'POST', {}); st('mail/process (download-only mode)', ml, 200); eq('mail off in download mode', ml.j, {'sent': 0, 'blocked': 'מסמכי ההזמנה זמינים להורדה באתר; דיוור כבוי.'})
     # mail retry
     jid = next((j for j in (call('manage/mail').j or []) if j['id'] == o['id']), None)
     if jid:
@@ -507,7 +511,7 @@ def run():
         st('retry of a sent mail -> 409', call('manage/mail/' + jid['id'] + '/retry', 'POST', {}), 409, 'המייל כבר התקבל אצל שירות המייל.')
         sql(f"UPDATE {TBL('mail_jobs')} SET data=JSON_SET(data,'$.status','failed','$.firstAttemptAt','2020-01-01T00:00:00.000Z') WHERE id={q(jid['id'])}")
         st('retry after the 23h idempotency window -> 409', call('manage/mail/' + jid['id'] + '/retry', 'POST', {}), 409, 'חלון מניעת כפילות פג. יש לאמת מול שירות המייל לפני שליחה נוספת.')
-    blocked('mail sending (Resend + PDF attachments)', 'mail module missing: filter scc_admin_mail_process; processMail replay with mocked Resend not run')
+    # item 8 (owner rule): no mail provider -> e-mail component off, invoices downloadable from the thank-you screen only (SCC_INVOICE_DELIVERY_MODE=download)
     st('manage unknown kind -> 404', call('manage/bogus'), 404)
     st('manage/orders unknown id GET returns null (original)', call('manage/orders/nope'), 200); eq('null body', call('manage/orders/nope').j, None)
     st('manage action on unknown record -> 404', call('manage/orders/nope/archive', 'POST', {}), 404, 'רשומה לא נמצאה.')

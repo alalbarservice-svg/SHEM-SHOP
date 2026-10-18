@@ -1423,13 +1423,13 @@
  },
  {
   "screen": "orders",
-  "check": "customer mail job queued (pending)",
+  "check": "download mode: no customer mail job created",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "manager mail job queued",
+  "check": "download mode: no manager mail job created",
   "status": "PASS",
   "detail": ""
  },
@@ -1603,15 +1603,15 @@
  },
  {
   "screen": "orders",
-  "check": "payment-link without connection -> blocked",
+  "check": "payment-link on unpaid order -> sandbox gateway session",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "manage/orders/:id/payment-link",
-  "status": "BLOCKED",
-  "detail": "needs the payments module filter scc_admin_payment_link (returns 501 until it exists)"
+  "check": "payment-link returns embedUrl + orderId",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
@@ -1669,7 +1669,7 @@
  },
  {
   "screen": "orders",
-  "check": "invoiceStatus queued",
+  "check": "invoiceStatus available (download mode)",
   "status": "PASS",
   "detail": ""
  },
@@ -1681,33 +1681,33 @@
  },
  {
   "screen": "orders",
-  "check": "GET manage/documents/:id/html",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "check": "GET manage/documents/%s/html",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
-  "check": "GET manage/documents/:id/pdf",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "check": "GET manage/documents/%s/pdf",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
-  "check": "GET manage/orders/:id/order-pdf",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "check": "GET manage/orders/%s/order-pdf",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
   "check": "GET manage/template-preview",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
   "check": "GET manage/template-preview.pdf",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
@@ -1723,39 +1723,15 @@
  },
  {
   "screen": "orders",
-  "check": "mail/process (mail not configured)",
+  "check": "mail/process (download-only mode)",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "blocked message",
+  "check": "mail off in download mode",
   "status": "PASS",
   "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "mail retry -> pending (processMail blocked)",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "retry of a sent mail -> 409",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "retry after the 23h idempotency window -> 409",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "mail sending (Resend + PDF attachments)",
-  "status": "BLOCKED",
-  "detail": "mail module missing: filter scc_admin_mail_process; processMail replay with mocked Resend not run"
  },
  {
   "screen": "orders",

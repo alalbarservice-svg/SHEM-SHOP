@@ -96,8 +96,12 @@ check('8 simultaneous workers on stock 5: exactly 5 succeed, 3 refused', (n200, 
 hb = w('shem', 'holds', 't-channel-live-big')
 check('held 5, sellable 0, never negative', sum(int(r['q']) for r in hb['by_state'] if r['state'] == 'held') == 5 and hb['product']['stock_sellable'] == 0, hb)
 # replay of an identical reservation (idempotent)
-rep = parallel('shem', '/api/channel/reserve', sign_many('shem', '/api/channel/reserve', [bodies[0]]))
+# which of the 8 simultaneous workers win is not deterministic: replay a body that actually won (200) and one that lost (409)
+win_i = next(i for i, (c, _) in enumerate(res) if c == 200); lose_i = next(i for i, (c, _) in enumerate(res) if c == 409)
+rep = parallel('shem', '/api/channel/reserve', sign_many('shem', '/api/channel/reserve', [bodies[win_i]]))
 check('replaying a held reservation is idempotent (200, still 5 held)', rep[0][0] == 200 and sum(int(r['q']) for r in w('shem', 'holds', 't-channel-live-big')['by_state'] if r['state'] == 'held') == 5, rep)
+rep2 = parallel('shem', '/api/channel/reserve', sign_many('shem', '/api/channel/reserve', [bodies[lose_i]]))
+check('replaying a refused reservation stays refused (409) and holds nothing (still 5 held)', rep2[0][0] == 409 and sum(int(r['q']) for r in w('shem', 'holds', 't-channel-live-big')['by_state'] if r['state'] == 'held') == 5, rep2)
 
 section('4. release and commit over HTTP')
 # winner of the first race: find which id holds

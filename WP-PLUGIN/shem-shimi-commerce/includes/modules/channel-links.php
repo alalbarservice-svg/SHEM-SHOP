@@ -59,7 +59,7 @@ final class Scc_Channel_Links {
         foreach ($ids as $id) {
             $p = Scc_Channel_Catalog::get((string) $id);
             if (!$p || !empty($p['archived'])) continue;
-            $out[] = self::projection($p, Scc_Channel_Stock::apply_holds($p, $held[$p['id']] ?? []));
+            $out[] = self::projection($p, Scc_Channel_Stock::apply_holds($p, $held[$p['id'] ?? ''] ?? []));
         }
         return $out;
     }
@@ -115,10 +115,10 @@ final class Scc_Channel_Links {
     /** Port of hydrateProducts(): subtract own holds; on the home store replace price/sku/stock of linked cards with the SHEM truth (fail closed). */
     public static function hydrate(array $products): array {
         $held = Scc_Channel_Stock::holds_all();
-        $local = fn(array $p) => Scc_Channel_Stock::apply_holds($p, $held[$p['id']] ?? []);
+        $local = fn(array $p) => Scc_Channel_Stock::apply_holds($p, $held[$p['id'] ?? ''] ?? []);
         if (!Scc_Channel::is_home()) return array_map($local, $products);
-        $links = []; foreach (self::all() as $l) $links[$l['id']] = $l;
-        $needed = array_values(array_filter($links, fn($l) => (bool) array_filter($products, fn($p) => $p['id'] === $l['id'])));
+        $links = []; foreach (self::all() as $l) if (isset($l['id'])) $links[$l['id']] = $l;
+        $needed = array_values(array_filter($links, fn($l) => (bool) array_filter($products, fn($p) => ($p['id'] ?? null) === $l['id'])));
         $snap = [];
         foreach (array_chunk($needed, 100) as $batch) {
             try { $d = Scc_Channel::peer('/api/channel/sources', ['ids' => array_column($batch, 'sourceId')]); foreach ($d['products'] ?? [] as $x) $snap[$x['id']] = $x; } catch (Throwable $e) {}

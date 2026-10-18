@@ -34,7 +34,7 @@ switch ($cmd) {
     case 'set-price':
         $p = wc_get_product($wc_by_legacy($args[1])); $p->set_regular_price($args[2]); $p->save(); $out(['price' => $args[2]]); break;
     case 'set-stock':
-        wc_update_product_stock(wc_get_product($wc_by_legacy($args[1])), (int) $args[2], 'set'); do_action('woocommerce_update_product', $wc_by_legacy($args[1])); $out(['stock' => (int) $args[2]]); break;
+        wc_update_product_stock(wc_get_product($wc_by_legacy($args[1])), (int) $args[2], 'set'); do_action('woocommerce_update_product', $wc_by_legacy($args[1]), wc_get_product($wc_by_legacy($args[1]))); $out(['stock' => (int) $args[2]]); break;
     case 'sign': {      // sign <path> <raw body>  -> ts and signature (secret stays inside)
         $ts = (string) Scc_Channel::ts(); $out(['ts' => $ts, 'sig' => Scc_Channel::sign(Scc_Channel::secret(), implode('.', [$ts, 'POST', $args[1], $args[2]]))]); break; }
     case 'sign-many': {   // sign-many <path> <file with one raw body per line> -> JSON list

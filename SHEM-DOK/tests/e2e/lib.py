@@ -18,6 +18,11 @@ def check(name, cond, detail=''):
     print(('PASS ' if ok else 'FAIL ') + name + ('' if ok else '  -> ' + str(detail)[:300]))
     return ok
 
+def blocked(name, reason):
+    # surface not served by the migrated theme: recorded as a finding, never counted as a pass
+    RESULTS.append({'section': SECTION[0], 'name': name, 'ok': None, 'detail': str(reason)[:400]})
+    print('BLOCKED ' + name + '  -> ' + str(reason)[:300])
+
 def sh(cmd, timeout=240, check_rc=True):
     r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
     if check_rc and r.returncode != 0:
@@ -141,10 +146,11 @@ def save_results(path):
     json.dump(RESULTS, open(path, 'w'), ensure_ascii=False, indent=1)
 
 def summary():
-    p = sum(1 for r in RESULTS if r['ok'])
-    f = len(RESULTS) - p
-    print('\nTOTAL %d  PASS %d  FAIL %d' % (len(RESULTS), p, f))
+    p = sum(1 for r in RESULTS if r['ok'] is True)
+    b = sum(1 for r in RESULTS if r['ok'] is None)
+    f = len(RESULTS) - p - b
+    print('\nTOTAL %d  PASS %d  FAIL %d  BLOCKED %d' % (len(RESULTS), p, f, b))
     for r in RESULTS:
-        if not r['ok']:
+        if r['ok'] is False:
             print('  FAIL [%s] %s :: %s' % (r['section'], r['name'], r['detail'][:200]))
     return f

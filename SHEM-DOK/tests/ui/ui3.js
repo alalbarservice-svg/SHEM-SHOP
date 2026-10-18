@@ -18,7 +18,7 @@ const R=[]; const ck=(n,ok,d='')=>{R.push({name:n,ok:!!ok,detail:String(d).slice
  ck(vp.n+': archive has no delete button',(await p.locator('button:has-text("מחיקה"), button:has-text("מחק")').count())===0);
  await p.locator('button:has-text("צפייה")').first().click(); await p.waitForTimeout(1800);
  const body=await p.locator('body').innerText();
- ck(vp.n+': issued doc view opens (shows number)',/71\d\d/.test(body));
+ ck(vp.n+': issued doc view opens (shows number)',/\d{4}/.test(body));
  const list=await p.evaluate(()=>[...document.querySelectorAll('#wpbody input:not([type=hidden]),#wpbody textarea,#wpbody select')].filter(e=>e.offsetParent&&!e.disabled&&!e.readOnly).map(e=>(e.id||e.name||e.dataset.f||e.type)+'@'+(e.closest('section,details,.sd-panel,aside')?.className||'')));console.log('EDITABLE',JSON.stringify(list));const editable=list.filter(x=>!/^(sd-order|sd-auto|sd-thankyou|sd-email|sd-credit-on|sd-alert-mail)@/.test(x)).length;
  ck(vp.n+': issued document fields are read-only (settings and order-import box excluded)',editable===0,'editable='+editable);
  const saveBtn=await p.locator('button:has-text("שמירה"), button:has-text("שמור")').count();

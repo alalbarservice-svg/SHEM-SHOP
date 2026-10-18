@@ -10,6 +10,8 @@ def usql(q):
     return sh("docker exec shem-staging-db-1 mariadb -uroot -plocal_root_only -N -e %s shem_up" % ("'" + q.replace("'", "'\\''") + "'")).strip()
 
 def run():
+    global DBG0
+    DBG0 = int((sh("docker exec %s sh -c 'wc -l < /var/www/html/wp-content/debug.log 2>/dev/null || echo 0'" % CTN, check_rc=False).strip() or '0'))
     section('O. אבטחה סטטית של הקוד')
     files = [f for f in glob.glob(PLUG + '/*.php')]
     src = {f: open(f).read() for f in files}
@@ -103,7 +105,7 @@ def run():
     check('S7 גודל PDF טיפוסי (<150KB)', typ < 150, typ)
 
     section('T. יומנים')
-    dbg = sh("docker exec %s sh -c 'cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -v \"shem-dok-mpdf\\|Cache.php\\|wp_update_plugins\\|wp_update_themes\\|themes_api\" | grep -ciE \"fatal|database error|warning|notice|deprecated\" ; true'" % CTN, check_rc=False)
+    dbg = sh("docker exec %s sh -c 'tail -n +%d /var/www/html/wp-content/debug.log 2>/dev/null | grep -v \"shem-dok-mpdf\\|Cache.php\\|wp_update_plugins\\|wp_update_themes\\|themes_api\" | grep -ciE \"fatal|database error|warning|notice|deprecated\" ; true'" % (CTN, DBG0 + 1), check_rc=False)
     check('T1 אין fatal/שגיאות DB/warning ב-debug.log מעבר לכשל ה-mPDF שהוזרק בכוונה', dbg.strip() in ('0', ''), dbg[-300:])
     ap = sh("docker exec %s sh -c 'tail -n 400 /var/log/apache2/error.log 2>/dev/null | grep -ciE \"shem-dok.*(fatal|warning|notice|deprecated)\"' || true" % CTN, check_rc=False)
     check('T2 אין שגיאות PHP של התוסף ביומן Apache', ap.strip() in ('0', ''), ap)

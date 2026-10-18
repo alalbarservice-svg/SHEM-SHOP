@@ -7,3 +7,5 @@ add_filter('pre_wp_mail', function($null,$a){
  update_option('shem_e2e_mails',array_slice($log,-50),false);
  return true;
 },10,2);
+/* E2E only: staging runs over plain http with WP_ENVIRONMENT_TYPE=staging, where Application Passwords are unavailable; the suite authenticates with one. */
+add_filter('wp_is_application_passwords_available', function($v){ return get_option('shem_e2e_mailcap')==='1' ? true : $v; });

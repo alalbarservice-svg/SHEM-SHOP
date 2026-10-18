@@ -46,3 +46,5 @@
 - Owner: removed the text "הסליקה מתבצעת באמצעות SHIMI. הפרטים אינם נשמרים ב-SHEM." from the payment frame. Under "תשלום מאובטח" it now reads: "פרטי האשראי אינם נשמרים במערכת."
 - Block checkout: the gateway did not appear in the WooCommerce block checkout ("no payment methods available"). Fixed by registering it for Blocks (SHEM-PAY blocks.js). An order placed through the block checkout now reaches the "הזמנתך התקבלה" page with the PayPal frame. Also fixed the receipt block rendering 4 times on block themes.
 - PayPal reconcile: polling (hourly, `wp shimi-pay reconcile`) for sessions left at pp_created for over 15 minutes; verifies at PayPal (COMPLETED, or captures if APPROVED) and sends the signed callback. Chosen over a webhook because staging has no public URL; a webhook can be added at go-live as a second trigger of the same function.
+
+- 2026-10-18: Gateway enable switch in SHEM-PAY was ignored (found by test G9); fixed (init_form_fields, enabled option). Payment suite now 58/58 on staging (incl. block checkout: 1 h1, 1 iframe). Not verified: real wallet approval, card (ACDC), real webhook, real theme look.

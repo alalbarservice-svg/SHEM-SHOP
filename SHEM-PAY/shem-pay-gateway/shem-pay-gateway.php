@@ -24,10 +24,11 @@ add_action('plugins_loaded', function () {
    $this->supports = ['products'];
    $this->title = 'PayPal';
    $this->description = '';
-   $this->enabled = 'yes';
+   $this->init_form_fields(); $this->init_settings(); $this->enabled = $this->get_option('enabled', 'yes');
    add_action('woocommerce_receipt_' . $this->id, [$this, 'receipt_page']);
   }
-  function is_available() { return defined('SHEM_HOME_PAYMENT_SECRET') && strlen((string)SHEM_HOME_PAYMENT_SECRET) >= 32 && defined('SHEM_PAY_SESSION_URL'); }
+  function init_form_fields() { $this->form_fields = ['enabled' => ['title' => 'Enable', 'type' => 'checkbox', 'label' => 'Offer payment via SHIMI', 'default' => 'yes']]; }
+  function is_available() { return $this->enabled === 'yes' && defined('SHEM_HOME_PAYMENT_SECRET') && strlen((string)SHEM_HOME_PAYMENT_SECRET) >= 32 && defined('SHEM_PAY_SESSION_URL'); }
 
   static function cents($v) { return (int)round(((float)$v) * 100); }
 

@@ -52,7 +52,7 @@ with sync_playwright() as p:
                       await Promise.race([t,(async()=>{await document.fonts.ready;
                       await Promise.all([...document.images].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r})));
                       await Promise.all([...document.images].map(i=>i.decode?i.decode().catch(()=>{}):0));})()]);}""")
-                    pg.wait_for_timeout(800)
+                    pg.wait_for_timeout(3000)
                 pg.screenshot(path=fn, full_page=True)
             except Exception as e:
                 print("FAIL", site, r, vp, str(e)[:100])

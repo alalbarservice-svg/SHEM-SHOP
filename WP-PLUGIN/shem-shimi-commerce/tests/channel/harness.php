@@ -27,6 +27,7 @@ $GLOBALS['t_role_home'] = null; $GLOBALS['t_time'] = 0; $GLOBALS['t_peer_log'] =
 add_filter('scc_channel_is_home', fn($d) => $GLOBALS['t_role_home'] ?? $d);
 add_filter('scc_channel_time', fn($t) => $t + $GLOBALS['t_time']);
 add_filter('scc_channel_allow_insecure', '__return_true');
+add_filter('pre_wp_mail', '__return_true');   // tests never send mail
 add_filter('scc_channel_backoff', fn($s) => $s);
 function as_home(bool $home, callable $fn): mixed { $prev = $GLOBALS['t_role_home']; $GLOBALS['t_role_home'] = $home; try { return $fn(); } finally { $GLOBALS['t_role_home'] = $prev; } }
 function use_docs(): void { Scc_Channel_Catalog::use_backend(new Scc_Channel_Catalog_Docs()); }

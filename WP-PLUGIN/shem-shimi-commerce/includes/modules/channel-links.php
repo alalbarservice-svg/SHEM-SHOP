@@ -70,7 +70,9 @@ final class Scc_Channel_Links {
         $old = self::get($sid);
         if ($old && ($old['homeId'] ?? null) !== $hid) Scc_Channel::fail('מוצר המקור כבר מקושר למוצר אחר.');
         Scc_Channel_Catalog::backend()->set_home_meta($sid, $hid);
-        self::save($sid, ['id' => $sid, 'homeId' => $hid, 'variantMap' => (object) ($d['variantMap'] ?? []), 'status' => 'connected', 'lastSyncAt' => Scc_Channel::now()]);
+        // emittedRevision: the home store has just read this exact state, so only a later change of what it mirrors emits an event (loop guard).
+        $rev = $old['emittedRevision'] ?? Scc_Channel_Catalog::sync_revision($p);
+        self::save($sid, ['id' => $sid, 'homeId' => $hid, 'variantMap' => (object) ($d['variantMap'] ?? []), 'status' => 'connected', 'lastSyncAt' => Scc_Channel::now(), 'emittedRevision' => $rev]);
         return ['ok' => true];
     }
     public static function unregister(array $d): array {

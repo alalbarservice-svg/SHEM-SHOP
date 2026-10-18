@@ -1,0 +1,435 @@
+{
+    "tool": "wp scc import 1.0.0",
+    "store": "shimi-basics",
+    "role": "shimi",
+    "site": "http://localhost:8082",
+    "mode": "commit",
+    "overwrite_settings": false,
+    "started_at": "2026-10-18T18:03:18+00:00",
+    "finished_at": "2026-10-18T18:03:33+00:00",
+    "seconds": 14.72,
+    "source_dir": "/export",
+    "assets_dir": "/assets-src",
+    "files": [
+        {
+            "name": "shem-menswear-catalogue.json",
+            "store": "shem-menswear",
+            "expected": "3f2d390f2d02a20db3ffe6a6789be1e503af8dec0db2dbf8b39990e5183cbe75",
+            "actual": "3f2d390f2d02a20db3ffe6a6789be1e503af8dec0db2dbf8b39990e5183cbe75",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shem-menswear-collections.json",
+            "store": "shem-menswear",
+            "expected": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shem-menswear-help.json",
+            "store": "shem-menswear",
+            "expected": "0d357c19168fd217fda0d4fed98c97f4d88e5f8178dad40c5a09798ea17af3de",
+            "actual": "0d357c19168fd217fda0d4fed98c97f4d88e5f8178dad40c5a09798ea17af3de",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shem-menswear-store.json",
+            "store": "shem-menswear",
+            "expected": "2493959b18849370abf5bb071482cb71e2572f42d1dd186d8100796f28da7c94",
+            "actual": "2493959b18849370abf5bb071482cb71e2572f42d1dd186d8100796f28da7c94",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shimi-basics-catalogue.json",
+            "store": "shimi-basics",
+            "expected": "646f0a30b82bdcfa3190dc2fc606030554f546585d3d543ce9c629ad0b288cd7",
+            "actual": "646f0a30b82bdcfa3190dc2fc606030554f546585d3d543ce9c629ad0b288cd7",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shimi-basics-collections.json",
+            "store": "shimi-basics",
+            "expected": "a46fe5e9adcdc3b74647ea40fd62096659cc30b1c7f3a26303def2cd36591eb7",
+            "actual": "a46fe5e9adcdc3b74647ea40fd62096659cc30b1c7f3a26303def2cd36591eb7",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shimi-basics-help.json",
+            "store": "shimi-basics",
+            "expected": "c8d3eae160a892e32837db3dcae515e843e5383fef52b8141940c8bcf8b6d59f",
+            "actual": "c8d3eae160a892e32837db3dcae515e843e5383fef52b8141940c8bcf8b6d59f",
+            "ok": true,
+            "problem": ""
+        },
+        {
+            "name": "shimi-basics-store.json",
+            "store": "shimi-basics",
+            "expected": "0770bf8c0155eebf1cc52c88e3f74a4c07a6afd6259b8eedb62f5597fd1d2f3c",
+            "actual": "0770bf8c0155eebf1cc52c88e3f74a4c07a6afd6259b8eedb62f5597fd1d2f3c",
+            "ok": true,
+            "problem": ""
+        }
+    ],
+    "counts": {
+        "product": {
+            "created": 5
+        },
+        "collection": {
+            "created": 1
+        },
+        "setting": {
+            "created": 3
+        },
+        "help": {
+            "skipped": 1
+        },
+        "customers": {
+            "absent_in_export": 1
+        },
+        "orders": {
+            "absent_in_export": 1
+        },
+        "promotions": {
+            "absent_in_export": 1
+        },
+        "members": {
+            "absent_in_export": 1
+        },
+        "loyalty": {
+            "absent_in_export": 1
+        }
+    },
+    "errors": 1,
+    "new_records": 12,
+    "side_effects": {
+        "mode": "commit",
+        "wp_mail_attempts_suppressed": 0,
+        "expected_row_delta": {
+            "scc_collections": 1,
+            "scc_products": 5,
+            "scc_settings": -7,
+            "posts:product": 5,
+            "posts:product_variation": 4,
+            "posts:attachment": 3
+        },
+        "other_row_delta_not_attributable": {
+            "actionscheduler_actions": 11,
+            "as_pending:woocommerce_run_product_attribute_lookup_update_callback": 11
+        },
+        "protected_tables_changed": {
+            "scc_document_sequences": -1,
+            "scc_payment_transactions": -2
+        },
+        "ok": false
+    },
+    "notes": [
+        {
+            "level": "info",
+            "message": "ignored (other store): shem-menswear-catalogue.json"
+        },
+        {
+            "level": "info",
+            "message": "ignored (other store): shem-menswear-collections.json"
+        },
+        {
+            "level": "info",
+            "message": "ignored (other store): shem-menswear-help.json"
+        },
+        {
+            "level": "info",
+            "message": "ignored (other store): shem-menswear-store.json"
+        },
+        {
+            "level": "error",
+            "message": "migration side effects detected: {\"scc_document_sequences\":-1,\"scc_payment_transactions\":-2} mails=0"
+        }
+    ],
+    "records": [
+        {
+            "type": "product",
+            "source_id": "qa-shimi-knit-20261009",
+            "target_id": 11,
+            "result": "created",
+            "converted": [
+                "type=variable (2 variations)",
+                "price->sale_price 179, regular_price 219",
+                "status=publish",
+                "cat->product_cat \"clothing\"",
+                "flag:qa/demo item in live export (kept as is)",
+                "document kept byte-exact in _scc_doc + wp_scc_products mirror"
+            ],
+            "error": null,
+            "warnings": [
+                "sizeStock ignored for variable product (stock lives on variations)"
+            ],
+            "sha256": "fd93663a9b34ea8bb87b7a38684ea8229b319d5661c3f08b9f2945dde975eecf",
+            "variations": {
+                "qa-shimi-knit-20261009-M": 12,
+                "qa-shimi-knit-20261009-L": 13
+            },
+            "images": [
+                {
+                    "role": "main",
+                    "asset": "/assets/knit.png",
+                    "file": "/assets-src/assets/knit.png",
+                    "sha256": "98091da37bfa689b339ba4962a694c6934418cece282aca844db6e7aa009e3c7",
+                    "bytes": 2067743,
+                    "result": "created",
+                    "attachment_id": 14,
+                    "target_sha256": "98091da37bfa689b339ba4962a694c6934418cece282aca844db6e7aa009e3c7",
+                    "attach": "set"
+                }
+            ],
+            "action_before_error": "created"
+        },
+        {
+            "type": "product",
+            "source_id": "qa-shimi-shirt-20261009",
+            "target_id": 15,
+            "result": "created",
+            "converted": [
+                "type=variable (2 variations)",
+                "price->regular_price 129.9",
+                "status=publish",
+                "cat->product_cat \"clothing\"",
+                "flag:qa/demo item in live export (kept as is)",
+                "document kept byte-exact in _scc_doc + wp_scc_products mirror"
+            ],
+            "error": null,
+            "warnings": [
+                "sizeStock ignored for variable product (stock lives on variations)"
+            ],
+            "sha256": "2ef5ae455489038e599021ffa7a89e2aaf0bf1d5d31bc764d709cf41fff020b9",
+            "variations": {
+                "qa-shimi-shirt-20261009-M": 16,
+                "qa-shimi-shirt-20261009-L": 17
+            },
+            "images": [
+                {
+                    "role": "main",
+                    "asset": "/assets/shirt.png",
+                    "file": "/assets-src/assets/shirt.png",
+                    "sha256": "94019f5dfc5c414ab608d8b315b297b0bac028f770ed249542ecb582d3c61204",
+                    "bytes": 1481667,
+                    "result": "created",
+                    "attachment_id": 18,
+                    "target_sha256": "94019f5dfc5c414ab608d8b315b297b0bac028f770ed249542ecb582d3c61204",
+                    "attach": "set"
+                }
+            ],
+            "action_before_error": "created"
+        },
+        {
+            "type": "product",
+            "source_id": "demo-shimi-shirt",
+            "target_id": 19,
+            "result": "created",
+            "converted": [
+                "type=simple",
+                "price->regular_price 129",
+                "status=publish",
+                "cat->product_cat \"clothing\"",
+                "sizeStock->_scc_size_stock",
+                "flag:qa/demo item in live export (kept as is)",
+                "document kept byte-exact in _scc_doc + wp_scc_products mirror"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "37e9c5daf32d8926e153df5c3d82c372053e0160a42f78bb46b90e5373a2b2a7",
+            "images": [
+                {
+                    "role": "main",
+                    "result": "reused_in_run",
+                    "asset": "/assets/shirt.png",
+                    "file": "/assets-src/assets/shirt.png",
+                    "sha256": "94019f5dfc5c414ab608d8b315b297b0bac028f770ed249542ecb582d3c61204",
+                    "bytes": 1481667,
+                    "attachment_id": 18,
+                    "target_sha256": "94019f5dfc5c414ab608d8b315b297b0bac028f770ed249542ecb582d3c61204",
+                    "attach": "set"
+                }
+            ],
+            "action_before_error": "created"
+        },
+        {
+            "type": "product",
+            "source_id": "demo-shimi-trousers",
+            "target_id": 20,
+            "result": "created",
+            "converted": [
+                "type=simple",
+                "price->regular_price 149",
+                "status=publish",
+                "cat->product_cat \"clothing\"",
+                "sizeStock->_scc_size_stock",
+                "flag:qa/demo item in live export (kept as is)",
+                "document kept byte-exact in _scc_doc + wp_scc_products mirror"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "db6fedf5d62718facc231af094607f6ba9b2eb0fe8e361538de7b4fa00d06930",
+            "images": [
+                {
+                    "role": "main",
+                    "asset": "/assets/trousers.png",
+                    "file": "/assets-src/assets/trousers.png",
+                    "sha256": "765ac0c443871c5482eec71f8dbc01ac5d45c92cc36022403573516912fbc6ac",
+                    "bytes": 1391295,
+                    "result": "created",
+                    "attachment_id": 21,
+                    "target_sha256": "765ac0c443871c5482eec71f8dbc01ac5d45c92cc36022403573516912fbc6ac",
+                    "attach": "set"
+                }
+            ],
+            "action_before_error": "created"
+        },
+        {
+            "type": "product",
+            "source_id": "demo-shimi-knit",
+            "target_id": 22,
+            "result": "created",
+            "converted": [
+                "type=simple",
+                "price->sale_price 179, regular_price 219",
+                "status=publish",
+                "cat->product_cat \"clothing\"",
+                "sizeStock->_scc_size_stock",
+                "flag:qa/demo item in live export (kept as is)",
+                "document kept byte-exact in _scc_doc + wp_scc_products mirror"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "c5e49c8513b477f7bd41cdf66e0a46df8b6c85851ecaf14e3f2ed6988a6b63f8",
+            "images": [
+                {
+                    "role": "main",
+                    "result": "reused_in_run",
+                    "asset": "/assets/knit.png",
+                    "file": "/assets-src/assets/knit.png",
+                    "sha256": "98091da37bfa689b339ba4962a694c6934418cece282aca844db6e7aa009e3c7",
+                    "bytes": 2067743,
+                    "attachment_id": 14,
+                    "target_sha256": "98091da37bfa689b339ba4962a694c6934418cece282aca844db6e7aa009e3c7",
+                    "attach": "set"
+                }
+            ],
+            "action_before_error": "created"
+        },
+        {
+            "type": "collection",
+            "source_id": "demo-shimi-basics",
+            "target_id": "demo-shimi-basics",
+            "result": "created",
+            "converted": [
+                "stored in wp_scc_collections (data without revision, updated_at = source revision)"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "70d744f4fa0af045be5ffe9866af959473b5ab4220c459416f798fb5bc8da83b"
+        },
+        {
+            "type": "setting",
+            "source_id": "operations",
+            "target_id": "operations",
+            "result": "created",
+            "converted": [
+                "stored as {value: ...} in wp_scc_settings"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+            "type": "setting",
+            "source_id": "business",
+            "target_id": "business",
+            "result": "created",
+            "converted": [
+                "stored as {value: ...} in wp_scc_settings"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "6ef0bde54edfbd73a49597b2caa5a17d2a1753f099ad25366c020276fd85417b"
+        },
+        {
+            "type": "setting",
+            "source_id": "catalogue.configured",
+            "target_id": "catalogueInitialized",
+            "result": "created",
+            "converted": [
+                "stored as {value: ...} in wp_scc_settings"
+            ],
+            "error": null,
+            "warnings": [],
+            "sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+        },
+        {
+            "type": "help",
+            "source_id": "help",
+            "target_id": null,
+            "result": "skipped",
+            "converted": [],
+            "error": null,
+            "warnings": [
+                "help centre is a SHEM-only route; export content: {\"error\":\"Not found\"}"
+            ],
+            "sha256": null
+        },
+        {
+            "type": "customers",
+            "source_id": "*",
+            "target_id": null,
+            "result": "absent_in_export",
+            "converted": [],
+            "error": null,
+            "warnings": [],
+            "sha256": null
+        },
+        {
+            "type": "orders",
+            "source_id": "*",
+            "target_id": null,
+            "result": "absent_in_export",
+            "converted": [],
+            "error": null,
+            "warnings": [],
+            "sha256": null
+        },
+        {
+            "type": "promotions",
+            "source_id": "*",
+            "target_id": null,
+            "result": "absent_in_export",
+            "converted": [],
+            "error": null,
+            "warnings": [],
+            "sha256": null
+        },
+        {
+            "type": "members",
+            "source_id": "*",
+            "target_id": null,
+            "result": "absent_in_export",
+            "converted": [],
+            "error": null,
+            "warnings": [],
+            "sha256": null
+        },
+        {
+            "type": "loyalty",
+            "source_id": "*",
+            "target_id": null,
+            "result": "absent_in_export",
+            "converted": [],
+            "error": null,
+            "warnings": [],
+            "sha256": null
+        }
+    ]
+}

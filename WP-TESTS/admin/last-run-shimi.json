@@ -1,0 +1,1226 @@
+[
+ {
+  "screen": "auth+session",
+  "check": "anonymous GET products -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "anonymous POST products -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "anonymous GET manage/orders -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "anonymous GET audit -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "session 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "session shape",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "session authorized/contact",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "write without nonce -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "write with wrong nonce -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "POST from foreign origin -> 403 Origin rejected",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "POST with non-JSON content-type -> 415",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "POST body > 1MB -> 413",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "POST invalid JSON -> 400 Invalid JSON",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "GET /api/session (logged in)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "GET /api/session (anonymous)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "/signin-with-chatgpt redirects to wp-login",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "return_to open redirect is neutralised",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "non-admin WP user -> 403",
+  "status": "NOT-RUN",
+  "detail": "Scc_Router::is_admin always answers 401 (shared class); original answered 403 for a signed-in non-manager"
+ },
+ {
+  "screen": "products",
+  "check": "invalid product (price -1) -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "create product -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "create: revision + id + price + previousPrice",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "create: sizeStock object",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "SHIMI record has no productType/images/sizeGuide",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "duplicate sku -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "sizeStock sum mismatch -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "previousPrice invalid",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "duplicate sizes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "no sizes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "active without image",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "bad image URL",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "bad image reference",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "sizeStock negative",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT unknown id -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT stale revision -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT price change -> 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT: new revision, old revision rejected",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT with the previous revision now conflicts",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "GET one product",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "GET one product price",
+  "status": "FAIL",
+  "detail": "got '199.9' want '149'"
+ },
+ {
+  "screen": "products",
+  "check": "list contains product, newest first",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT stock change (movement) -> 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "stock movements: opening + edit written (system)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "deactivate -> 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "deactivated",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "archive product (manage)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "archive: archived true, previousActive false, active false",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "PUT on archived product -> 409",
+  "status": "FAIL",
+  "detail": "status 400 (want 409) err='מלאי כולל חייב להתאים לסכום המידות.' want_err='יש לשחזר מוצר מהארכיון לפני עריכה.' body='{\"error\":\"מלאי כולל חייב להתאים לסכום המידות.\"}'"
+ },
+ {
+  "screen": "products",
+  "check": "restore product",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "restore: archived false",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "manage/products POST -> 405 dedicated action",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "manage/products/:id PUT -> 405",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products",
+  "check": "archive POST needs a JSON body",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "create product with variants -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "variant outside sizes -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "variant stock does not match total",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "variant sku reused by another product -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "duplicate variant combo",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory +2 on variant",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory: total 8, variant 5, sizeStock S 5",
+  "status": "FAIL",
+  "detail": "got '(8, 3, 3)' want '(8, 5, 5)'"
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory: movement (non-system) returned",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory negative result -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory stale revision -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory delta 0 -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory without reason -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory variant required",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory unknown product",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory on plain product by size",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory by size: M 4, stock 5",
+  "status": "FAIL",
+  "detail": "got '(4, 3)' want '(4, 5)'"
+ },
+ {
+  "screen": "inventory",
+  "check": "inventory unknown size",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "manage/stock lists the movements",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "SHIMI linked product: price edit blocked",
+  "status": "FAIL",
+  "detail": "status 400 (want 409) err='מלאי כולל חייב להתאים לסכום המידות.' want_err='מק״ט, מחיר וגרסאות של מוצר מקושר מנוהלים דרך SHEM. נתקו חיבור לפני שינוי.' body='{\"error\":\"מלאי כולל חייב להתאים לסכום המידות.\"}'"
+ },
+ {
+  "screen": "inventory",
+  "check": "SHIMI linked product: inventory blocked",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "inventory",
+  "check": "status.lowStock / unmapped reflect catalogue",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload PNG -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "imageUrl shape",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "public GET media",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "public HEAD media",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload JPEG",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload WebP",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload with wrong magic bytes -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload GIF type -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload > 8MB -> 413",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "upload anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "unknown media file -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "path traversal in media -> not served",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "products (media)",
+  "check": "product with uploaded imageUrl",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "create promotion",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "code upper-cased, numbers typed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "duplicate code (case-insensitive) -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "discount 0",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "discount 101",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "code charset",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "invalid date",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "end before start",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "negative minimum",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "2026-02-31 accepted like Date.parse",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "PUT excludeSale",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "excludeSale stored",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "PUT stale -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "archive promotion (manage)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "archive: active false, previousActive true",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "restore promotion",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "restore: active true again",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "GET promotions list",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "promotions",
+  "check": "promotions DELETE not supported",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "create collection (operations)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "collection with missing product -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "collection without title -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "PUT collection",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "PUT collection stale -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "PUT collection unknown -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "collections anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "create collection (manage)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "manage: productIds de-duplicated, archived false",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "manage collection missing product",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "manage collection no title",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "archive collection",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "archived + inactive",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "admin list shows archived flag",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "restore collection",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "collections",
+  "check": "manage collection stale revision -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "create customer (operations)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "duplicate customer (operations) -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "customer invalid email -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "customers anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "create customer (manage)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "duplicate customer (manage) -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "PUT customer notes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "archive customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "customers (crm)",
+  "check": "after archive the e-mail can be reused",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "create member card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "cardNumber format",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "duplicate card e-mail -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "invalid tier -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "cards list has effectiveTier",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "members list shape",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "member profile (operations PUT)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "profile cardNumber prefix",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "member profile for missing member -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "member profile bad tier",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "members PATCH missing -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "members PATCH active -> 409 (needs new consent)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "members PATCH invalid status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "members PATCH unsubscribed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "PATCH ok body",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "member now unsubscribed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "members POST -> not supported",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "loyalty: invalid percent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "loyalty: expiryDays 0",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "loyalty: out of range",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "loyalty PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "loyalty stored (typed)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "loyalty GET equals PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "invoice: bad vat mode",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "invoice: bad e-mail",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "invoice PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "invoice GET vatRate",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "home: http rejected",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "home: creds in URL rejected",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "home: protocol",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "home PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "home defaults",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "operations: invalid number",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "operations: invalid instagram",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "operations PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "operations typed + defaults",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "content PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "content: link filter, heroImages filter, default ids",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "content defaults",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "business (manage) PUT",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "business: unknown keys dropped",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "manage/settings/<unknown> -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "manage/settings DELETE -> 404 (only GET/PUT exist)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings club enabled without privacyUrl -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings club ok",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings club \"#/privacy\" accepted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings adminPrincipal -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings store ok",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings GET store",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings business ok",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "health.businessComplete",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "settings integrations ok",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "integrations: secret not saved",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "integration-status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "catalogueInitialized set by product write",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "settings (loyalty/invoice/ops/content/home/business)",
+  "check": "catalogueInitialized true",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "create manual order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order totals",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order total (money)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order vat fields",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order item snapshot",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order without items",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order bad item",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order bad qty",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order variant/size mismatch",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order duplicate lines",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order discount above subtotal",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "order bad customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "edit unpaid order (PUT recalculates)",
+  "status": "FAIL",
+  "detail": "status 404 (want 200) err='רשומה לא נמצאה.' want_err=None body='{\"error\":\"רשומה לא נמצאה.\"}'"
+ },
+ {
+  "screen": "orders",
+  "check": "recalculated total",
+  "status": "FAIL",
+  "detail": "got 'None' want '63870'"
+ },
+ {
+  "screen": "orders",
+  "check": "id/createdAt kept",
+  "status": "FAIL",
+  "detail": "got '(None, None)' want \"('d6e7a32a-2f4e-4998-9714-85e16cf80e6e', '2026-10-18T18:10:58.447Z')\""
+ },
+ {
+  "screen": "orders",
+  "check": "edit with stale revision -> 409",
+  "status": "FAIL",
+  "detail": "status 404 (want 409) err='רשומה לא נמצאה.' want_err='הרשומה השתנתה. רעננו לפני שמירה.' body='{\"error\":\"רשומה לא נמצאה.\"}'"
+ },
+ {
+  "screen": "orders",
+  "check": "PUT back to discount 0",
+  "status": "FAIL",
+  "detail": "status 404 (want 200) err='רשומה לא נמצאה.' want_err=None body='{\"error\":\"רשומה לא נמצאה.\"}'"
+ },
+ {
+  "screen": "orders",
+  "check": "suite crashed",
+  "status": "FAIL",
+  "detail": "KeyError('id')"
+ }
+]

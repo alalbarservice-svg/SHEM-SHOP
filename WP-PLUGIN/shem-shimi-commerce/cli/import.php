@@ -30,8 +30,11 @@ final class Scc_Import_Command {
     const KNOWN = ['catalogue', 'collections', 'help', 'store'];
     /** export file kinds that would carry personal / operational data: never imported, always flagged */
     const FORBIDDEN_RX = '/(order|customer|member|promotion|coupon|loyalty|ledger|request|invoice|payment|user)/i';
-    /** tables expected to change in a commit run; every other scc table, wc order/coupon table, users, mail must stay equal */
-    const EXPECTED_TABLES = ['scc_products', 'scc_collections', 'scc_settings'];
+    /** A commit run must leave these untouched (mail, stock movements, loyalty, payments, cross-store outbox, documents, coupons, users).
+     *  Orders/requests/activities/members/audit/scheduled actions are only reported: other agents or shoppers can write them on the same staging site. */
+    const PROTECTED = ['scc_mail_jobs', 'scc_stock_movements', 'scc_loyalty_ledger', 'scc_payment_transactions', 'scc_payment_sessions', 'scc_channel_outbox', 'scc_channel_ledger',
+        'scc_channel_reservations', 'scc_invoice_documents', 'scc_document_sequences', 'scc_operation_guards', 'scc_promotions', 'scc_customers', 'scc_member_profiles', 'scc_product_links',
+        'posts:shop_coupon', 'users'];
 
     private array $records = [];
     private array $files = [];
@@ -191,6 +194,7 @@ final class Scc_Import_Command {
             $t = $wpdb->prefix . $n; if ($wpdb->get_var("SHOW TABLES LIKE '$t'")) $o[$n] = (int) $wpdb->get_var("SELECT COUNT(*) FROM `$t`");
         }
         foreach (['shop_order', 'shop_order_refund', 'shop_coupon'] as $pt) $o['posts:' . $pt] = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type=%s", $pt));
+        foreach ($wpdb->get_results("SELECT hook,COUNT(*) c FROM {$wpdb->prefix}actionscheduler_actions WHERE status='pending' GROUP BY hook", ARRAY_A) ?: [] as $r) $o['as_pending:' . $r['hook']] = (int) $r['c'];
         $o['users'] = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->users}");
         $o['posts:product'] = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type='product'");
         $o['posts:product_variation'] = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type='product_variation'");
@@ -505,10 +509,14 @@ final class Scc_Import_Command {
         foreach ($this->records as $r) foreach ((array) ($r['images'] ?? []) as $im) if (is_array($im) && ($im['result'] ?? '') === 'created') $newRecords++;
         $side = null;
         if ($before !== null && $after !== null) {
-            $delta = []; foreach ($after as $k => $v) $delta[$k] = $v - ($before[$k] ?? 0);
-            $allowed = array_merge(self::EXPECTED_TABLES, ['posts:product', 'posts:product_variation', 'posts:attachment']);
-            $bad = array_filter($delta, fn($d, $k) => $d !== 0 && !in_array($k, $allowed, true), ARRAY_FILTER_USE_BOTH);
-            $side = ['mode' => $this->dry ? 'dry-run (nothing written)' : 'commit', 'wp_mail_attempts_suppressed' => $this->mails, 'row_delta' => array_filter($delta, fn($d) => $d !== 0), 'unexpected_changes' => $bad, 'ok' => !$bad && $this->mails === 0];
+            $delta = []; foreach (array_unique(array_merge(array_keys($after), array_keys($before))) as $k) $delta[$k] = ($after[$k] ?? 0) - ($before[$k] ?? 0);
+            $delta = array_filter($delta, fn($d) => $d !== 0);
+            // the import only inserts: a protected table that GREW is a side effect; one that shrank was cleaned by someone else on the shared site
+            $bad = array_filter($delta, fn($d, $k) => in_array($k, self::PROTECTED, true) && $d > 0, ARRAY_FILTER_USE_BOTH);
+            $expected = array_filter($delta, fn($d, $k) => in_array($k, ['scc_products', 'scc_collections', 'scc_settings', 'posts:product', 'posts:product_variation', 'posts:attachment'], true), ARRAY_FILTER_USE_BOTH);
+            $other = array_diff_key($delta, $bad, $expected);
+            $side = ['mode' => $this->dry ? 'dry-run (nothing written)' : 'commit', 'wp_mail_attempts_suppressed' => $this->mails, 'expected_row_delta' => $expected,
+                'other_row_delta_not_attributable' => $other, 'protected_tables_changed' => $bad, 'ok' => !$bad && $this->mails === 0];
             if ($bad || $this->mails) { $errors++; $this->note('error', 'migration side effects detected: ' . json_encode($bad) . ' mails=' . $this->mails); }
         }
         $report = [
@@ -532,7 +540,7 @@ final class Scc_Import_Command {
         foreach ($count as $type => $res) WP_CLI::log(sprintf('%-12s %s', $type, implode(', ', array_map(fn($k, $v) => "$k=$v", array_keys($res), $res))));
         foreach ($this->notes as $n) WP_CLI::log(strtoupper($n['level']) . ': ' . $n['message']);
         foreach ($this->records as $r) if (!empty($r['error'])) WP_CLI::log('ERROR ' . $r['type'] . ' ' . $r['source_id'] . ': ' . $r['error']);
-        if ($side) WP_CLI::log('side effects: ' . ($side['ok'] ? 'none (mail attempts 0, protected tables unchanged)' : 'DETECTED ' . json_encode($side['unexpected_changes'])));
+        if ($side) WP_CLI::log('side effects: ' . ($side['ok'] ? 'none (mail attempts 0, protected tables unchanged)' : 'DETECTED ' . json_encode($side['protected_tables_changed'])) . ($side['other_row_delta_not_attributable'] ? ' | other deltas (shared site, not attributed): ' . json_encode($side['other_row_delta_not_attributable']) : ''));
         WP_CLI::log("errors=$errors" . ($this->dry ? '' : " new_records=$newRecords") . " report=$path");
         if ($errors > 0) WP_CLI::halt(1);
         WP_CLI::success($this->dry ? 'Dry-run finished with zero errors. Nothing was written.' : 'Import finished with zero errors.');

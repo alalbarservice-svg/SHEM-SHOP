@@ -28,6 +28,8 @@ final class Scc_Core_Orders {
         if ($upd === '') $upd = Scc_Core_Util::now_iso($o->get_date_modified() ? $o->get_date_modified()->getTimestamp() : time());
         return $d + ['id' => $id, 'updatedAt' => $upd, '_wcId' => $o->get_id()];
     }
+    /** Legacy document of a WooCommerce order ({...data, id, updatedAt, _wcId}) or null when it carries none. */
+    public static function to_doc(WC_Order $o): ?array { $id = (string) $o->get_meta(self::M_ID); return $id === '' ? null : self::from_wc($o, $id); }
     /** Legacy-shaped order document ({...data, id, updatedAt, _wcId}) or null. */
     public static function doc(string $id): ?array {
         $wc = self::wc_id($id);
@@ -88,7 +90,13 @@ final class Scc_Core_Orders {
      * @param array $doc full legacy order document (id, viewToken, items, totals...). @param string $coupon promotion code or ''
      */
     public static function create_wc_order(array $doc, string $coupon = '', int $customer_user = 0): WC_Order {
-        $rate = self::tax_rate_id();
+        $orig = $doc; $rate = self::tax_rate_id();
+        $sub = 0; foreach ((array) ($doc['items'] ?? []) as $i) $sub += (int) $i['qty'] * (int) $i['priceCents'];
+        $doc['discountCents'] = (int) ($doc['discountCents'] ?? 0); $doc['shippingCents'] = (int) ($doc['shippingCents'] ?? 0);
+        $doc['vatItemsCents'] = (int) ($doc['vatItemsCents'] ?? Scc_Core_Util::ratio_round($sub - $doc['discountCents'], 18, 118));
+        $doc['vatShippingCents'] = (int) ($doc['vatShippingCents'] ?? Scc_Core_Util::ratio_round($doc['shippingCents'], 18, 118));
+        $doc['totalCents'] = (int) ($doc['totalCents'] ?? ($sub + $doc['shippingCents'] - $doc['discountCents']));
+        $doc['shippingLabel'] = (string) ($doc['shippingLabel'] ?? 'שליח עד הבית');
         $o = new WC_Order();
         $o->set_created_via('scc-storefront');
         $o->set_currency('ILS');
@@ -138,7 +146,7 @@ final class Scc_Core_Orders {
         $sh->set_total(self::dec((int) $doc['shippingCents'] - $shipVat));
         $sh->set_taxes(['total' => [$rate => self::dec($shipVat)]]);
         $o->add_item($sh);
-        if ((int) $doc['discountCents'] > 0) {
+        if ((int) ($doc['discountCents'] ?? 0) > 0) {
             $cp = new WC_Order_Item_Coupon(); $cp->set_code($coupon !== '' ? $coupon : 'DISCOUNT'); $cp->set_discount(self::dec($sumDiscEx)); $cp->set_discount_tax(self::dec((int) $doc['discountCents'] - $sumDiscEx));
             $o->add_item($cp);
         }
@@ -149,12 +157,12 @@ final class Scc_Core_Orders {
             throw new Scc_Http_Exception('סכומי ההזמנה אינם עקביים (' . $got . ').', 500);
         }
         $legacy = (string) $doc['id'];
-        $store = $doc; unset($store['id']);
+        $store = $orig; unset($store['id']);
         $o->update_meta_data(self::M_ID, $legacy);
         $o->update_meta_data(self::M_DOC, Scc_Core_Util::enc($store));
-        $o->update_meta_data(self::M_UPD, (string) $doc['createdAt']);
+        $o->update_meta_data(self::M_UPD, (string) ($doc['createdAt'] ?? Scc_Core_Util::now_iso()));
         $o->update_meta_data(self::M_EMAIL, strtolower((string) $c['email']));
-        $o->update_meta_data(self::M_TOKEN, (string) $doc['viewToken']);
+        $o->update_meta_data(self::M_TOKEN, (string) ($doc['viewToken'] ?? ''));
         $o->save();
         return $o;
     }

@@ -1,0 +1,82 @@
+[
+ {
+  "name": "desktop: archive loads without API error",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "desktop: archive lists documents",
+  "ok": true,
+  "detail": "rows=30"
+ },
+ {
+  "name": "desktop: archive has no delete button",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "desktop: issued doc view opens (shows number)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "desktop: issued document fields are read-only (settings and order-import box excluded)",
+  "ok": true,
+  "detail": "editable=0"
+ },
+ {
+  "name": "desktop: no save control on issued doc",
+  "ok": true,
+  "detail": "count=0"
+ },
+ {
+  "name": "desktop: alerts dialog opens",
+  "ok": true,
+  "detail": "dialogs=1"
+ },
+ {
+  "name": "desktop: no console errors",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: archive loads without API error",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: archive lists documents",
+  "ok": true,
+  "detail": "rows=30"
+ },
+ {
+  "name": "mobile: archive has no delete button",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: issued doc view opens (shows number)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: issued document fields are read-only (settings and order-import box excluded)",
+  "ok": true,
+  "detail": "editable=0"
+ },
+ {
+  "name": "mobile: no save control on issued doc",
+  "ok": true,
+  "detail": "count=0"
+ },
+ {
+  "name": "mobile: alerts dialog opens",
+  "ok": true,
+  "detail": "dialogs=1"
+ },
+ {
+  "name": "mobile: no console errors",
+  "ok": true,
+  "detail": ""
+ }
+]

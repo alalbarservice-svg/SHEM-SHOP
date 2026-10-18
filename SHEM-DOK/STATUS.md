@@ -12,3 +12,9 @@ Not verified: real PayPal/card sandbox charge, legacy (non-HPOS) order storage, 
 Must not ship: e2e mail-capture mu-plugin, test users, coming-soon override, shots/ screenshots contain staging data only.
 Pending owner: accountant approval for credit documents, issuer details, Hebrew wording, hosting/payment provider, DNS window.
 Open finding: /api/admin/manage/status is unauthenticated on both live sites (unchanged).
+
+## Update 18.10.2026 (13:50)
+- Fixed 2 editor bugs found by browser test: (1) archive opened the alerts dialog instead of the archive (querySelector('dialog')); (2) archive list failed with plain permalinks (second "?" in REST URL).
+- ui3: 16/16 pass (archive, issued read-only view, alerts dialog; desktop+mobile).
+- PDF comparison old (pdf-lib, SHEM/worker/documents.js) vs new: amounts identical; design differs (see tests/pdf-compare/compare.png) - awaiting owner decision.
+- The 1 open alert on staging is a leftover of the intentional tamper test; wp shem-dok verify: 193 documents intact.

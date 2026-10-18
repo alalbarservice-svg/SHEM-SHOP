@@ -35,3 +35,9 @@
 - The large "הזמנתך התקבלה" heading is now implemented above the payment options (SHEM order-pay/receipt page, option shem_pay_received_heading). Staging, default theme only; the live theme look is not verified.
 - Card (ACDC) is not enabled on the PayPal Sandbox business account (PAYEE_NOT_ENABLED_FOR_CARD_PROCESSING). The card button appears in the PayPal SDK but a card capture was not tested.
 - Staging-only scoped forwarder (CONNECT to *.paypal.com / *.paypalobjects.com:443 only) gives the SHIMI container internet access to PayPal. Not part of go-live.
+
+## 18.10.2026 (17:23) - Owner replies
+- Accountant approval for credit documents: approved by owner.
+- Issuer email: your.shem88@gmail.com (other issuer details still not provided).
+- Hero slides 2 and 3 mobile images: owner is handling.
+- Owner asked for a sample of the email and thank-you texts for approval, and asked for explanations of buyer2 and the 13.10 backup key. Owner asked why block checkout, live-theme look and PayPal reconciliation were left unhandled: they are to be handled.

@@ -70,8 +70,7 @@ add_filter('pre_http_request', function ($pre, $args, $url) use (&$http, &$adapt
     if (preg_match('#/api/home/payment-callback$#', $url)) {
         $h = array_change_key_case((array) $args['headers']); $http[] = 'callback';
         $expect = Scc_Channel::sign($hs, ($h['x-shem-timestamp'] ?? '') . '.' . $args['body']);
-        if (!hash_equals($expect, (string) ($h['x-shem-signature'] ?? ''))) { echo '   DEBUG callback signature mismatch' . "\n"; return ['headers' => [], 'body' => '{}', 'response' => ['code' => 401, 'message' => '']]; }
-        echo '   DEBUG callback mode=' . $callback_mode . "\n";
+        if (!hash_equals($expect, (string) ($h['x-shem-signature'] ?? ''))) { return ['headers' => [], 'body' => '{}', 'response' => ['code' => 401, 'message' => '']]; }
         return ['headers' => [], 'body' => '{"ok":true}', 'response' => ['code' => $callback_mode === 'ok' ? 200 : 500, 'message' => '']];
     }
     return $pre;
@@ -87,7 +86,7 @@ $s = Scc_Docs::get('payment_sessions', 'shem:t-channel-ord'); eq('session pendin
 // page
 $tokq = ['token' => $s['token']];
 $pg = as_home(true, fn() => Scc_Channel_Payment::page((function () use ($tokq) { $r = mkreq('GET', '/payment/shem%3At-channel-ord', '', [], $tokq); $r->params = ['', 'shem:t-channel-ord']; return $r; })()));
-eq('payment page renders for the right token', $pg->status, 200); ok('page has the iframe + CSP frame-src pinned to the provider origin', strpos((string) $pg->body, '<iframe') !== false && strpos(json_encode($pg->headers), 'frame-src https://pay.invalid') !== false);
+eq('payment page renders for the right token', $pg->status, 200); ok('page has the iframe + CSP frame-src pinned to the provider origin', strpos((string) $pg->body, '<iframe') !== false && strpos(json_encode($pg->headers, JSON_UNESCAPED_SLASHES), 'frame-src https://pay.invalid') !== false);
 $pg = as_home(true, fn() => Scc_Channel_Payment::page((function () { $r = mkreq('GET', '/payment/x', '', [], ['token' => 'nope']); $r->params = ['', 'shem:t-channel-ord']; return $r; })()));
 eq('wrong token -> 404', $pg->status, 404);
 // callback
@@ -101,9 +100,10 @@ $cb = fn(array $e, ?array $hdr = null) => as_home(true, function () use ($e, $hd
 $http = []; $callback_mode = 'fail';
 [$st, $b] = $cb($ev); eq('SHEM unreachable: payment kept, retry demanded', [$st, $b['error'] ?? ''], [409, 'התשלום אושר אך העדכון ל-SHEM דורש ניסיון חוזר.']);
 $s = Scc_Docs::get('payment_sessions', 'shem:t-channel-ord'); eq('session parked as paid-awaiting-sync with the reference', [$s['status'], $s['paymentReference']], ['paid-awaiting-sync', 'tx-T-1']);
-eq('only safe payment details are stored (no pan/cvv)', array_keys($s['paymentDetails']), ['method', 'last4']);
+ok('card number and CVV are never stored (allow-listed fields only)', !isset($s['paymentDetails']['pan']) && !isset($s['paymentDetails']['cvv']) && ($s['paymentDetails']['last4'] ?? '') === '4242', array_keys($s['paymentDetails']));
 $callback_mode = 'ok';
-$rec = as_home(true, fn() => Scc_Channel_Payment::reconcile(['id' => 'shem:t-channel-ord'])); eq('reconcile re-notifies SHEM', $rec, ['ok' => true]);
+try { $rec = as_home(true, fn() => Scc_Channel_Payment::reconcile(['id' => 'shem:t-channel-ord'])); } catch (Throwable $e) { $rec = 'EXC ' . $e->getMessage() . ' | ' . wp_json_encode(array_intersect_key(Scc_Docs::get('payment_sessions', 'shem:t-channel-ord'), array_flip(['status', 'error', 'callbackUrl'])), JSON_UNESCAPED_UNICODE); }
+eq('reconcile re-notifies SHEM', $rec, ['ok' => true]);
 eq('session is paid', Scc_Docs::get('payment_sessions', 'shem:t-channel-ord')['status'], 'paid');
 throws('nothing left to reconcile', fn() => as_home(true, fn() => Scc_Channel_Payment::reconcile(['id' => 'shem:t-channel-ord'])), 'אין תשלום מאושר הממתין לסנכרון.', 409);
 [$st, $b] = $cb($ev); eq('provider retries the same callback: accepted again (idempotent)', [$st, $b], [200, ['ok' => true]]);

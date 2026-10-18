@@ -54,7 +54,7 @@ function peer_call_sim(string $path, string $raw, array $headers): array {
 }
 add_filter('pre_http_request', function ($pre, $args, $url) {
     $base = Scc_Channel::peer_url();
-    if ($base === '' || strpos($url, $base) !== 0) return $pre;
+    if ($pre !== false || $base === '' || strpos($url, $base) !== 0) return $pre;   // an earlier stub (priority < 10) already answered
     $path = substr($url, strlen($base));
     $mode = $GLOBALS['t_peer_mode'];
     $GLOBALS['t_peer_log'][] = $path;

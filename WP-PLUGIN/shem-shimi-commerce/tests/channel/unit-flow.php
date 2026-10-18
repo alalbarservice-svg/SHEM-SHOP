@@ -2,6 +2,7 @@
 /** Channel tests: product-save trigger, outbox state machine (retry/backoff/dead-letter), loop guard, review token + coupon invalidation. */
 require __DIR__ . '/harness.php';
 use_docs(); cleanup();
+$GLOBALS['t_role_home'] = false;   // default role of this file = SHEM (source); the home store is simulated per call via as_home(true)
 $P = Scc_Channel::peer_url();
 $src = fn(string $id) => $P . '/api/channel/source/' . $id;
 $link = fn(string $id, array $d) => as_home(true, fn() => Scc_Channel_Links::link($id, $d));

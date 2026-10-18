@@ -1,0 +1,12 @@
+# Rules for all sub-agents (SHEM / SHIMI migration)
+- Staging only (docker: shem-staging-shem-1 :8081, shem-staging-shimi-1 :8082). NEVER write to the live sites (*.chatgpt.site); read-only GET is allowed only when the task says so.
+- Never delete anything outside files you created. No git commit/push (the director commits). Never touch .env or secrets; never print secrets. Secrets only as wp-config constants.
+- No design change of any kind. Existing React/CSS is the source of truth.
+- Edit ONLY the files your task owns. Plugin modules live one-per-domain in WP-PLUGIN/shem-shimi-commerce/includes/modules/; share only through Scc_Router, Scc_Docs, Scc_Request/Scc_Response, Scc_Http_Exception (see includes/class-scc-*.php). Need a change to a shared class: ask in your report, do not edit it.
+- Deploy to staging with /home/claude/deploy-scc.sh (lints PHP, rsyncs plugin+themes to both sites). WP-CLI: /home/claude/wps.sh shem|shimi <args>. If docker is down: start `dockerd` in background, then docker start shem-staging-db-1 shem-staging-shem-1 shem-staging-shimi-1.
+- Never use `pkill -f` or `pgrep -f` with patterns present in your own command line (kills your shell). Kill by PID.
+- Test data: prefix ids with `t_<yourtask>_` and clean only your own. Never wipe shared tables. Do not run payment/import against real data stores.
+- Behavior spec = the original worker code + its tests under SHEM/tests and SHIMI/tests (JS, Node). Port behavior 1:1 (JSON shapes, status codes, Hebrew error strings, rounding in agorot). Original source: /home/claude/shem-shop/SHEM and /SHIMI.
+- New text: only the short hyphen (-), never long/medium dashes. User-facing text Hebrew.
+- Evidence or it did not happen: report only what you ran. Mark anything not run as not-run. A successful build is not a browser test.
+- Report (<=25 lines, English or Hebrew): files created, routes/screens done, tests run with counts, failures, open gaps, questions. No raw dumps.

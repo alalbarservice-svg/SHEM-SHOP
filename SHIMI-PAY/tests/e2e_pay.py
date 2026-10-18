@@ -167,5 +167,50 @@ try:
 finally:
     php('shem', r'$s=get_option("shem_dok_settings",[]);$s["auto"]=%s;update_option("shem_dok_settings",$s);echo "ok";' % ('true' if orig_auto == '1' else 'false'))
 
+
+# --- G. security / exposure / disabled-gateway checks that need no real payment (acceptance AC-023..026, AC-032, AC-036)
+CB = SHEM + '/?rest_route=/shem-dok/v1/shimi/paid'
+fl = new_flow('g'); raw = json.dumps({'orderId': str(fl['oid']), 'status': 'paid', 'currency': 'ILS', 'amountCents': fl['cents'], 'transactionId': 'FORGED1', 'paymentDetails': {'method': 'paypal'}}).encode()
+st, b, _ = http('POST', CB, raw, {'Content-Type': 'application/json', 'x-shem-timestamp': str(int(time.time())), 'x-shem-signature': 'a' * 64})
+ok('G1 forged callback (bad signature) rejected, order stays unpaid', st in (401, 403) and paid(fl) == 'unpaid', st)
+st, b, _ = http('POST', CB, raw, {'Content-Type': 'application/json'})
+ok('G2 unsigned callback rejected', st in (401, 403) and paid(fl) == 'unpaid', st)
+ts = str(int(time.time()) - 3600); st, b, _ = http('POST', CB, raw, {'Content-Type': 'application/json', 'x-shem-timestamp': ts, 'x-shem-signature': hmac.new(SECRET.encode(), (ts + '.').encode() + raw, hashlib.sha256).hexdigest()})
+ok('G3 correctly signed but stale (1h old) callback rejected', st in (401, 403) and paid(fl) == 'unpaid', st)
+ts = str(int(time.time())); sg = hmac.new(SECRET.encode(), (ts + '.').encode() + raw, hashlib.sha256).hexdigest()
+st, b, _ = http('POST', CB, raw.replace(b'FORGED1', b'FORGED2'), {'Content-Type': 'application/json', 'x-shem-timestamp': ts, 'x-shem-signature': sg})
+ok('G4 body changed after signing rejected', st in (401, 403) and paid(fl) == 'unpaid', st)
+o2 = new_flow('g2')
+key = php('shem', 'echo wc_get_order(%s)->get_order_key();' % fl['oid'])[0]
+st, b, _ = http('GET', SHEM + '/?rest_route=/shem-pay/v1/status&order=%s&key=%s' % (o2['oid'], key))
+ok('G5 status API with another order id + key -> 404, no order details', st == 404 and b'"paid":true' not in b and b'redirect' not in b, (st, b[:120]))
+# route sweep: every route in our namespaces must refuse an anonymous caller unless it is on the intended public list
+PUBLIC = {'/shem-dok/v1/shimi/paid', '/shem-dok/v1/customer/status', '/shem-pay/v1/status', '/shimi-pay/v1/session', '/shimi-pay/v1/paypal/create', '/shimi-pay/v1/paypal/capture'}
+bad = []; seen = 0
+for site, base_url in (('shem', SHEM), ('shimi', SHIMI)):
+    idx = json.loads(http('GET', base_url + '/?rest_route=/')[1])
+    for route, meta in idx.get('routes', {}).items():
+        if not re.match(r'^/(shem-dok|shem-pay|shimi-pay)/v1/.', route) or route in PUBLIC: continue  # namespace index pages are WordPress core and only list routes
+        for m in meta.get('methods', []):
+            if m not in ('GET', 'POST', 'PUT', 'PATCH', 'DELETE'): continue
+            seen += 1; s, bb, _ = http(m, base_url + '/?rest_route=' + route, b'{}' if m != 'GET' else None, {'Content-Type': 'application/json'})
+            if s < 400: bad.append((site, m, route, s))
+ok('G6 non-public REST routes refuse anonymous callers (%d checked)' % seen, not bad, bad)
+# secrets must not appear in any public page or log
+secs = {'hmac': SECRET, 'pp_secret': wp('shimi', 'config', 'get', 'SHIMI_PAYPAL_SECRET')}
+pages = [SHEM + '/', SHEM + '/?page_id=7', SHIMI + '/', re.sub(r'&#038;|&amp;', '&', php('shem', 'echo wc_get_order(%s)->get_meta("_shem_pay_embed");' % fl['oid'])[0]), re.sub(r'https?://[^/]+', SHEM, php('shem', 'echo wc_get_order(%s)->get_checkout_payment_url();' % fl['oid'])[0])]
+leak = [(n, u[:60]) for u in pages for n, s in secs.items() if s and s.encode() in http('GET', u)[1]]
+ok('G7 no secret in public pages / PayPal frame / receipt page (%d pages)' % len(pages), not leak, leak)
+logs = subprocess.run('for c in shem-staging-shem-1 shem-staging-shimi-1; do docker exec $c sh -c "cat /var/www/html/wp-content/debug.log 2>/dev/null"; docker logs --tail 3000 $c 2>&1; done', shell=True, capture_output=True, text=True).stdout
+ok('G8 no secret in debug / web logs', not any(s and s in logs for s in secs.values()))
+# gateway switched off -> not offered (AC-032)
+php('shem', r'update_option("woocommerce_shem_via_shimi_settings",["enabled"=>"no"]);echo "ok";')
+try:
+    avail = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_via_shimi",$a)?"offered":"hidden";')[0]
+finally:
+    php('shem', r'delete_option("woocommerce_shem_via_shimi_settings");echo "ok";')
+back = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_via_shimi",$a)?"offered":"hidden";')[0]
+ok('G9 gateway disabled -> not offered; restored afterwards', avail == 'hidden' and back == 'offered', (avail, back))
+
 print(json.dumps({'oid': oid, 'sid': sid, 'ppid': ppid}))
 f = [n for n, c in res if not c]; print(f'\n{len(res)-len(f)}/{len(res)} passed'); sys.exit(1 if f else 0)

@@ -109,6 +109,15 @@ final class Scc_Channel_Catalog_Docs implements Scc_Channel_Catalog_Backend {
 /* ---------------------------------------------------------------- Woo backend */
 final class Scc_Channel_Catalog_Woo implements Scc_Channel_Catalog_Backend {
     private array $ids = [];
+    /**
+     * Signed channel routes are dispatched on init:1, before WooCommerce registers its post types and taxonomies (init:5), so wc_get_product()
+     * would return false there (found by the live HTTP scenario, invisible to CLI tests that run after init). Register them early; both calls are
+     * guarded inside WooCommerce (post_type_exists / taxonomy_exists), so the later init:5 pass is a no-op.
+     */
+    public static function boot(): void {
+        static $done = false; if ($done) return; $done = true;
+        if (class_exists('WC_Post_Types') && !taxonomy_exists('product_type')) { WC_Post_Types::register_taxonomies(); WC_Post_Types::register_post_types(); }
+    }
     /** legacy id -> Woo product id (parent products only). */
     public function resolve(string $id): int {
         global $wpdb;
@@ -132,7 +141,7 @@ final class Scc_Channel_Catalog_Woo implements Scc_Channel_Catalog_Backend {
         if ($m !== 'yes') return 0;
         return max(0, (int) $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id=%d AND meta_key='_stock'", $id)));
     }
-    public function get(string $id, bool $fresh = false): ?array {
+    public function get(string $id, bool $fresh = false): ?array { self::boot();
         $pid = $this->resolve($id);
         if (!$pid) return null;
         if ($fresh) { wp_cache_delete($pid, 'post_meta'); clean_post_cache($pid); }
@@ -175,7 +184,7 @@ final class Scc_Channel_Catalog_Woo implements Scc_Channel_Catalog_Backend {
         else { $p->set_regular_price((string) $price); $p->set_sale_price(''); }
         update_post_meta($p->get_id(), '_scc_previous_price', $prev !== null && $prev > $price ? (string) $prev : '');
     }
-    public function apply_sync(string $id, array $f): void {
+    public function apply_sync(string $id, array $f): void { self::boot();
         $pid = $this->resolve($id); $p = $pid ? wc_get_product($pid) : null;
         if (!$p) Scc_Channel::fail('מוצר היעד חסר.');
         $prev = $f['previousPrice'] ? (float) $f['previousPrice'] : null;
@@ -198,14 +207,14 @@ final class Scc_Channel_Catalog_Woo implements Scc_Channel_Catalog_Backend {
             wc_delete_product_transients($pid);
         });
     }
-    public function set_active(string $id, bool $active): void {
+    public function set_active(string $id, bool $active): void { self::boot();
         $pid = $this->resolve($id); if (!$pid) return;
         Scc_Channel_Catalog::quietly(function () use ($pid, $active) {
             $p = wc_get_product($pid); if (!$p) return;
             $p->set_status($active ? 'publish' : 'draft'); $p->save();
         });
     }
-    public function set_home_meta(string $id, string $homeId): void {
+    public function set_home_meta(string $id, string $homeId): void { self::boot();
         $pid = $this->resolve($id); if (!$pid) return;
         Scc_Channel_Catalog::quietly(function () use ($pid, $homeId) {
             update_post_meta($pid, '_scc_home_product_id', $homeId);
@@ -214,7 +223,7 @@ final class Scc_Channel_Catalog_Woo implements Scc_Channel_Catalog_Backend {
             if ($p && $p->is_type('variable')) foreach ($p->get_children() as $vid) update_post_meta($vid, '_scc_home_sku', (string) get_post_meta($vid, '_sku', true));
         });
     }
-    public function decrement(array $lines): void {
+    public function decrement(array $lines): void { self::boot();
         foreach ($lines as $l) {
             $pid = $this->resolve($l['productId']); $p = $pid ? wc_get_product($pid) : null;
             if (!$p) Scc_Channel::fail('המוצר אינו זמין.');

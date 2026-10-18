@@ -76,6 +76,7 @@ add_action('plugins_loaded', function () {
 
   /* The payment-options page: "הזמנתך התקבלה" above the options (the order already exists here). */
   function receipt_page($order_id) {
+   static $rendered = false; if ($rendered) return; $rendered = true; /* block themes can run the page content filter several times per request */
    $order = wc_get_order($order_id); if (!$order) return;
    if ($order->is_paid()) { echo '<p>ההזמנה שולמה. <a href="' . esc_url($this->get_return_url($order)) . '">המשך</a></p>'; return; }
    $embed = (string)$order->get_meta('_shem_pay_embed');
@@ -92,6 +93,25 @@ add_action('plugins_loaded', function () {
  }
 
  add_filter('woocommerce_payment_gateways', function ($g) { $g[] = 'WC_Gateway_Shem_Via_Shimi'; return $g; });
+
+ /* Block checkout support: show the same gateway in the WooCommerce Blocks checkout. Payment still runs through process_payment() ->
+    receipt page (iframe); the block only lists the method and hands over to the server. */
+ add_action('woocommerce_blocks_payment_method_type_registration', function ($reg) {
+  if (!class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) return;
+  if (!class_exists('Shem_Pay_Blocks')) {
+   final class Shem_Pay_Blocks extends Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType {
+    protected $name = 'shem_via_shimi';
+    public function initialize() {}
+    public function is_active() { $g = new WC_Gateway_Shem_Via_Shimi(); return $g->is_available(); }
+    public function get_payment_method_script_handles() {
+     wp_register_script('shem-pay-blocks', plugins_url('blocks.js', __FILE__), ['wc-blocks-registry', 'wc-settings', 'wp-element', 'wp-html-entities'], '0.1.2', true);
+     return ['shem-pay-blocks'];
+    }
+    public function get_payment_method_data() { return ['title' => 'PayPal', 'description' => '', 'supports' => ['products']]; }
+   }
+  }
+  $reg->register(new Shem_Pay_Blocks());
+ });
 
  /* Read-only status: "paid" is true only after SHIMI's signed callback marked the order paid. */
  add_action('rest_api_init', function () {

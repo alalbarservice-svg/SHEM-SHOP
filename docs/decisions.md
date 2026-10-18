@@ -41,3 +41,8 @@
 - Issuer email: your.shem88@gmail.com (other issuer details still not provided).
 - Hero slides 2 and 3 mobile images: owner is handling.
 - Owner asked for a sample of the email and thank-you texts for approval, and asked for explanations of buyer2 and the 13.10 backup key. Owner asked why block checkout, live-theme look and PayPal reconciliation were left unhandled: they are to be handled.
+
+## 18.10.2026 (17:40) - Payment page text, block checkout, reconcile
+- Owner: removed the text "הסליקה מתבצעת באמצעות SHIMI. הפרטים אינם נשמרים ב-SHEM." from the payment frame. Under "תשלום מאובטח" it now reads: "פרטי האשראי אינם נשמרים במערכת."
+- Block checkout: the gateway did not appear in the WooCommerce block checkout ("no payment methods available"). Fixed by registering it for Blocks (SHEM-PAY blocks.js). An order placed through the block checkout now reaches the "הזמנתך התקבלה" page with the PayPal frame. Also fixed the receipt block rendering 4 times on block themes.
+- PayPal reconcile: polling (hourly, `wp shimi-pay reconcile`) for sessions left at pp_created for over 15 minutes; verifies at PayPal (COMPLETED, or captures if APPROVED) and sends the signed callback. Chosen over a webhook because staging has no public URL; a webhook can be added at go-live as a second trigger of the same function.

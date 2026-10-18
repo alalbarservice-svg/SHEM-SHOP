@@ -135,5 +135,37 @@ try:
 finally:
     php('shem', r'$s=get_option("shem_dok_settings",[]);$s["auto"]=%s;update_option("shem_dok_settings",$s);echo "ok";' % ('true' if orig_auto == '1' else 'false'))
 
+
+# --- F. reconcile (polling): payments approved/captured at PayPal whose browser flow never completed. PayPal GET/capture responses are MOCKED.
+def backdate(f, secs=1200):
+    php('shimi', 'update_option("shimi_pay_s_%s",wp_json_encode(array_merge(Shimi_Pay::load("%s"),["created"=>time()-%d])),false);echo "ok";' % (f['sid'], f['sid'], secs))
+def reconcile(f, get_mock, cap_mock=None):
+    code = '$g=%s;$c=%s;' % (json.dumps(json.dumps(get_mock)), json.dumps(json.dumps(cap_mock)) if cap_mock else 'null')
+    code += 'add_filter("pre_http_request",function($pre,$a,$u) use($g,$c){ if(strpos($u,"/orders/")!==false){ if(strpos($u,"/capture")!==false&&$c)return ["response"=>["code"=>201,"message"=>"x"],"body"=>$c,"headers"=>[],"cookies"=>[]]; if(strpos($u,"/capture")===false)return ["response"=>["code"=>200,"message"=>"OK"],"body"=>$g,"headers"=>[],"cookies"=>[]]; } return $pre;},10,3);'
+    code += 'echo wp_json_encode(Shimi_Pay::reconcile());'
+    return json.loads(php('shimi', code)[0]).get(f['sid'], 'not-scanned')
+php('shem', r'$s=get_option("shem_dok_settings",[]);$s["auto"]=true;update_option("shem_dok_settings",$s);echo "ok";')
+try:
+    f = new_flow('r1'); r = reconcile(f, mock_resp(f)); sf = state(f)
+    ok('F0 younger than 15 minutes -> not touched', r == 'not-scanned' and sf['state'] == 'pp_created', (r, sf['state']))
+    backdate(f); r = reconcile(f, mock_resp(f)); sf = state(f)
+    ok('F1 captured at PayPal (COMPLETED) but never reached SHEM -> reconciled, callback_ok, SHEM paid', r == 'reconciled' and sf['state'] == 'callback_ok' and paid(f) == 'paid', (r, sf['state']))
+    for _ in range(10):
+        n = invoices(f)
+        if n != '0': break
+        wp('shem', 'cron', 'event', 'run', '--due-now'); time.sleep(1)
+    ok('F1b exactly 1 invoice after reconcile', n == '1', n)
+    g = new_flow('r2'); backdate(g); appr = mock_resp(g); appr['status'] = 'APPROVED'; appr['purchase_units'][0]['payments'] = {}
+    r = reconcile(g, appr, mock_resp(g)); sg = state(g)
+    ok('F2 APPROVED but not captured -> server captures, then reconciled and paid', r == 'reconciled' and sg['state'] == 'callback_ok' and paid(g) == 'paid', (r, sg['state']))
+    h = new_flow('r3'); backdate(h); op = mock_resp(h); op['status'] = 'CREATED'; op['purchase_units'][0]['payments'] = {}
+    r = reconcile(h, op); sh = state(h)
+    ok('F3 still CREATED at PayPal (buyer never approved) -> left alone, unpaid', r == 'open_CREATED' and sh['state'] == 'pp_created' and paid(h) == 'unpaid', (r, sh['state']))
+    k = new_flow('r4'); backdate(k); r = reconcile(k, mock_resp(k, cents=100)); sk = state(k)
+    ok('F4 wrong amount at PayPal -> not verified, unpaid, no invoice', r == 'not_verified' and paid(k) == 'unpaid' and invoices(k) == '0', (r, sk['state']))
+    r = reconcile(f, mock_resp(f)); ok('F5 already settled session is not scanned again', r == 'not-scanned', r)
+finally:
+    php('shem', r'$s=get_option("shem_dok_settings",[]);$s["auto"]=%s;update_option("shem_dok_settings",$s);echo "ok";' % ('true' if orig_auto == '1' else 'false'))
+
 print(json.dumps({'oid': oid, 'sid': sid, 'ppid': ppid}))
 f = [n for n, c in res if not c]; print(f'\n{len(res)-len(f)}/{len(res)} passed'); sys.exit(1 if f else 0)

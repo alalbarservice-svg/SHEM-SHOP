@@ -94,7 +94,7 @@ final class Shimi_Pay {
   $cfg=['api'=>esc_url_raw(rest_url(self::NS)),'sid'=>$sid,'token'=>$tok,'parent'=>$fa,'cid'=>(self::pp_ready()?SHIMI_PAYPAL_CLIENT_ID:''),'paid'=>$paid];
   echo '<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>תשלום מאובטח</title>';
   echo '<style>body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:16px;color:#111}h2{margin:.2em 0}.amt{font-size:1.3rem;font-weight:700;margin:.6em 0}.msg{margin:1em 0;padding:.8em;border-radius:6px}.ok{background:#e8f5e9}.err{background:#fdecea}</style></head><body>';
-  echo '<h2>תשלום מאובטח</h2><p>הסליקה מתבצעת באמצעות SHIMI. הפרטים אינם נשמרים ב-SHEM.</p><div class="amt">סכום לתשלום: '.esc_html(number_format($rec['amountCents']/100,2)).' ₪</div><div id="btns"></div><div id="msg"></div>';
+  echo '<h2>תשלום מאובטח</h2><p>פרטי האשראי אינם נשמרים במערכת.</p><div class="amt">סכום לתשלום: '.esc_html(number_format($rec['amountCents']/100,2)).' ₪</div><div id="btns"></div><div id="msg"></div>';
   echo '<script>window.SHIMI_PAY='.wp_json_encode($cfg).';</script>';
   echo '<script>'.self::page_js().'</script>';
   if(!$paid&&self::pp_ready()) echo '<script src="https://www.paypal.com/sdk/js?client-id='.esc_attr(SHIMI_PAYPAL_CLIENT_ID).'&amp;currency=ILS&amp;intent=capture&amp;components=buttons&amp;locale=he_IL" onload="shimiInit()"></script>';
@@ -163,16 +163,22 @@ JS; }
    if($rec['state']!=='pp_created'||$rec['ppOrderId']===''||!hash_equals($rec['ppOrderId'],$ppId))return self::fail(409,'order_mismatch','PayPal order does not belong to this session');
    [$st,$j]=self::pp('POST','/v2/checkout/orders/'.rawurlencode($ppId).'/capture',(object)[],'shimi-capture-'.$rec['id']);
    if($st<200||$st>=300)return self::fail(502,'paypal_capture','PayPal capture failed ('.$st.')');
+   if(!self::finalize($rec,$j))return self::fail(409,'not_completed','Payment not completed or does not match');
+   self::send_callback($rec['id']);
+   return new WP_REST_Response(['ok'=>true],200);
+  });
+ }
+
+ /* verify a PayPal order payload against the server-side session; on success mark paid (callback is sent by the caller) */
+ static function finalize(&$rec,$j){
    $pu=$j['purchase_units'][0]??[]; $cap=$pu['payments']['captures'][0]??[];
    $ok=($j['status']??'')==='COMPLETED'&&($cap['status']??'')==='COMPLETED'&&($cap['amount']['currency_code']??'')==='ILS'&&($cap['amount']['value']??'')===self::cents_to_str($rec['amountCents'])&&($pu['custom_id']??($cap['custom_id']??''))===$rec['id']&&!empty($cap['id']);
-   if(!$ok){ $rec['cbError']='capture not verified: status='.($cap['status']??($j['status']??'?')); self::save($rec); return self::fail(409,'not_completed','Payment not completed or does not match');}
+   if(!$ok){ $rec['cbError']='capture not verified: status='.($cap['status']??($j['status']??'?')); self::save($rec); return false;}
    $src=$j['payment_source']??[]; $payer=$j['payer']['name']??[]; $rec['txn']=(string)$cap['id'];
    if(isset($src['card'])&&is_array($src['card'])){ $rec['method']='card'; $rec['last4']=preg_match('/^\d{4}$/',(string)($src['card']['last_digits']??''))?$src['card']['last_digits']:''; $rec['brand']=mb_substr((string)($src['card']['brand']??''),0,24); $rec['holder']=mb_substr((string)($src['card']['name']??''),0,80); $rec['auth']=mb_substr((string)($cap['processor_response']['response_code']??''),0,64); }
    else { $rec['method']='paypal'; $rec['holder']=trim(($payer['given_name']??'').' '.($payer['surname']??'')); }
    $rec['state']='paid'; self::save($rec);
-   self::send_callback($rec['id']);
-   return new WP_REST_Response(['ok'=>true],200);
-  });
+   return true;
  }
 
  /* ---------- 5. paid callback (SHIMI -> SHEM), retried until accepted ---------- */
@@ -191,6 +197,28 @@ JS; }
   else { $rec['state']='callback_pending'; $rec['cbError']=$err; if($rec['cbAttempts']<self::MAX_CB)wp_schedule_single_event(time()+min(3600,60*(2**$rec['cbAttempts'])),'shimi_pay_retry',[$sid]); }
   self::save($rec);
  }
+ /* ---------- 6. reconcile: payments that were approved/captured at PayPal but never reached the callback (browser closed, crash).
+    Polling, so it needs no public webhook URL. Only sessions still in pp_created, older than 15 minutes and younger than 7 days. ---------- */
+ static function reconcile(){
+  global $wpdb; $out=[];
+  $rows=$wpdb->get_col($wpdb->prepare("SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",$wpdb->esc_like(self::OPT).'%'));
+  foreach($rows as $n){
+   $sid=substr($n,strlen(self::OPT)); $rec=self::load($sid);
+   if(!$rec||$rec['state']!=='pp_created'||$rec['ppOrderId']===''||$rec['created']>time()-900||$rec['created']<time()-7*86400)continue;
+   $res=self::locked($sid,function() use($sid){
+    $rec=self::load($sid); if(!$rec||$rec['state']!=='pp_created')return 'skip';
+    [$st,$j]=self::pp('GET','/v2/checkout/orders/'.rawurlencode($rec['ppOrderId']),null,'shimi-rec-get-'.$sid.'-'.time());
+    if($st<200||$st>=300)return 'paypal_get_'.$st;
+    $ps=$j['status']??'';
+    if($ps==='APPROVED'){ [$st,$j]=self::pp('POST','/v2/checkout/orders/'.rawurlencode($rec['ppOrderId']).'/capture',(object)[],'shimi-capture-'.$sid); if($st<200||$st>=300)return 'capture_'.$st; }
+    elseif($ps!=='COMPLETED')return 'open_'.$ps;
+    if(!self::finalize($rec,$j))return 'not_verified';
+    self::send_callback($sid); return 'reconciled';
+   });
+   $out[$sid]=is_string($res)?$res:'locked';
+  }
+  return $out;
+ }
 }
 /* Staging only: containers have no direct internet. When SHIMI_HTTP_PROXY is defined, PayPal requests (and only PayPal) go through it,
    trusting SHIMI_CA_BUNDLE. Not defined on a real host. */
@@ -203,10 +231,13 @@ add_action('http_api_curl',function($h,$args,$url){
 add_action('rest_api_init',['Shimi_Pay','routes']);
 add_action('init',['Shimi_Pay','render_page'],1);
 add_action('shimi_pay_retry',['Shimi_Pay','send_callback']);
+add_action('shimi_pay_reconcile',['Shimi_Pay','reconcile']);
+add_action('init',function(){ if(!wp_next_scheduled('shimi_pay_reconcile'))wp_schedule_event(time()+300,'hourly','shimi_pay_reconcile'); });
 
 if (defined('WP_CLI') && WP_CLI) {
  WP_CLI::add_command('shimi-pay', function($args){
   global $wpdb; $sub=$args[0]??'status';
+  if($sub==='reconcile'){ foreach(Shimi_Pay::reconcile() as $k=>$v)WP_CLI::line($k.' '.$v); return; }
   $rows=$wpdb->get_col($wpdb->prepare("SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",$wpdb->esc_like(Shimi_Pay::OPT).'%'));
   foreach($rows as $n){ $sid=substr($n,strlen(Shimi_Pay::OPT)); $rec=Shimi_Pay::load($sid); if(!$rec)continue;
    if($sub==='resend'&&in_array($rec['state'],['paid','callback_pending'],true)){ Shimi_Pay::send_callback($sid); $rec=Shimi_Pay::load($sid); }

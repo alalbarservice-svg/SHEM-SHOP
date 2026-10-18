@@ -1,0 +1,62 @@
+[
+ {
+  "name": "desktop: login as shop manager",
+  "ok": true,
+  "detail": "http://localhost:8081/wp-admin/"
+ },
+ {
+  "name": "desktop: editor page renders",
+  "ok": true,
+  "detail": "Skip to main content\nSkip to toolbar\n\n\nDashboard\n\n\nPosts\nAll Posts\nAdd Post\nCategories\nTags\n\n\nMedia\nLibrary\nAdd Media Fi"
+ },
+ {
+  "name": "desktop: no horizontal overflow",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "desktop: archive present",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "desktop: no delete control visible on load",
+  "ok": true,
+  "detail": "count=0"
+ },
+ {
+  "name": "desktop: no console errors",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: login as shop manager",
+  "ok": true,
+  "detail": "http://localhost:8081/wp-admin/"
+ },
+ {
+  "name": "mobile: editor page renders",
+  "ok": true,
+  "detail": "Skip to main content\nMenu\nSHEM staging\nCtrl+K\nOpen command palette\nNew\nHowdy, shopmgr\n\nSHEM DOK: יש 1 התראות פתוחות. למס"
+ },
+ {
+  "name": "mobile: no horizontal overflow",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: archive present",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile: no delete control visible on load",
+  "ok": true,
+  "detail": "count=0"
+ },
+ {
+  "name": "mobile: no console errors",
+  "ok": true,
+  "detail": ""
+ }
+]

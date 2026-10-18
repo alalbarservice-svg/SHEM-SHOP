@@ -1,0 +1,254 @@
+[
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O1 כל קובץ PHP מוגן ב-ABSPATH",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O2 אין eval/assert/create_function/system/exec/shell_exec/passthru/popen",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O3 אין $_REQUEST ו-$_COOKIE",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O4 אין קריאות HTTP יוצאות (wp_remote, curl, file_get_contents http)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O5 אין unserialize על קלט",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O6 אין $_GET/$_POST בתוך שאילתות SQL",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O7 שאילתות עם משתנים מפורשים הן רק שמות טבלה/מספרים שלמים",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O8 רק שני נתיבי REST ציבוריים (shimi/paid + customer/status)",
+  "ok": true,
+  "detail": "['/customer/status', '/shimi/paid']"
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O9 נתיבי הניהול דורשים manage_woocommerce (allowed)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O10 יש nonce בטופס הפקה ידנית מההזמנה וב-PDF מנהל",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O11 קוד הסוד אינו מוטבע בקוד (אין מחרוזת hex/ארוכה כסוד)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O12 אין סודות/מפתחות בקבצי ההתקנה (כולל תיעוד)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O13 הכותרות: nocache_headers (no-store) + nosniff + no-referrer בהגשת PDF",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O14 mPDF: ללא allow_url_fopen לתמונות חיצוניות בקוד התבנית",
+  "ok": true,
+  "detail": "template has http"
+ },
+ {
+  "section": "O. אבטחה סטטית של הקוד",
+  "name": "O15 אין קבצי PHP עם הרשאת כתיבה לכולם",
+  "ok": true,
+  "detail": "total 120\ndrwxr-xr-x 7 www-data www-data  4096 Oct 18 07:30 .\ndrwxr-xr-x 5 www-data www-data  4096 Oct 18 06:55 ..\n"
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P1 הסכמה הורדה לצורת 1.0.1",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P2 שדרוג אוטומטי ב-plugins_loaded: גרסת DB 2 מיד בטעינה הראשונה",
+  "ok": true,
+  "detail": "2"
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P3 אחרי הפעלה: גרסת DB 2",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P4 המסמכים (payload ו-pdf) לא השתנו בשדרוג",
+  "ok": true,
+  "detail": "('131\\t272267746535\\t288024916986', '131\\t272267746535\\t288024916986')"
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P5 hash וגודל חושבו לכל המסמכים",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P6 gross_cents הושלם לחשבוניות",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P7 doc_type=invoice ו-status=issued ברירת מחדל",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P8 רצף המספור שמור (next > max)",
+  "ok": true,
+  "detail": "(7144, 7143)"
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P9 verify על כל המסמכים לאחר שדרוג",
+  "ok": true,
+  "detail": "Success: 131 documents verified\n"
+ },
+ {
+  "section": "P. שדרוג מגרסה 1.0.1 (על עותק DB נפרד, shem_up)",
+  "name": "P10 install חוזר אידמפוטנטי",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "Q. הפעלה מחדש ושמירת נתונים (על SHEM staging)",
+  "name": "Q1 כיבוי התוסף אינו מוחק טבלאות",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "Q. הפעלה מחדש ושמירת נתונים (על SHEM staging)",
+  "name": "Q2 כשהתוסף כבוי נקודת הקצה לא קיימת (404)",
+  "ok": true,
+  "detail": "404"
+ },
+ {
+  "section": "Q. הפעלה מחדש ושמירת נתונים (על SHEM staging)",
+  "name": "Q3 אחרי הפעלה מחדש: הנתונים והמספור זהים",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "Q. הפעלה מחדש ושמירת נתונים (על SHEM staging)",
+  "name": "Q4 ההגדרות נשמרו",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "Q. הפעלה מחדש ושמירת נתונים (על SHEM staging)",
+  "name": "Q5 state תקין אחרי הפעלה",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "R. כשל במנוע PDF: Rollback ללא פער מספור",
+  "name": "R1 כשל במנוע: שגיאה מוחזרת (לא 200)",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"Temporary files directory \\\\\"\\\\/tmp\\\\/shem-dok-mpdf\\\\/mpdf\\\\\" is not writable\",\"data\":{\"s')"
+ },
+ {
+  "section": "R. כשל במנוע PDF: Rollback ללא פער מספור",
+  "name": "R2 לא נשארה רשומה חלקית ולא התקדם המספור",
+  "ok": true,
+  "detail": "('147', '7148')"
+ },
+ {
+  "section": "R. כשל במנוע PDF: Rollback ללא פער מספור",
+  "name": "R3 אחרי תיקון המנוע ההפקה חוזרת לעבוד עם המספר הבא ללא פער",
+  "ok": true,
+  "detail": "(200, '7148')"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S1 מסמך 200 פריטים הופק",
+  "ok": true,
+  "detail": "(200, '{\"id\":7149,\"version\":1,\"document\":{\"business\":\"SHEM \\\\u05de\\\\u05d5\\\\u05ea\\\\u05d2\\\\u05d9\\\\u05dd\",\"businessId\":\"516067873\",\"address\":\"\\\\u05d3\\\\u05e8\\\\u05da \\\\u05d')"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S2 הזמן להפקת 200 פריטים < 20 שניות",
+  "ok": true,
+  "detail": "0.7"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S3 גודל PDF 200 פריטים סביר (<1.5MB)",
+  "ok": true,
+  "detail": "141665"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S4 כל 200 הפריטים בטקסט ה-PDF (S-0 עד S-199)",
+  "ok": true,
+  "detail": "53249"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S5 הפקת מסמך רגיל < 5 שניות",
+  "ok": true,
+  "detail": "0.2"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S6 רשימת ארכיון < 3 שניות עם כל המסמכים",
+  "ok": true,
+  "detail": "0.12"
+ },
+ {
+  "section": "S. ביצועים וגבולות",
+  "name": "S7 גודל PDF טיפוסי (<150KB)",
+  "ok": true,
+  "detail": "120"
+ },
+ {
+  "section": "T. יומנים",
+  "name": "T1 אין fatal/שגיאות DB/warning ב-debug.log מעבר לכשל ה-mPDF שהוזרק בכוונה",
+  "ok": true,
+  "detail": "0\n"
+ },
+ {
+  "section": "T. יומנים",
+  "name": "T2 אין שגיאות PHP של התוסף ביומן Apache",
+  "ok": true,
+  "detail": "0\n"
+ }
+]

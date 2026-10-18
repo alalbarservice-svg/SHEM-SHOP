@@ -11,3 +11,8 @@
 - 18.10.2026: הסנכרון בין החנויות חד-כיווני בלבד, מ-SHEM ל-SHIMI. ב-SHEM נקבעים מק"ט ומחיר; שום נתון לא חוזר ל-SHEM.
 - 18.10.2026: מערכת חשבוניות העסקה החדשה מחליפה את המחולל הקיים רק ב-SHEM ובממשק הניהול שלו (הנפקה ידנית ואוטומטית, עמוד תודה עם הורדה). פרטי מנפיק ניתנים לעדכון, עם ברירת מחדל.
 - 18.10.2026: החיוב האמיתי מתבצע תמיד דרך SHIMI (PayPal או סליקה), גם בקנייה ב-SHEM. חשבונית העסקה ללקוח מונפקת מ-SHEM רק אחרי אישור תשלום. הסליקה ב-SHIMI מונפקת דרך חברת האשראי חשבונית על העסקה עבור העסק (פירוש מדויק של המסמך הזה טרם אומת).
+
+## 18.10.2026 - SHEM DOK 1.1
+- Issued documents are immutable; corrections only via linked credit documents (off by default, needs accountant approval).
+- Documents issued only from a verified signed SHIMI paid callback; automation and customer email off by default.
+- Backed up on branch feature/shem-dok-1.1-staging-verified (not merged).

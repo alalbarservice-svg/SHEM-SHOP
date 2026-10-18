@@ -1,0 +1,8 @@
+<?php
+require __DIR__.'/domain.php';
+require __DIR__.'/fixtures-order.php';
+$o=new FakeOrder();$mapped=ShemDok::from_order($o);check(ShemDok::totals($mapped)['gross']===15520,'Woo order matches item discount and shipping cents');check($mapped['discount']===11.8&&$mapped['reference']==='test-transaction','Woo discount and transaction mapping');check($mapped['sourceOrderId']===99,'order provenance retained for deduplication');$o->total='156.00';rejects(fn()=>ShemDok::from_order($o),'fees or unexplained totals fail closed');$o->currency='USD';rejects(fn()=>ShemDok::from_order($o),'foreign currency rejected');$o->currency='ILS';$o->method='cod';rejects(fn()=>ShemDok::from_order($o),'cash gateway rejected');
+
+$o->method='unknown-wallet';$o->total='155.20';rejects(fn()=>ShemDok::from_order($o),'unknown gateway rejected instead of guessed card');$o->method='stripe';$o->tax='0.00';rejects(fn()=>ShemDok::from_order($o),'tax mismatch rejected even when gross matches');$o->tax='23.67';$GLOBALS['options']['shem_dok_settings']=['defaults'=>['last4'=>'9876','brand'=>'WRONG','holder'=>'WRONG','paypalEmail'=>'wrong@example.test','installments'=>'9']];$mapped=ShemDok::from_order($o);check($mapped['last4']===''&&$mapped['holder']===''&&$mapped['installments']==='','payment defaults cannot leak into Woo snapshots');
+
+$o->tax='23.66';$mapped=ShemDok::from_order($o);check(ShemDok::totals($mapped)['tax']===2366&&$mapped['taxCents']===2366,'canonical Woo tax cents preserved for rounding differences');$roundTrip=ShemDok::clean($mapped);check(ShemDok::totals($roundTrip)['tax']===2366,'canonical tax survives archive edit round trip');

@@ -1,0 +1,326 @@
+[
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I1 עמוד התודה מציג כפתור הורדה",
+  "ok": true,
+  "detail": "(200, '<!DOCTYPE html>\\n<html lang=\"en-US\">\\n<head>\\n\\t<meta charset=\"UTF-8\" />\\n\\t<meta name=\"viewport\" content=')"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I2 הורדה עם אסימון: 200 ו-PDF",
+  "ok": true,
+  "detail": "(200, b'%PDF-1.4\\n%\\xe2\\xe3\\xcf\\xd3\\n3 0 obj\\n<</Type')"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I3 כותרות אבטחה (no-store, nosniff)",
+  "ok": true,
+  "detail": "{'date': 'Sun, 18 Oct 2026 07:34:37 GMT', 'server': 'Apache/2.4.68 (Debian)', 'x-powered-by': 'PHP/8.3.35', 'expires': 'Wed, 11 Jan 1984 05:00:00 GMT', 'cache-control': 'no-cache, must-revalidate, max-age=0, no-store, private', 'referrer-policy': 'no-referrer', 'x-frame-options': 'SAMEORIGIN', 'content-security-policy': \"frame-ancestors 'self';\", 'content-disposition': 'attachment; filename=\"SHEM-"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I4 hash התוכן תואם לרשומה",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I5 ההורדה נרשמה בלוג ביקורת",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I6 אסימון משובש: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I7 אסימון הורדה אינו תקף ל-status (scope נפרד)",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I8 אסימון מזויף להזמנה אחרת: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I9 אסימון שפג תוקפו: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I10 מפתח הזמנה שגוי: אין קישור הורדה",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I11 הזמנה שלא שולמה: 403 גם עם אסימון חתום",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I12 שולם אך אין חשבונית: 404",
+  "ok": true,
+  "detail": "404"
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I13 אוטומציה כבויה: אין בלוק בעמוד התודה",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "I. עמוד תודה והורדת לקוח",
+  "name": "I14 אחרי הפקה הכפתור מופיע",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "J. בעלות לקוח מחובר",
+  "name": "J1 בעל ההזמנה (מחובר) מקבל PDF",
+  "ok": true,
+  "detail": "200"
+ },
+ {
+  "section": "J. בעלות לקוח מחובר",
+  "name": "J2 לקוח מחובר על הזמנה של אחר: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "J. בעלות לקוח מחובר",
+  "name": "J3 ללא התחברות ואסימון: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "K. מייל ללקוח (מצולם, לא נשלח)",
+  "name": "K1 נשלח מייל אחד בדיוק",
+  "ok": true,
+  "detail": "[{'to': 'alalbar.service@gmail.com', 'subject': \"[SHEM staging]: You've got a new order: #106\", 'message': '<!DOCTYPE html>\\n<html lang=\"en-US\">\\n\\t<head>\\n\\t\\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\\n\\t\\t<meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\">\\n\\t\\t<title>SHEM staging</title>\\n\\t<style type=\"text/css\">@media screen and (max-width: 600px){"
+ },
+ {
+  "section": "K. מייל ללקוח (מצולם, לא נשלח)",
+  "name": "K2 נושא ותוכן עם משתנים",
+  "ok": true,
+  "detail": "חשבונית עסקה מספר 7185"
+ },
+ {
+  "section": "K. מייל ללקוח (מצולם, לא נשלח)",
+  "name": "K3 קובץ PDF מצורף ותקין",
+  "ok": true,
+  "detail": "[{'name': 'SHEM-7185-qhEwnfQD.pdf', 'size': 116964, 'magic': '%PDF-', 'sha': '0ee3f129f34d8ecfa86c788d5c1fec135e04c399b1879ab52ba4430a102db325'}]"
+ },
+ {
+  "section": "K. מייל ללקוח (מצולם, לא נשלח)",
+  "name": "K4 emailed_at נקבע",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "K. מייל ללקוח (מצולם, לא נשלח)",
+  "name": "K5 הפעלה חוזרת לא שולחת מייל נוסף",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "K. מייל ללקוח (מצולם, לא נשלח)",
+  "name": "K6 מייל לקוח לא תקין: התראה ולא קריסה",
+  "ok": true,
+  "detail": "[{'id': '5f7c07efcfd0ae7c', 'kind': 'email_failed', 'message': 'שליחת החשבונית ללקוח נכשלה: כתובת מייל של הלקוח חסרה או לא תקינה', 'order': 107, 'doc': 7186, 'time': '2026-10-18T07:35:44+00:00'}]"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L1 זיכוי כבוי כברירת מחדל: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L2 בלי סיבה: 400",
+  "ok": true,
+  "detail": "400"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L3 בלי requestId: 400",
+  "ok": true,
+  "detail": "400"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L4 סכום זיכוי לא חוקי נדחה (0)",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d6\\\\u05d9\\\\u05db\\\\')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L4 סכום זיכוי לא חוקי נדחה (-5)",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d6\\\\u05d9\\\\u05db\\\\')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L4 סכום זיכוי לא חוקי נדחה (1.5)",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d6\\\\u05d9\\\\u05db\\\\')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L4 סכום זיכוי לא חוקי נדחה ('abc')",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d6\\\\u05d9\\\\u05db\\\\')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L4 סכום זיכוי לא חוקי נדחה (73521)",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d4\\\\u05d6\\\\u05d9\\\\')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L5 זיכוי חלקי הצליח",
+  "ok": true,
+  "detail": "{\"id\":7188,\"version\":1,\"document\":{\"business\":\"SHEM \\u05de\\u05d5\\u05ea\\u05d2\\u05d9\\u05dd\",\"businessId\":\"516067873\",\"address\":\"\\u05d3\\u05e8\\u05da \\u05de\\u05e6\\u05d3\\u05d4 259 \\u05d1\\u05d0\\u05e8 \\u05e9\\"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L6 מסמך זיכוי מקושר לחשבונית המקורית",
+  "ok": true,
+  "detail": "{'id': 7188, 'doc_type': 'credit', 'ref_id': 7187, 'status': 'issued', 'gross': 5000, 'order_id': 108, 'version': 1, 'deleted': 0, 'sha': 'd5ff8d11c1e04d0d9f8df4e8a8b5a26ccef761f5394852f57a87ad75f7015d54', 'size': '117005', 'emailed': '', 'key': 'credit:7187:a8e1f61e-6703-4cc9-a165-6f49778b8cd4'}"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L7 המקור לא השתנה והוא עדיין issued",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L8 PDF זיכוי כולל הפניה לחשבונית, סיבה וסימן מינוס",
+  "ok": true,
+  "detail": "\n\n                                                                                              ‫פרטי תשלום‬\n\n                                                           ‫אשראי | ‪ | Visa‬דנה כהן | מסתיים ב‪ 3 | 4242-‬תשלומים‬\n                                                     ‫אסמכתת תשלום‪ | TX-S3-2fd98f-a31020 :‬אישור ‪AUTH77‬‬\n\n\n\n                                                               "
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L9 אותו requestId: אותו זיכוי (idempotent)",
+  "ok": true,
+  "detail": "{\"id\":7188,\"version\":1,\"existing\":true,\"downloadUrl\":\"http:\\/\\/localhost:8081\\/wp-admin\\/admin-post.php?action=shem_dok_pdf&id=7188&_wpnonce=c2680ffde"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L10 זיכוי מעל היתרה נדחה",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d4\\\\u05d6\\\\u05d9\\\\u05db\\\\u05d5\\\\u05d9 \\\\u')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L11 אי אפשר לזכות מסמך זיכוי",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e0\\\\u05d9\\\\u05ea\\\\u05df \\\\u05dc\\\\u05d6\\\\u05db\\\\u05d5\\\\u05ea \\\\u05e8\\\\u')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L12 זיכוי ללא סכום = יתרה מלאה",
+  "ok": true,
+  "detail": "(200, '{\"id\":7189,\"version\":1,\"document\":{\"business\":\"SHEM \\\\u05de\\\\u05d5\\\\u05ea\\\\u05d2\\\\u05d9\\\\u05dd\",\"businessId\":\"516067873\",\"address\":\"\\\\u05d3\\\\u05e8\\\\u05da \\\\u05d')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L13 אחרי זיכוי מלא המקור מסומן cancelled",
+  "ok": true,
+  "detail": "cancelled"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L14 אחרי ביטול מלא אין זיכוי נוסף",
+  "ok": true,
+  "detail": "(400, '{\"code\":\"shem_dok_error\",\"message\":\"\\\\u05e1\\\\u05db\\\\u05d5\\\\u05dd \\\\u05d6\\\\u05d9\\\\u05db\\\\u05d5\\\\u05d9 \\\\u05d7\\\\u')"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L15 סכום הזיכויים = סכום החשבונית",
+  "ok": true,
+  "detail": "(73520, 73520)"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L16 6 זיכויים מקבילים: הסכום לא עולה על החשבונית",
+  "ok": true,
+  "detail": "(19900, 19900, [400, 400, 200, 400, 400, 400])"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L17 החזר ב-WooCommerce יוצר התראה",
+  "ok": true,
+  "detail": "['refund']"
+ },
+ {
+  "section": "L. זיכוי וביטול",
+  "name": "L18 אין זיכוי אוטומטי מהחזר",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M1 verify תקין לפני שינוי",
+  "ok": true,
+  "detail": "Success: 193 documents verified\n"
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M2 PDF שהשתנה ב-DB לא מוגש ללקוח",
+  "ok": true,
+  "detail": "(500, b'<!DOCTYPE html>\\n<html lang=\"en-US\">\\n<hea')"
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M3 verify מזהה שינוי (קוד יציאה ≠ 0 והודעת mismatch)",
+  "ok": true,
+  "detail": "(1, 'Warning: mismatch 7193\\nError: 1 of 193 documents failed integrity\\n')"
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M4 אחרי שחזור ההורדה חוזרת לעבוד",
+  "ok": true,
+  "detail": "200"
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M5 אין UPDATE/DELETE על טבלת הביקורת בקוד",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M6 reconcile מחזיר רשימה תקינה",
+  "ok": true,
+  "detail": "{'missing': []}"
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M7 אין כפילויות במספור ואין פערים",
+  "ok": true,
+  "detail": "(7193, 7194)"
+ },
+ {
+  "section": "M. שלמות, ביקורת ועקביות",
+  "name": "M8 לכל הזמנה חשבונית עסקה אחת",
+  "ok": true,
+  "detail": "0"
+ },
+ {
+  "section": "N. מצערת בקשות",
+  "name": "N1 אחרי 30 בקשות בשעה: 429",
+  "ok": true,
+  "detail": "[200, 200, 429, 429, 429]"
+ }
+]

@@ -1,0 +1,260 @@
+[
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A1 התוסף פעיל",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A2 שלוש טבלאות קיימות",
+  "ok": true,
+  "detail": "['wp_shem_dok', 'wp_shem_dok_audit', 'wp_shem_dok_sequence']"
+ },
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A3 עמודות חדשות",
+  "ok": true,
+  "detail": "{'pdf', 'deleted', 'payload', 'gross_cents', 'ref_id', 'id', 'emailed_at', 'doc_type', 'pdf_sha256', 'status', 'source_key', 'order_id', 'updated_at', 'pdf_size', 'version', 'created_at'}"
+ },
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A4 המספור לא נמוך מ-7001",
+  "ok": true,
+  "detail": "7151"
+ },
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A5 גרסת סכמה 2",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A6 state מחזיר health ומנוע PDF מוכן",
+  "ok": true,
+  "detail": "{\"settings\":{\"defaults\":[],\"auto\":true,\"email_customer\":false,\"email_subject\":\"\\u05d7\\u05e9\\u05d1\\u05d5\\u05e0\\u05d9\\u05ea \\u05e2\\u05e1\\u05e7\\u05d4 \\u05de\\u05e1\\u05e4\\u05e8 {number}\",\"email_body\":\"\\u05"
+ },
+ {
+  "section": "A. התקנה וסכמה",
+  "name": "A7 bridgeConfigured אמת",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "B. הרשאות",
+  "name": "B1 אנונימי: כל הנתיבים 401",
+  "ok": true,
+  "detail": "[401, 401, 401, 401, 401, 401, 401, 401, 401, 401, 401, 401, 401]"
+ },
+ {
+  "section": "B. הרשאות",
+  "name": "B2 לקוח רשום: כל הנתיבים 403",
+  "ok": true,
+  "detail": "[403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403, 403]"
+ },
+ {
+  "section": "B. הרשאות",
+  "name": "B3 מנהל חנות (manage_woocommerce) מורשה",
+  "ok": true,
+  "detail": "200"
+ },
+ {
+  "section": "B. הרשאות",
+  "name": "B4 סיסמה שגויה נדחית",
+  "ok": true,
+  "detail": "401"
+ },
+ {
+  "section": "B. הרשאות",
+  "name": "B5 הורדת מנהל ללא התחברות נדחית",
+  "ok": true,
+  "detail": "400"
+ },
+ {
+  "section": "B. הרשאות",
+  "name": "B6 הורדת לקוח ללא אסימון: 403",
+  "ok": true,
+  "detail": "403"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C1 הפקה ראשונה מחזירה את המספר הבא בתור",
+  "ok": true,
+  "detail": "{\"id\":7151,\"version\":1,\"document\":{\"business\":\"SHEM \\u05de\\u05d5\\u05ea\\u05d2\\u05d9\\u05dd\",\"businessId\":\"516067873\",\"address\":\"\\u05d3\\u05e8\\u05da \\u05de\\u05e6\\u05d3\\u05d4 259 \\u05d1\\u05d0\\u05e8 \\u05e9\\"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C2 שורה נשמרה עם hash וגודל",
+  "ok": true,
+  "detail": "{'id': 7151, 'doc_type': 'invoice', 'ref_id': 0, 'status': 'issued', 'gross': 24800, 'order_id': 0, 'version': 1, 'deleted': 0, 'sha': 'bbfe71af19152ba4e655766931b982dd59a3aee9be972272991a7cd58df16228', 'size': '116966', 'emailed': '', 'key': 'manual:93f375e1-b801-4167-8616-f55f63cb3bd1'}"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C3 הקובץ הוא PDF",
+  "ok": true,
+  "detail": "b'%PDF-1.4'"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C4 hash תואם לתוכן",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C5 עברית ופרטי עסקה ב-PDF",
+  "ok": true,
+  "detail": "                       ‫‪ SHEM‬מותגים‬\n                      ‫ח״פ ‪516067873‬‬\n               ‫דרך מצדה ‪ 259‬באר שבע‬\n                                                                            ‫חשבונית עסקה‬\n                                                                                          "
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C6 סכומים: 248.00 ₪ סה״כ",
+  "ok": true,
+  "detail": "                                                                                ‫פרטי תשלום‬\n\n                                                           ‫אשראי | ‪ | Visa‬דנה כהן | מסתיים ב‪ 3 | 4242-‬תשלומים‬\n                                                                                    ‫אסמכתת תשלום‪REF-123 :‬‬\n\n\n\n                                                                             "
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C7 אותו requestId: אותו מסמך, existing",
+  "ok": true,
+  "detail": "{\"id\":7151,\"version\":1,\"existing\":true,\"downloadUrl\":\"http:\\/\\/localhost:8081\\/wp-admin\\/admin-post.php?action=shem_dok_pdf&id=7151&_wpnonce=09d5b6301c\"}"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C8 המספור לא התקדם בכפילות",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C9 כל הקלטים הלא תקינים נדחים (400)",
+  "ok": true,
+  "detail": "{}"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C10 אף מסמך לא נוצר מקלט שגוי",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C11 מספור ללא פער אחרי כשלונות",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C12 בלי requestId: 400",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C13 requestId לא UUID: 400",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C14 קלט עם HTML/XSS מתקבל אך מנוקה",
+  "ok": true,
+  "detail": "{\"id\":7152,\"version\":1,\"document\":{\"business\":\"SHEM \\u05de\\u05d5\\u05ea\\u05d2\\u05d9\\u05dd\",\"businessId\":\"516067873\",\"address\":\"\\u05d3\\u05e8\\u05da \\u05de\\u05e6\\u05d3\\u05d4 259 \\u05d1\\u05d0\\u05e8 \\u05e9\\"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C15 תגיות הוסרו מהשדות",
+  "ok": true,
+  "detail": "{\"business\": \"SHEM מותגים\", \"businessId\": \"516067873\", \"address\": \"דרך מצדה 259 באר שבע\", \"phone\": \"052-958-6766\", \"email\": \"\", \"title\": \"חשבונית עסקה\", \"vat\": 18, \"supply1\": \"שליח עד הבית 5-7 ימי עסקים\", \"supply2\": \"\", \"orderNumber\": \"1001\", \"customer\": \"ד\\\"ר O'Brien & Sons\", \"customerPhone\": \"050-"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C16 ה-PDF אינו מכיל קישורים חיצוניים",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C17 עשר הפקות רצופות: מספור רציף ללא פערים",
+  "ok": true,
+  "detail": "[7153, 7154, 7155, 7156, 7157, 7158, 7159, 7160, 7161, 7162]"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C18 12 הפקות מקבילות: כולן הצליחו",
+  "ok": true,
+  "detail": "[200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200]"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C19 12 הפקות מקבילות: מספרים ייחודיים ורצופים",
+  "ok": true,
+  "detail": "[7163, 7164, 7165, 7166, 7167, 7168, 7169, 7170, 7171, 7172, 7173, 7174]"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C20 8 בקשות מקבילות עם אותו requestId: מסמך אחד",
+  "ok": true,
+  "detail": "[200, 200, 200, 200, 200, 200, 200, 200]"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C21 next_number = MAX(id)+1",
+  "ok": true,
+  "detail": "(7176, 7175)"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C22 עריכה ומחיקה של מסמך שהונפק: 410",
+  "ok": true,
+  "detail": "(410, 410)"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C23 המסמך לא השתנה",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C24 רשימת ארכיון: 30 לכל היותר, ללא payload",
+  "ok": true,
+  "detail": "175"
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C25 סימון סוג מסמך וסטטוס ברשימה",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C. הפקה ידנית",
+  "name": "C26 פרמטר page זדוני מנוטרל",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C2. הגדרות",
+  "name": "C27 שמירת הגדרות",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "section": "C2. הגדרות",
+  "name": "C28 ברירת מחדל מספרית שגויה נדחית",
+  "ok": true,
+  "detail": "400"
+ },
+ {
+  "section": "C2. הגדרות",
+  "name": "C29 מייל התראות שגוי נדחה",
+  "ok": true,
+  "detail": "400"
+ },
+ {
+  "section": "C2. הגדרות",
+  "name": "C30 מפתח לא מוכר מתעלמים",
+  "ok": true,
+  "detail": ""
+ }
+]

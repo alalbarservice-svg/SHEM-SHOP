@@ -8,3 +8,6 @@
 - הבא: ייצוא נתונים טרי לקריאה בלבד, importer במצב dry-run.
 - הערה: המאגר ציבורי. לא להעלות סודות, נתוני לקוחות או מסמכים עסקיים רגישים.
 - 18.10.2026: נקראו ממשקי הניהול (קריאה בלבד). אושרה הלוגיקה: סנכרון חד-כיווני SHEM->SHIMI, חיוב דרך SHIMI, חשבונית עסקה מ-SHEM. ממתין: מערכת החשבוניות החדשה מהבעלים.
+
+## Update 18.10.2026
+SHEM DOK 1.1 verified on local staging (unit, 193 e2e, 12 ui). Branch feature/shem-dok-1.1-staging-verified awaits review. Not done: sandbox charges, HPOS-off run, PDF visual approval.

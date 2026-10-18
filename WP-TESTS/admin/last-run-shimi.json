@@ -230,8 +230,8 @@
  {
   "screen": "products",
   "check": "GET one product price",
-  "status": "FAIL",
-  "detail": "got '199.9' want '149'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "products",
@@ -278,8 +278,8 @@
  {
   "screen": "products",
   "check": "PUT on archived product -> 409",
-  "status": "FAIL",
-  "detail": "status 400 (want 409) err='מלאי כולל חייב להתאים לסכום המידות.' want_err='יש לשחזר מוצר מהארכיון לפני עריכה.' body='{\"error\":\"מלאי כולל חייב להתאים לסכום המידות.\"}'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "products",
@@ -350,8 +350,8 @@
  {
   "screen": "inventory",
   "check": "inventory: total 8, variant 5, sizeStock S 5",
-  "status": "FAIL",
-  "detail": "got '(8, 3, 3)' want '(8, 5, 5)'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "inventory",
@@ -404,8 +404,8 @@
  {
   "screen": "inventory",
   "check": "inventory by size: M 4, stock 5",
-  "status": "FAIL",
-  "detail": "got '(4, 3)' want '(4, 5)'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "inventory",
@@ -422,8 +422,8 @@
  {
   "screen": "inventory",
   "check": "SHIMI linked product: price edit blocked",
-  "status": "FAIL",
-  "detail": "status 400 (want 409) err='מלאי כולל חייב להתאים לסכום המידות.' want_err='מק״ט, מחיר וגרסאות של מוצר מקושר מנוהלים דרך SHEM. נתקו חיבור לפני שינוי.' body='{\"error\":\"מלאי כולל חייב להתאים לסכום המידות.\"}'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "inventory",
@@ -1190,37 +1190,781 @@
  {
   "screen": "orders",
   "check": "edit unpaid order (PUT recalculates)",
-  "status": "FAIL",
-  "detail": "status 404 (want 200) err='רשומה לא נמצאה.' want_err=None body='{\"error\":\"רשומה לא נמצאה.\"}'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
   "check": "recalculated total",
-  "status": "FAIL",
-  "detail": "got 'None' want '63870'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
   "check": "id/createdAt kept",
-  "status": "FAIL",
-  "detail": "got '(None, None)' want \"('d6e7a32a-2f4e-4998-9714-85e16cf80e6e', '2026-10-18T18:10:58.447Z')\""
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
   "check": "edit with stale revision -> 409",
-  "status": "FAIL",
-  "detail": "status 404 (want 409) err='רשומה לא נמצאה.' want_err='הרשומה השתנתה. רעננו לפני שמירה.' body='{\"error\":\"רשומה לא נמצאה.\"}'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
   "check": "PUT back to discount 0",
-  "status": "FAIL",
-  "detail": "status 404 (want 200) err='רשומה לא נמצאה.' want_err=None body='{\"error\":\"רשומה לא נמצאה.\"}'"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
-  "check": "suite crashed",
-  "status": "FAIL",
-  "detail": "KeyError('id')"
+  "check": "SHIMI order has no shipment fields",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "no carrier/shipmentHistory on SHIMI",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "api orders PUT invalid status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "api orders POST not allowed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "api orders PUT unknown",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "api orders PUT status/tracking/notes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "api orders typed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "mark paid without reference -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "loyalty-adjust negative balance -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "loyalty-adjust invalid input -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "loyalty-adjust unknown member",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "loyalty-adjust +5",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "adjust entry",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "mark paid (manual-external)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "paid order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "paymentDetails sanitised",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "vatItemsCents of paid order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "stock decremented 8 -> 5 (variant black-s 5->3, ivory-m 3->2)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "mark paid again (same reference) is idempotent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "stock unchanged after repeat",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "payment movements",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "invoice document created",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "document fields",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "customer mail job queued (pending)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "manager mail job queued",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "payment-details invalid last4",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "payment-details installments invalid",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "payment-details update",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "payment-details persisted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archive paid order -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archive document -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "documents POST -> 405",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "PUT paid order only changes status/tracking/notes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "paid order immutable core",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "document untouched",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "loyalty earned entry (3% of 59970)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "earned entry pending 14 days, expires",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "card effectiveTier vip",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "cancelled order cannot be paid",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "create second order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "redeem above available balance -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "redeem unknown member",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "redeem 5",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "redeemed totals",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "one redeemed ledger entry",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "redeem twice -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "edit order with open redemption -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archive with open redemption -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "release-credit",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "release restores total",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "release twice -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "release ledger entry present",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "issue-document on unpaid order -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "payment-link without connection -> blocked",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "manage/orders/:id/payment-link",
+  "status": "BLOCKED",
+  "detail": "needs the payments module filter scc_admin_payment_link (returns 501 until it exists)"
+ },
+ {
+  "screen": "orders",
+  "check": "second order paid while invoice details incomplete",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "invoiceStatus missing-business-details",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "no document for it yet",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "issue-document with incomplete business -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "issue-document now succeeds -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "issue-document body {document,mail}",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "document count after issue",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "issue-document again returns the same document (200)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "same number",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "invoiceStatus queued",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "stock after both payments",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "GET manage/documents/:id/html",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
+ },
+ {
+  "screen": "orders",
+  "check": "GET manage/documents/:id/pdf",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
+ },
+ {
+  "screen": "orders",
+  "check": "GET manage/orders/:id/order-pdf",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
+ },
+ {
+  "screen": "orders",
+  "check": "GET manage/template-preview",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
+ },
+ {
+  "screen": "orders",
+  "check": "GET manage/template-preview.pdf",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
+ },
+ {
+  "screen": "orders",
+  "check": "documents html for unknown id -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "documents pdf anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "mail/process (mail not configured)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "blocked message",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "mail retry -> pending (processMail blocked)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "retry of a sent mail -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "retry after the 23h idempotency window -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "mail sending (Resend + PDF attachments)",
+  "status": "BLOCKED",
+  "detail": "mail module missing: filter scc_admin_mail_process; processMail replay with mocked Resend not run"
+ },
+ {
+  "screen": "orders",
+  "check": "manage unknown kind -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "manage/orders unknown id GET returns null (original)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "null body",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "manage action on unknown record -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archive/restore of an unpaid draft order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archive an unpaid order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archive unpaid order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "archived",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "unpaid count excludes archived",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "orders",
+  "check": "restore unpaid order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "create request (manage)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request source manual",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request invalid type/status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request update",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "requests list (operations)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request PUT (operations)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request typed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request invalid status (operations)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "request POST (operations) -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "requests anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "create activity",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "activity system false, history empty",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "activity requires title+reason",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "activity update keeps history",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "history entry with actor",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "service + returns / activities",
+  "check": "archive activity",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "birthday: not today -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "card set birthday to today",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "birthday benefit granted -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "birthday entry",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club cards + members",
+  "check": "birthday benefit twice -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "audit list",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "audit rows (latest 200) with shape",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "audit has write actions of this run",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "reads are not audited",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "audit UPDATE rejected by the database",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "audit DELETE rejected by the database",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "health",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "health shape",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "manage/status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "status shape",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "status.invoiceComplete",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "status counts are numbers",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "audit log + control",
+  "check": "health anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "unknown admin route -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth+session",
+  "check": "responses carry nosniff",
+  "status": "PASS",
+  "detail": ""
  }
 ]

@@ -75,7 +75,10 @@ def inlist(ids): return ','.join(q(i) for i in sorted(ids)) or "''"
 SETTING_KEYS = ['club', 'store', 'business', 'integrations', 'catalogueInitialized', 'invoice', 'loyalty', 'home', 'operations', 'content']
 SNAP = {}
 def snapshot():
-    out, _ = sql(f"SELECT id, REPLACE(REPLACE(data,'\\\\','\\\\\\\\'),'\\n',' '), updated_at FROM {TBL('settings')} WHERE id IN ({inlist(SETTING_KEYS)})")
+    # HEX() keeps the data byte-exact. REPLACE() in the query text makes wp-cli treat the statement as a write and return no rows,
+    # which left SNAP empty and made restore() delete the settings (root cause of the vanishing settings, proven 2026-10-18).
+    out, _ = sql(f"SELECT id, HEX(data), updated_at FROM {TBL('settings')} WHERE id IN ({inlist(SETTING_KEYS)})")
+    assert out == '' or '\t' in out, 'settings snapshot failed: ' + out[:120]
     SNAP['settings'] = out
     SNAP['seq'], _ = sql(f"SELECT data, updated_at FROM {TBL('document_sequences')} WHERE id='transaction'")
     SNAP['seq_present'] = bool(SNAP['seq'])
@@ -86,7 +89,7 @@ def restore():
     for line in SNAP.get('settings', '').splitlines():
         parts = line.split('\t')
         if len(parts) == 3:
-            sql(f"INSERT INTO {TBL('settings')} (id,data,updated_at) VALUES ({q(parts[0])},{q(parts[1].replace(chr(92)*2, chr(92)))},{q(parts[2])})")
+            sql(f"INSERT INTO {TBL('settings')} (id,data,updated_at) VALUES ({q(parts[0])},UNHEX('{parts[1]}'),{q(parts[2])})")
     sql(f"DELETE FROM {TBL('document_sequences')} WHERE id='transaction'")
     if SNAP.get('seq_present'):
         d, u = SNAP['seq'].split('\t')

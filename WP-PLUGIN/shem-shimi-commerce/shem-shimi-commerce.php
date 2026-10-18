@@ -21,5 +21,7 @@ add_action('plugins_loaded', function () {
     foreach (glob(SCC_DIR . 'includes/modules/*.php') as $f) require_once $f;
     do_action('scc_modules_loaded');
 }, 5);
-// Dispatch /api/* and /payment/* before WordPress routing.
-add_action('init', ['Scc_Router', 'dispatch'], 1);
+// Dispatch /api/* and /payment/* before WordPress routing but AFTER WooCommerce has registered its post types/taxonomies and
+// fired woocommerce_init (init:0 and init:5): wc_get_product() returns false before that point, which made every admin write
+// create a duplicate WooCommerce product (Round 2, item 4/5 root cause).
+add_action('init', ['Scc_Router', 'dispatch'], 20);

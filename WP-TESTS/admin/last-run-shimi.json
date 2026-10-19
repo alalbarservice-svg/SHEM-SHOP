@@ -1621,15 +1621,15 @@
  },
  {
   "screen": "orders",
-  "check": "GET manage/documents/:id/pdf",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "check": "GET manage/documents/%s/pdf",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
-  "check": "GET manage/orders/:id/order-pdf",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "check": "GET manage/orders/%s/order-pdf",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",
@@ -1640,8 +1640,8 @@
  {
   "screen": "orders",
   "check": "GET manage/template-preview.pdf",
-  "status": "BLOCKED",
-  "detail": "document renderer missing: filter scc_admin_document_render"
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "orders",

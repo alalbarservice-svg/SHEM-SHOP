@@ -15,7 +15,7 @@ const check = (n, ok, d='') => { results.push({name:n, ok:!!ok, detail:String(d)
     page.on('console', m => { if (m.type()==='error' && !/Failed to load resource/.test(m.text())) errs.push(m.text()); });
     page.on('pageerror', e => errs.push('PAGEERR '+e.message));
     await page.goto(BASE+'/wp-login.php');
-    await page.fill('#user_login','shopmgr'); await page.fill('#user_pass',PW); await Promise.all([page.waitForNavigation({waitUntil:'domcontentloaded'}),page.click('#wp-submit')]);
+    await page.fill('#user_login','shopmgr'); await page.fill('#user_pass',PW); await page.click('#wp-submit'); await page.waitForURL(u=>!u.pathname.includes('wp-login'),{waitUntil:'domcontentloaded',timeout:45000});
     await page.waitForTimeout(500);
     check(vp.n+': login as shop manager', !page.url().includes('wp-login'), page.url());
     await page.goto(BASE+'/wp-admin/admin.php?page=shem-dok');

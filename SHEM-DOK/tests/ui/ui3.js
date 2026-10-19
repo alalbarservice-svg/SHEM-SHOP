@@ -8,7 +8,7 @@ const R=[]; const ck=(n,ok,d='')=>{R.push({name:n,ok:!!ok,detail:String(d).slice
  await ctx.route(/^https?:\/\/(?!localhost)/,r=>r.abort());
  const p=await ctx.newPage(); const errs=[]; p.on('pageerror',e=>errs.push(e.message)); p.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource/.test(m.text()))errs.push(m.text())});
  await p.goto(BASE+'/wp-login.php'); await p.fill('#user_login','shopmgr'); await p.fill('#user_pass',PW);
- await Promise.all([p.waitForNavigation({waitUntil:'domcontentloaded'}),p.click('#wp-submit')]);
+ await p.click('#wp-submit'); await p.waitForURL(u=>!u.pathname.includes('wp-login'),{waitUntil:'domcontentloaded',timeout:45000});
  await p.goto(BASE+'/wp-admin/admin.php?page=shem-dok'); await p.waitForLoadState('networkidle'); await p.waitForTimeout(1000);
  await p.click('button:has-text("ארכיון מסמכים")'); await p.waitForTimeout(1500);
  const errBox=await p.locator('text=No route was found').count();

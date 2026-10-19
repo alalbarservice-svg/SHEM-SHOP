@@ -59,3 +59,9 @@
 - UI test harness: one login navigation timeout in 4 ui.js runs (server login measured 12 times at about 0.3 s). Harness changed to waitForURL; cause of the single timeout not proven.
 - Test logs: T1 now reads only debug.log lines written during the run.
 - acceptance status: docs/acceptance-status-2026-10-19.csv (34 pass, 23 partial, 16 not-run, 9 blocked). Payment-provider scenarios are blocked by the owner decision to skip the provider for now.
+
+## 19.10.2026 (evening) - Owner answers and what was done
+- Thank-you wording approved by the owner ("מאשר"): the SHEM SPA order-complete screen now uses the approved DOK wording (title, "הזמנתך נקלטה, והתשלום בוצע!", "חשבונית עסקה", "הורדת חשבונית עסקה", pending text). The WooCommerce order-received URL now points to /order-complete.html#order=..&token=.. (filter woocommerce_get_checkout_order_received_url, only for orders with a legacy id and view token). Customer e2e 42/42 on staging. SHIMI bundle not changed (customer invoices exist only on SHEM).
+- HMAC secret of the staging payment bridge rotated on both staging wp-config files (new random value, identical on both, never printed). The owner typed a password in chat in reply to this question; it was NOT used and NOT stored. Real secrets for production go in a vault only.
+- Owner decision for SHIMI: keep the existing products and add more basics-style items. 30 new demo products (10 shirts, 8 pants, 6 shoes, 6 hats, SKU SHIMI-B-*) created on STAGING only via the admin API and added to the collection "בייסיק ליום יום" (slug basics). Live SHIMI is untouched. 5 of 30 have generated photos; 25 carry a labeled "PHOTO PENDING" placeholder because the image generator hit its daily limit. Images to be replaced via the admin API when available.
+- Products created on staging do not exist on the live SHIMI; they reach it only if the owner adds them there or approves an import at go-live.

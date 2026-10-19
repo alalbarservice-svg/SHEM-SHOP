@@ -56,3 +56,12 @@ Scc_Router::add('GET', '#^/api/checkout-invoice/(.*)$#', ['Scc_Core_Order_Routes
 add_action('woocommerce_payment_complete', function ($order_id) { Scc_Core_Orders::on_paid((int) $order_id); }, 20, 1);
 foreach (['woocommerce_order_status_processing', 'woocommerce_order_status_completed'] as $h) add_action($h, function ($order_id) { Scc_Core_Orders::on_paid((int) $order_id); }, 20, 1);
 add_action('woocommerce_reduce_order_stock', function ($order) { if ($order instanceof WC_Order) Scc_Core_Orders::on_stock_reduced($order); }, 20, 1);
+
+/* WooCommerce order-received URL -> the storefront thank-you page (/order-complete.html), which carries the approved wording and the invoice buttons.
+ * Only for orders that have a legacy id and view token; any other order keeps the WooCommerce URL. */
+add_filter('woocommerce_get_checkout_order_received_url', function ($url, $order) {
+    if (!$order instanceof WC_Order) return $url;
+    $id = (string) $order->get_meta('_scc_legacy_id'); $tok = (string) $order->get_meta('_scc_view_token');
+    if ($id === '' || $tok === '') return $url;
+    return home_url('/order-complete.html') . '#order=' . rawurlencode($id) . '&token=' . rawurlencode($tok);
+}, 20, 2);

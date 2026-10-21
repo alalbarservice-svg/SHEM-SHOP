@@ -3,20 +3,22 @@ import { Pause, Play } from "@phosphor-icons/react";
 
 const defaultSlides = [
   {
-    src: "/assets/hero.webp",
-    mobile: "/assets/hero-mobile.webp",
-    he: "חולצה שחורה ומכנסי שנהב לצד תקריב סריג",
-    en: "Black shirt and ivory trousers beside a knit detail",
+    src: "/assets/hero-look1.webp",
+    mobile: "/assets/hero-look1-mobile.webp",
+    he: "סריג בז' עם תקריב שרוול ומכנסיים שחורים בקולונדה",
+    en: "Beige knit with a sleeve detail and black trousers in a colonnade",
   },
   {
-    src: "/assets/hero-tailoring.webp",
-    he: "חליפה שחורה בגזרת ערב לצד תקריב בד",
-    en: "Black tailoring beside a fabric detail",
+    src: "/assets/hero-look2.webp",
+    mobile: "/assets/hero-look2-mobile.webp",
+    he: "חולצת טאופ ומכנסי פשתן לבנים לצד תקריב כיס",
+    en: "Taupe top and white linen trousers beside a pocket detail",
   },
   {
-    src: "/assets/hero-knitwear.webp",
-    he: "סריג שחור ומכנסי שנהב בצילום אופנה",
-    en: "Black knitwear and ivory trousers in a fashion editorial",
+    src: "/assets/hero-look3.webp",
+    mobile: "/assets/hero-look3-mobile.webp",
+    he: "סריג כבלים שנהב ומכנסיים אפורים לצד תקריב סריג",
+    en: "Ivory cable knit and grey trousers beside a knit detail",
   },
 ];
 

@@ -3087,3 +3087,12 @@ footer,
     transform: none;
   }
 }
+
+/* Adaptive hero text tone: dark ink where a light garment sits under the copy (looks 2-3, desktop/tablet only; mobile keeps its dark panel) */
+@media(min-width:761px){
+.hero h1,.hero-copy p,.hero-copy .button.outline,.hero-eyebrow{transition:color 1.8s ease,border-color 1.8s ease,background-color 1.8s ease}
+.hero:has(.hero-carousel[data-active-slide="2"]) h1,.hero:has(.hero-carousel[data-active-slide="3"]) h1{color:#0b0b0b}
+.hero:has(.hero-carousel[data-active-slide="2"]) .hero-copy p,.hero:has(.hero-carousel[data-active-slide="3"]) .hero-copy p{color:#1f1f1f}
+.hero:has(.hero-carousel[data-active-slide="2"]) .hero-copy .button.outline,.hero:has(.hero-carousel[data-active-slide="3"]) .hero-copy .button.outline{color:#0b0b0b;border-color:#0b0b0b99;background:#0b0b0b0a}
+.hero:has(.hero-carousel[data-active-slide="3"]) .hero-eyebrow{color:#0b0b0b}
+}

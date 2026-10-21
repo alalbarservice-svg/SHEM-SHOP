@@ -61,6 +61,8 @@ import { ProductCard } from "./components/ProductCard";
 import { HeroCarousel } from "./components/HeroCarousel";
 import { PolicyPages, SUPPORT_EMAIL, WHATSAPP } from "./components/PolicyPages";
 import { CouponQuote } from "./components/CouponQuote";
+import { PdpNav, installListMemory } from "./pdp-nav";
+installListMemory();
 const stored = (k, d) => {
   try {
     return JSON.parse(localStorage.getItem(k)) ?? d;
@@ -645,7 +647,7 @@ export function App() {
                     "Your style. Without compromise.",
                   )}
                 </p>
-                <button className="button outline" onClick={() => shop()}>
+                <button className="button luxe" onClick={() => shop()}>
                   {t("לקולקציה", "Shop the collection")}
                   <ArrowRight size={19} />
                 </button>
@@ -834,6 +836,19 @@ export function App() {
           </section>
         ) : current ? (
           <section className="pdp page">
+            <PdpNav
+              id={current.id}
+              products={products}
+              fallbackIds={products.filter((p) => p.cat === current.cat).map((p) => p.id)}
+              fallbackHref="#/shop"
+              fallbackLabel=""
+              label={{
+                nav: t("ניווט בין פריטים", "Browse pieces"),
+                back: t("חזרה", "Back"),
+                prev: t("הפריט הקודם", "Previous piece"),
+                next: t("הפריט הבא", "Next piece"),
+              }}
+            />
             <div className="breadcrumb">
               <a href="#/">SHEM</a> /{" "}
               <a href="#/shop">{t("קולקציה", "Collection")}</a> /{" "}

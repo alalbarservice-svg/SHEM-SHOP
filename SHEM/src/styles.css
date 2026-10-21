@@ -3087,3 +3087,306 @@ footer,
     transform: none;
   }
 }
+
+/* Adaptive hero text tone: dark ink where a light garment sits under the copy (looks 2-3, desktop/tablet only; mobile keeps its dark panel) */
+@media(min-width:761px){
+.hero h1,.hero-copy p,.hero-copy .button.outline,.hero-eyebrow{transition:color 1.8s ease,border-color 1.8s ease,background-color 1.8s ease}
+.hero:has(.hero-carousel[data-active-slide="2"]) h1,.hero:has(.hero-carousel[data-active-slide="3"]) h1{color:#0b0b0b}
+.hero:has(.hero-carousel[data-active-slide="2"]) .hero-copy p,.hero:has(.hero-carousel[data-active-slide="3"]) .hero-copy p{color:#1f1f1f}
+.hero:has(.hero-carousel[data-active-slide="2"]) .hero-copy .button.outline,.hero:has(.hero-carousel[data-active-slide="3"]) .hero-copy .button.outline{color:#0b0b0b;border-color:#0b0b0b99;background:#0b0b0b0a}
+.hero:has(.hero-carousel[data-active-slide="3"]) .hero-eyebrow{color:#0b0b0b}
+}
+
+/* SHEM luxe pill button: black, gold hairline border that thickens on hover (rounded, never square) */
+.button.luxe {
+  background: #0b0b0b;
+  color: #fff;
+  border: 1px solid #c9a96a;
+  border-radius: 999px;
+  min-width: 195px;
+  min-height: 52px;
+  padding: 16px 34px;
+  gap: 22px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 0 0 0 0 #c9a96a,
+    0 6px 18px rgb(0 0 0 / 0.35);
+  transition:
+    box-shadow 0.22s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    background 0.22s,
+    color 0.22s;
+}
+.hero-copy .button.luxe {
+  margin-top: 29px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .button.luxe:hover {
+    background: #0b0b0b;
+    color: #fff;
+    border-color: #c9a96a;
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 0 0 1.5px #c9a96a,
+      0 12px 30px rgb(0 0 0 / 0.5);
+  }
+}
+.button.luxe:active {
+  transform: scale(0.97);
+  box-shadow:
+    inset 0 0 0 1.5px #c9a96a,
+    0 3px 10px rgb(0 0 0 / 0.4);
+}
+@media (max-width: 760px) {
+  .hero-copy .button.luxe {
+    margin-top: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button.luxe,
+  .button.luxe:hover,
+  .button.luxe:active {
+    transform: none;
+  }
+}
+
+/* Collections on the home page: editorial luxury treatment */
+.designer-band {
+  position: relative;
+  padding: 18px 24px 16px;
+  gap: 2px;
+  border-top: 1px solid rgb(201 169 106 / 0.45);
+  border-bottom: 1px solid rgb(201 169 106 / 0.45);
+}
+.designer-index,
+.designer-meta {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  color: #c9a96a;
+  text-transform: uppercase;
+  text-align: center;
+}
+.designer-meta {
+  color: rgb(255 255 255 / 0.62);
+  letter-spacing: 0.3em;
+}
+.designer-cta-row {
+  display: flex;
+  justify-content: center;
+  padding: 6px 0 4px;
+}
+@media (max-width: 760px) {
+  .designer-band {
+    padding: 14px 20px 12px;
+  }
+  .designer-index,
+  .designer-meta {
+    font-size: 10px;
+    letter-spacing: 0.26em;
+  }
+}
+
+/* ===== Mobile polish (final block) ===== */
+@media (max-width: 760px) {
+  /* Hero: controls move to the bottom, below the CTA, away from eyebrow and face */
+  .hero-copy {
+    padding-bottom: 78px;
+  }
+  .hero-carousel-controls {
+    top: auto;
+    bottom: 14px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 6px;
+  }
+  /* Legible text (11px minimum) */
+  .brand-tagline {
+    display: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+  }
+  footer p {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+  }
+  .eyebrow,
+  p.eyebrow,
+  span.eyebrow {
+    font-size: 11px;
+  }
+  .designer-index,
+  .designer-meta {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+  }
+  .designer-page-signature {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+  /* 44px tap targets */
+  .header-tools .icon-button {
+    min-width: 44px;
+    width: 44px;
+  }
+  .header-tools {
+    gap: 0;
+  }
+  footer nav a {
+    min-width: 44px;
+    justify-content: center;
+    padding-inline: 6px;
+  }
+  aside.measurement-choice button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 16px;
+  }
+  aside.measurement-choice a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 8px;
+  }
+  .text-button {
+    min-width: 44px;
+  }
+  .rail-controls button {
+    width: 44px;
+    height: 44px;
+  }
+  a.product-name {
+    padding-block: 11px;
+    margin-block: -11px 0;
+  }
+  input[type="range"] {
+    height: 44px;
+  }
+}
+
+/* ===== Seamless block transitions: no white gaps, no grey rules; only a fine gold hairline ===== */
+.designer-collections .designer-collection {
+  padding-top: 0;
+  padding-bottom: 36px;
+  border-bottom: 0;
+}
+.designer-collections .designer-collection .designer-band {
+  margin-bottom: 28px;
+}
+.selection.clearance,
+.designer-strip {
+  border-top: 1px solid rgb(201 169 106 / 0.55);
+}
+@media (max-width: 760px) {
+  .designer-collections .designer-collection {
+    padding-top: 0;
+    padding-bottom: 28px;
+  }
+}
+@media (max-width: 760px) {
+  .section-heading .eyebrow,
+  .context-help .eyebrow,
+  .help-center .eyebrow,
+  p.eyebrow {
+    font-size: 11px;
+  }
+  a.view-all {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .help-categories button {
+    min-height: 44px;
+  }
+  .breadcrumb a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+@media (max-width: 760px) {
+  .breadcrumb a {
+    min-width: 44px;
+    justify-content: center;
+  }
+  .section-heading a.view-all,
+  .section-heading .view-all {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* product page: back + previous / next inside the list the shopper came from */
+.pdp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+.pdp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 14px;
+  max-width: 60%;
+  transition: background 0.18s ease, transform 0.16s ease;
+}
+.pdp-back span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pdp-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.pdp-step button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.16s ease, opacity 0.18s ease;
+}
+.pdp-step button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.pdp-back:active,
+.pdp-step button:not(:disabled):active {
+  transform: scale(0.97);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pdp-back:hover,
+  .pdp-step button:not(:disabled):hover {
+    background: color-mix(in srgb, var(--gold) 16%, transparent);
+  }
+}
+.pdp-nav a:focus-visible,
+.pdp-step button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+:root[dir="ltr"] .pdp-nav svg {
+  transform: scaleX(-1);
+}

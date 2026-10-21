@@ -4,7 +4,134 @@ import { PolicyPages } from "./components/PolicyPages";
 import { Club } from "./components/Club";
 import { HomeCheckout } from "./components/HomeCheckout";
 import { money } from "./commerce";
+import { PdpNav, installListMemory } from "./pdp-nav";
 import "./shimi.css";
+installListMemory();
+const PREVIEW = import.meta.env.VITE_PREVIEW === "1";
+const BASE = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
+const media = (u) => (PREVIEW && u && u.startsWith("/") ? BASE + u : u);
+const hidden = (p) =>
+  /^t_admin_|בדיקת QA/.test(p.he || "") ||
+  /^(qa-|demo-shimi)/.test(String(p.id));
+const CATS = [
+  { key: "tops", he: "חולצות", en: "TOPS", pick: "אוקספורד לבנה" },
+  { key: "bottoms", he: "מכנסיים וג'ינס", en: "BOTTOMS", pick: "ג'ינס ישר כחול" },
+  { key: "shoes", he: "נעליים", en: "SHOES", pick: "סניקרס עור מינימליסטיות לבנות" },
+  { key: "caps", he: "כובעים", en: "CAPS", pick: "מצחייה נייבי" },
+];
+const catOf = (p) => {
+  const n = p.he || "";
+  if (p.cat === "shoes" || /נעל|סניקרס/.test(n)) return "shoes";
+  if (p.cat === "accessories" || /כובע/.test(n)) return "caps";
+  if (/מכנס|ג'ינס|צ'ינו|טרנינג/.test(n)) return "bottoms";
+  return "tops";
+};
+const COLLECTIONS = [
+  {
+    key: "essentials",
+    he: "האסנשיאלס",
+    en: "THE ESSENTIALS",
+    blurb: "החלקים שמשתלבים עם כל השאר: טי כותנה, ג'ינס ישר וסניקרס נקיות.",
+    test: /טי כותנה|ג'ינס ישר|סניקרס|כובע גרב|אוקספורד/,
+    pick: "טי כותנה לבנה",
+  },
+  {
+    key: "stone",
+    he: "גווני אבן",
+    en: "STONE TONES",
+    blurb: "אבן, בז' ואופוויט: פלטה רכה ובהירה לימים חמים.",
+    test: /אבן|בז'|אופוויט/,
+    pick: "פשתן אבן",
+  },
+  {
+    key: "black",
+    he: "שחור על שחור",
+    en: "ALL BLACK",
+    blurb: "פריטים בשחור מלא, מחולצה ועד נעליים.",
+    test: /שחור/,
+    pick: "ג'ינס ישר שחור",
+  },
+];
+const pickImg = (list, hint) =>
+  (list.find((p) => (p.he || "").includes(hint) && p.imageUrl) ||
+    list.find((p) => p.imageUrl) ||
+    {}).imageUrl;
+const sorters = {
+  def: null,
+  asc: (a, b) => a.price - b.price,
+  desc: (a, b) => b.price - a.price,
+};
+function Card({ p }) {
+  return (
+    <article className="pcard">
+      <a href={"#/product/" + p.id}>
+        <div className="pcard-img">
+          {p.imageUrl ? (
+            <img src={media(p.imageUrl)} alt={p.he} loading="lazy" />
+          ) : (
+            <div className="product-placeholder">SHIMI</div>
+          )}
+          {p.demo && <span className="tag">הדגמה</span>}
+        </div>
+        <small>{p.brand || "SHIMI"}</small>
+        <h3>{p.he}</h3>
+        <p>
+          {p.previousPrice && <del>{money(p.previousPrice)}</del>}{" "}
+          {money(p.price)}
+        </p>
+      </a>
+    </article>
+  );
+}
+function Listing({ title, en, blurb, items, active }) {
+  const [sort, setSort] = useState("def");
+  const list = sorters[sort] ? [...items].sort(sorters[sort]) : items;
+  return (
+    <section className="listing">
+      <nav className="crumbs" aria-label="מיקום">
+        <a href="#/">החנות</a> / <span>{title}</span>
+      </nav>
+      <header className="listing-head">
+        <span dir="ltr">{en}</span>
+        <h1>{title}</h1>
+        {blurb && <p>{blurb}</p>}
+      </header>
+      <div className="listing-bar">
+        <div className="chips">
+          <a className={!active ? "on" : ""} href="#/all">
+            הכול
+          </a>
+          {CATS.map((c) => (
+            <a
+              key={c.key}
+              className={active === c.key ? "on" : ""}
+              href={"#/category/" + c.key}
+            >
+              {c.he}
+            </a>
+          ))}
+        </div>
+        <label className="sort">
+          מיון
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="def">מומלצים</option>
+            <option value="asc">מחיר: מהנמוך לגבוה</option>
+            <option value="desc">מחיר: מהגבוה לנמוך</option>
+          </select>
+        </label>
+      </div>
+      <p className="count" role="status">
+        {list.length} פריטים
+      </p>
+      {!list.length && <p className="empty">אין פריטים להצגה כרגע.</p>}
+      <div className="pgrid">
+        {list.map((p) => (
+          <Card key={p.id} p={p} />
+        ))}
+      </div>
+    </section>
+  );
+}
 const readCart = () => {
   try {
     return JSON.parse(localStorage.getItem("shimi-cart")) || [];
@@ -46,11 +173,15 @@ export function App() {
   }, [cart]);
   useEffect(() => {
     Promise.all([
-      fetch("/api/catalogue").then((r) => r.json()),
-      fetch("/api/store").then((r) => r.json()),
+      fetch(PREVIEW ? BASE + "/data/catalogue.json" : "/api/catalogue").then((r) =>
+        r.json(),
+      ),
+      fetch(PREVIEW ? BASE + "/data/store.json" : "/api/store").then((r) =>
+        r.json(),
+      ),
     ])
       .then(([c, s]) => {
-        setProducts(c.products || []);
+        setProducts((c.products || []).filter((p) => !hidden(p)));
         setContent(s);
         if (c.error) setError(c.error);
       })
@@ -58,7 +189,7 @@ export function App() {
       .finally(() => setLoading(false));
   }, []);
   useEffect(() => {
-    if (!cart.length) {
+    if (!cart.length || PREVIEW) {
       setQuote(null);
       return;
     }
@@ -118,27 +249,50 @@ export function App() {
     });
     location.hash = "/cart";
   };
-  const grid = products.filter((p) =>
+  const byCat = (k) => products.filter((p) => catOf(p) === k);
+  const search = products.filter((p) =>
     [p.he, p.brand].some((x) =>
       String(x || "")
         .toLowerCase()
         .includes(query.toLowerCase()),
     ),
   );
+  const [r0, r1, r2] = route.split("/").slice(1);
+  const related = product
+    ? products
+        .filter((p) => p.id !== product.id && catOf(p) === catOf(product))
+        .slice(0, 4)
+    : [];
+  const fresh = products.slice(0, 8);
   return (
     <div className="shimi-app" dir="rtl">
       <a className="skip" href="#main">
         דילוג לתוכן
       </a>
+      <p className="topbar">
+        {PREVIEW
+          ? "תצוגה מקדימה לאישור - הרכישה אינה פעילה"
+          : "קטלוג הדגמה - הפריטים והתמונות להמחשה. הרכישה אינה פעילה."}
+      </p>
       <header className="shimi-header">
         <a className="shimi-logo" href="#/" dir="ltr">
           SHIMI<span>EVERYDAY BASICS</span>
         </a>
-        <nav aria-label="ניווט ראשי">
-          <a href="#/">החנות</a>
+        <nav aria-label="ניווט ראשי" className="main-nav">
+          <a href="#/all">הכול</a>
+          {CATS.filter((c) => byCat(c.key).length).map((c) => (
+            <a key={c.key} href={"#/category/" + c.key}>
+              {c.he}
+            </a>
+          ))}
+          <a href="#/collection/essentials">קולקציות</a>
           <a href="#/club">מועדון חברים</a>
-          <a href="#/cart">סל קניות ({totalQty})</a>
         </nav>
+        {!PREVIEW && (
+          <a className="cart-link" href="#/cart">
+            סל קניות ({totalQty})
+          </a>
+        )}
       </header>
       <main id="main">
         {error && (
@@ -148,96 +302,178 @@ export function App() {
         )}
         {route === "/" && (
           <>
-            <section className="shimi-intro">
-              <div className="intro-copy">
-                <span>SHIMI / BASICS</span>
-                <h1>{content.heroTitle || "פשוט. נוח. כל יום."}</h1>
-                <p>{content.heroSubtitle || "פריטי בייסיק, במקום אחד."}</p>
-                <button
-                  className="button dark"
-                  onClick={() =>
-                    document
-                      .getElementById("catalogue")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                >
-                  לכל הפריטים
-                </button>
+            <section className="hero">
+              <div className="hero-copy">
+                <span dir="ltr">EVERYDAY BASICS</span>
+                <h1>{content.heroTitle || "בסיס טוב. כל יום."}</h1>
+                <p>
+                  {content.heroSubtitle ||
+                    "חולצות, מכנסיים, נעליים וכובעים בגזרות נקיות וצבעים שמשתלבים זה בזה."}
+                </p>
+                <div className="hero-cta">
+                  <a className="button dark" href="#/collection/essentials">
+                    לקולקציית האסנשיאלס
+                  </a>
+                  <a className="button" href="#/all">
+                    לכל הפריטים
+                  </a>
+                </div>
               </div>
-              <div className="intro-media">
-                <img
-                  src="/assets/shirt.png"
-                  alt="חולצה מכופתרת שחורה מקטלוג ההדגמה"
-                  fetchPriority="high"
-                  width="1448"
-                  height="1086"
-                />
-                <span dir="ltr">THE EVERYDAY EDIT</span>
+              <div className="hero-media" aria-hidden="true">
+                {[
+                  pickImg(products, "טי כותנה לבנה"),
+                  pickImg(products, "ג'ינס ישר כחול"),
+                  pickImg(products, "סניקרס עור מינימליסטיות לבנות"),
+                  ...products.map((p) => p.imageUrl),
+                ]
+                  .filter((u, i, a) => u && a.indexOf(u) === i)
+                  .slice(0, 3)
+                  .map((u, i) => (
+                  <img key={i} src={media(u)} alt="" fetchPriority="high" />
+                ))}
               </div>
             </section>
-            <p className="demo-notice">
-              קטלוג הדגמה - הפריטים והתמונות להמחשה. הרכישה אינה פעילה.
-            </p>
-            <section id="catalogue">
-              <div className="catalogue-heading">
-                <h2>הפריטים שלנו</h2>
-                <label>
+            <section className="strip" aria-label="עקרונות">
+              <p>בייסיק לכל יום</p>
+              <p>צבעים שמשתלבים זה בזה</p>
+              <p>גזרות פשוטות ונקיות</p>
+              <p>מחיר ברור, בלי הפתעות</p>
+            </section>
+            <section className="block">
+              <header className="block-head">
+                <h2>קונים לפי קטגוריה</h2>
+                <a href="#/all">לכל הפריטים</a>
+              </header>
+              <div className="tiles">
+                {CATS.filter((c) => byCat(c.key).length).map((c) => (
+                  <a key={c.key} className="tile" href={"#/category/" + c.key}>
+                    <img
+                      src={media(pickImg(byCat(c.key), c.pick))}
+                      alt=""
+                      loading="lazy"
+                    />
+                    <span dir="ltr">{c.en}</span>
+                    <strong>{c.he}</strong>
+                    <small>{byCat(c.key).length} פריטים</small>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <section className="block">
+              <header className="block-head">
+                <h2>קולקציות</h2>
+              </header>
+              <div className="collections">
+                {COLLECTIONS.map((c) => {
+                  const l = products.filter((p) => c.test.test(p.he || ""));
+                  return (
+                    <a
+                      key={c.key}
+                      className="collection"
+                      href={"#/collection/" + c.key}
+                    >
+                      <img
+                        src={media(pickImg(l, c.pick))}
+                        alt=""
+                        loading="lazy"
+                      />
+                      <div>
+                        <span dir="ltr">{c.en}</span>
+                        <strong>{c.he}</strong>
+                        <small>{l.length} פריטים</small>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+            <section className="block" id="catalogue">
+              <header className="block-head">
+                <h2>חדש בחנות</h2>
+                <label className="search">
                   חיפוש פריט
                   <input
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="שם פריט או מותג"
+                    placeholder="שם פריט"
                   />
                 </label>
-              </div>
+              </header>
               {loading ? (
                 <p role="status">טוענים את החנות...</p>
               ) : (
                 <>
-                  {!grid.length && (
-                    <p className="empty">
-                      הקטלוג מתעדכן. הפריטים יופיעו כאן לאחר הוספתם בממשק
-                      הניהול.
-                    </p>
+                  {!search.length && (
+                    <p className="empty">לא נמצאו פריטים תואמים.</p>
                   )}
-                  <div className="shimi-grid">
-                    {grid.map((p) => (
-                      <article key={p.id}>
-                        <a href={"#/product/" + p.id}>
-                          {p.imageUrl ? (
-                            <img src={p.imageUrl} alt={p.he} loading="lazy" />
-                          ) : (
-                            <div className="product-placeholder">SHIMI</div>
-                          )}
-                          <small>{p.brand || "SHIMI"}</small>
-                          <h3>{p.he}</h3>
-                        </a>
-                        <p>
-                          {p.previousPrice && (
-                            <del>{money(p.previousPrice)}</del>
-                          )}{" "}
-                          {money(p.price)}
-                        </p>
-                        {p.demo ? (
-                          <small className="demo-label">פריט הדגמה</small>
-                        ) : (
-                          p.stock < 1 && <small>אזל מהמלאי</small>
-                        )}
-                      </article>
+                  <div className="pgrid">
+                    {(query ? search : fresh).map((p) => (
+                      <Card key={p.id} p={p} />
                     ))}
                   </div>
                 </>
               )}
             </section>
+            <section className="club-band">
+              <div>
+                <span dir="ltr">SHIMI CLUB</span>
+                <h2>מועדון החברים</h2>
+                <p>הצטרפו וקבלו עדכונים על פריטים חדשים.</p>
+              </div>
+              <a className="button" href="#/club">
+                להצטרפות
+              </a>
+            </section>
           </>
+        )}
+        {r0 === "all" && (
+          <Listing
+            title="כל הפריטים"
+            en="ALL ITEMS"
+            blurb="כל הקטלוג במקום אחד."
+            items={products}
+          />
+        )}
+        {r0 === "category" && CATS.find((c) => c.key === r1) && (
+          <Listing
+            title={CATS.find((c) => c.key === r1).he}
+            en={CATS.find((c) => c.key === r1).en}
+            items={byCat(r1)}
+            active={r1}
+          />
+        )}
+        {r0 === "collection" && COLLECTIONS.find((c) => c.key === r1) && (
+          <Listing
+            title={COLLECTIONS.find((c) => c.key === r1).he}
+            en={COLLECTIONS.find((c) => c.key === r1).en}
+            blurb={COLLECTIONS.find((c) => c.key === r1).blurb}
+            items={products.filter((p) =>
+              COLLECTIONS.find((c) => c.key === r1).test.test(p.he || ""),
+            )}
+          />
         )}
         {route.startsWith("/product/") &&
           (product ? (
             <section className="shimi-detail">
+              <PdpNav
+                id={product.id}
+                products={products}
+                fallbackIds={products.filter((p) => catOf(p) === catOf(product)).map((p) => p.id)}
+                fallbackHref={"#/category/" + catOf(product)}
+                fallbackLabel=""
+                label={{ nav: "ניווט בין פריטים", back: "חזרה", prev: "הפריט הקודם", next: "הפריט הבא" }}
+              />
+              <nav className="crumbs wide" aria-label="מיקום">
+                <a href="#/">החנות</a> /{" "}
+                <a href={"#/category/" + catOf(product)}>
+                  {CATS.find((c) => c.key === catOf(product)).he}
+                </a>{" "}
+                / <span>{product.he}</span>
+              </nav>
               <div>
                 {product.imageUrl ? (
-                  <img src={product.imageUrl} alt={product.he} />
+                  <img src={media(product.imageUrl)} alt={product.he} />
                 ) : (
                   <div className="product-placeholder">SHIMI</div>
                 )}
@@ -298,10 +534,10 @@ export function App() {
                 )}
                 <button
                   className="button dark"
-                  disabled={product.demo || !size || product.stock < 1}
+                  disabled={PREVIEW || product.demo || !size || product.stock < 1}
                   onClick={add}
                 >
-                  {product.demo ? "פריט הדגמה - אינו למכירה" : "הוספה לסל"}
+                  {PREVIEW || product.demo ? "פריט הדגמה - אינו למכירה" : "הוספה לסל"}
                 </button>
                 <details>
                   <summary>הרכב וטיפול</summary>
@@ -313,6 +549,18 @@ export function App() {
           ) : (
             <p>המוצר אינו זמין.</p>
           ))}
+        {route.startsWith("/product/") && product && related.length > 0 && (
+          <section className="block">
+            <header className="block-head">
+              <h2>עוד מאותה קטגוריה</h2>
+            </header>
+            <div className="pgrid">
+              {related.map((p) => (
+                <Card key={p.id} p={p} />
+              ))}
+            </div>
+          </section>
+        )}
         {route === "/cart" && (
           <section>
             <h1>סל הקניות</h1>

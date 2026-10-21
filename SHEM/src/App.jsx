@@ -645,7 +645,7 @@ export function App() {
                     "Your style. Without compromise.",
                   )}
                 </p>
-                <button className="button outline" onClick={() => shop()}>
+                <button className="button luxe" onClick={() => shop()}>
                   {t("לקולקציה", "Shop the collection")}
                   <ArrowRight size={19} />
                 </button>

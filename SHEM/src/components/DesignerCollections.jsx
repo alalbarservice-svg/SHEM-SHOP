@@ -48,9 +48,10 @@ export function DesignerChoices({ onChoose, selected, className = "" }) {
   );
 }
 export function DesignerRails({ products, card, he }) {
+  const pad = (n) => String(n).padStart(2, "0");
   return (
     <div className="designer-collections">
-      {designers.map((d) => {
+      {designers.map((d, i) => {
         const items = designerProducts(products, d);
         return (
           <section
@@ -59,6 +60,9 @@ export function DesignerRails({ products, card, he }) {
             aria-label={d.name}
           >
             <div className="designer-band">
+              <span className="designer-index" dir="ltr" aria-hidden="true">
+                N° {pad(i + 1)}
+              </span>
               <h2>
                 <a
                   href={`#/brand/${d.slug}`}
@@ -67,11 +71,23 @@ export function DesignerRails({ products, card, he }) {
                   <DesignerLogo designer={d} tone="white" />
                 </a>
               </h2>
+              <span className="designer-meta" dir="ltr">
+                THE COLLECTION
+                {items.length ? ` · ${items.length} ${items.length === 1 ? "PIECE" : "PIECES"}` : ""}
+              </span>
             </div>
             {items.length ? (
-              <ProductRail he={he} label={d.name}>
-                {items.map(card)}
-              </ProductRail>
+              <>
+                <ProductRail he={he} label={d.name}>
+                  {items.map(card)}
+                </ProductRail>
+                <div className="designer-cta-row">
+                  <a className="button luxe" href={`#/brand/${d.slug}`}>
+                    {he ? `לקולקציית ${d.name}` : `Explore ${d.name}`}
+                    <ArrowRight size={19} />
+                  </a>
+                </div>
+              </>
             ) : (
               <div className="designer-empty">
                 <p>

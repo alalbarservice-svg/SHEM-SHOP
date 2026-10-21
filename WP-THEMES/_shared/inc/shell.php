@@ -47,6 +47,8 @@ function storefront_render_shell(string $name): string {
     $html = is_readable($file) ? (string) file_get_contents($file) : '';
     $cfg = STOREFRONT_CONFIG;
     $html = str_replace($cfg['legacy_origin'], untrailingslashit(home_url()), $html);
+    // Open Graph / Twitter images must be absolute URLs for link previews.
+    $html = preg_replace('~(property="og:image" content=|name="twitter:image" content=)"/~', '$1"' . untrailingslashit(home_url()) . '/', $html);
 
     $extra = '';
     if (get_option('blog_public') === '0' && stripos($html, 'name="robots"') === false) {

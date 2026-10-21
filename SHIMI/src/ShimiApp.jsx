@@ -4,7 +4,9 @@ import { PolicyPages } from "./components/PolicyPages";
 import { Club } from "./components/Club";
 import { HomeCheckout } from "./components/HomeCheckout";
 import { money } from "./commerce";
+import { PdpNav, installListMemory } from "./pdp-nav";
 import "./shimi.css";
+installListMemory();
 const PREVIEW = import.meta.env.VITE_PREVIEW === "1";
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
 const media = (u) => (PREVIEW && u && u.startsWith("/") ? BASE + u : u);
@@ -454,6 +456,14 @@ export function App() {
         {route.startsWith("/product/") &&
           (product ? (
             <section className="shimi-detail">
+              <PdpNav
+                id={product.id}
+                products={products}
+                fallbackIds={products.filter((p) => catOf(p) === catOf(product)).map((p) => p.id)}
+                fallbackHref={"#/category/" + catOf(product)}
+                fallbackLabel=""
+                label={{ nav: "ניווט בין פריטים", back: "חזרה", prev: "הפריט הקודם", next: "הפריט הבא" }}
+              />
               <nav className="crumbs wide" aria-label="מיקום">
                 <a href="#/">החנות</a> /{" "}
                 <a href={"#/category/" + catOf(product)}>

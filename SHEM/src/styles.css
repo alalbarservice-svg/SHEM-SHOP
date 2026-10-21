@@ -3320,3 +3320,73 @@ footer,
     align-items: center;
   }
 }
+
+/* product page: back + previous / next inside the list the shopper came from */
+.pdp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+.pdp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 14px;
+  max-width: 60%;
+  transition: background 0.18s ease, transform 0.16s ease;
+}
+.pdp-back span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pdp-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.pdp-step button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.16s ease, opacity 0.18s ease;
+}
+.pdp-step button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.pdp-back:active,
+.pdp-step button:not(:disabled):active {
+  transform: scale(0.97);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pdp-back:hover,
+  .pdp-step button:not(:disabled):hover {
+    background: color-mix(in srgb, var(--gold) 16%, transparent);
+  }
+}
+.pdp-nav a:focus-visible,
+.pdp-step button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+:root[dir="ltr"] .pdp-nav svg {
+  transform: scaleX(-1);
+}

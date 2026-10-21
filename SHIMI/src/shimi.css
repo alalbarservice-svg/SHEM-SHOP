@@ -867,3 +867,126 @@ del {
     transition: none;
   }
 }
+
+/* ===== Mobile polish (final block, wins the cascade) ===== */
+@media (max-width: 900px) {
+  /* Category tiles: stack eyebrow / title / count instead of absolute overlap */
+  .tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2px;
+    padding: 14px;
+  }
+  .tile img {
+    position: absolute;
+    inset: 0;
+  }
+  .tile span,
+  .tile strong,
+  .tile small {
+    position: relative;
+    inset-inline: auto;
+    bottom: auto;
+    z-index: 1;
+  }
+  .tile span {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+  }
+  .tile strong {
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+  .tile small {
+    font-size: 0.75rem;
+  }
+}
+@media (max-width: 760px) {
+  /* Compact sticky header: logo + cart on one row, categories as a swipe row of chips */
+  .shimi-header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 12px;
+    padding: 8px 16px 0;
+  }
+  .shimi-header .shimi-logo {
+    order: 1;
+    font-size: 22px;
+    gap: 2px;
+    min-height: 44px;
+    justify-content: center;
+  }
+  .shimi-header .cart-link {
+    order: 2;
+    min-width: 44px;
+    font-size: 0.9375rem;
+  }
+  .shimi-header .main-nav {
+    order: 3;
+    flex: 0 0 calc(100% + 32px);
+    margin-inline: -16px;
+    padding: 4px 16px 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+  }
+  .shimi-header .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .shimi-header .main-nav a {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    transition:
+      background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.16s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .shimi-header .main-nav a:active {
+    transform: scale(0.97);
+  }
+  .shimi-header,
+  .shimi-header .main-nav {
+    background: #fff;
+  }
+  /* 44px tap targets */
+  .crumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .shimi-footer nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimi-header .main-nav a {
+    transition: none;
+  }
+  .shimi-header .main-nav a:active {
+    transform: none;
+  }
+}
+@media (max-width: 760px) {
+  .crumbs a {
+    min-width: 44px;
+  }
+}

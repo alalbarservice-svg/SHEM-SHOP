@@ -2466,10 +2466,21 @@ footer nav {
   --lh: 84;
   margin-bottom: 26px;
 }
-.search-designer-logo {
+.search-designer-logo,
+.search-result img.search-designer-logo {
   --lw: 110;
   --lh: 38;
   margin-top: 8px;
+  width: calc(var(--lw) * 1px);
+  width: calc(
+    min(
+        var(--lw),
+        var(--lh) * var(--r),
+        sqrt(var(--fill) * var(--lw) * var(--lh) * var(--r))
+      ) * 1px
+  );
+  height: auto;
+  object-fit: contain;
 }
 .header,
 footer,

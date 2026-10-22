@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import {
   designers,
   designerFor,
@@ -70,13 +70,13 @@ test("the six original brand pages keep original high-resolution black and white
   }
 });
 test("every brand has a unique slug and an embedded black and white logo", () => {
-  const src = readFileSync(
-    new URL("../src/brand-logo-assets.js", import.meta.url),
-    "utf8",
-  );
+  const files = new Set([
+    ...readdirSync(new URL("../src/assets/embedded-logos/", import.meta.url)),
+    ...readdirSync(new URL("../src/assets/brand-logos/", import.meta.url)),
+  ]);
   assert.equal(designers.length, 23);
   assert.equal(new Set(designers.map((d) => d.slug)).size, designers.length);
   for (const d of designers)
     for (const tone of ["black", "white"])
-      assert.ok(src.includes(`"${d.slug}-${tone}":`), `${d.slug}-${tone}`);
+      assert.ok(files.has(`${d.slug}-${tone}.webp`), `${d.slug}-${tone}`);
 });

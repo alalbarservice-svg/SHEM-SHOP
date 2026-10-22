@@ -10,7 +10,7 @@ test("production app embeds all brand logos and the monogram without separate lo
   const files = readdirSync("src/assets/embedded-logos").filter((f) =>
     f.endsWith(".webp"),
   );
-  assert.equal(files.length, 47);
+  assert.equal(files.length, 13);
   for (const file of files) {
     const bytes = readFileSync("src/assets/embedded-logos/" + file);
     assert.equal(bytes.subarray(0, 4).toString(), "RIFF");
@@ -19,6 +19,26 @@ test("production app embeds all brand logos and the monogram without separate lo
       file,
     );
   }
+  const later = readdirSync("src/assets/brand-logos").filter((f) =>
+    f.endsWith(".webp"),
+  );
+  assert.equal(later.length, 34);
+  for (const file of later) {
+    const bytes = readFileSync("src/assets/brand-logos/" + file);
+    assert.equal(
+      bundled.includes("data:image/webp;base64," + bytes.toString("base64")),
+      false,
+      file + " must stay a separate file",
+    );
+  }
+  const emitted = readdirSync("dist/client/assets").filter((f) =>
+    f.endsWith(".webp"),
+  );
+  for (const file of later)
+    assert.ok(
+      emitted.some((f) => f.startsWith(file.replace(".webp", "-"))),
+      file,
+    );
   assert.equal(bundled.includes("/assets/designers/"), false);
   assert.equal(bundled.includes("/assets/logo-monogram.png"), false);
 });

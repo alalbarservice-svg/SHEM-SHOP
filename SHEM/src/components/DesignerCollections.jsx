@@ -58,10 +58,9 @@ export function DesignerRails({
   he,
   designers = allDesigners,
 }) {
-  const pad = (n) => String(n).padStart(2, "0");
   return (
     <div className="designer-collections">
-      {designers.map((d, i) => {
+      {designers.map((d) => {
         const items = designerProducts(products, d);
         return (
           <section
@@ -70,9 +69,7 @@ export function DesignerRails({
             aria-label={d.name}
           >
             <div className="designer-band">
-              <span className="designer-index" dir="ltr" aria-hidden="true">
-                N° {pad(i + 1)}
-              </span>
+              <span className="designer-index">קולקציית</span>
               <h2>
                 <a
                   href={`#/brand/${d.slug}`}

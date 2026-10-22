@@ -2156,8 +2156,9 @@ footer nav {
     drop-shadow(0 3px 3px rgb(0 0 0 / 0.1));
 }
 .designer-logo--white {
-  filter: drop-shadow(0 0 6px rgb(255 255 255 / 0.12))
-    drop-shadow(0 0 16px rgb(255 255 255 / 0.07));
+  /* crisp hairline edge keeps letterforms sharp; a warm gold ambient glow sits beneath instead of a white haze */
+  filter: drop-shadow(0 0 0.6px rgb(255 255 255 / 0.5))
+    drop-shadow(0 10px 24px rgb(201 169 106 / 0.2));
 }
 .designer-choices {
   display: grid !important;

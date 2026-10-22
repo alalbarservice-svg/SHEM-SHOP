@@ -1071,3 +1071,17 @@ del {
 :root[dir="ltr"] .pdp-nav svg {
   transform: scaleX(-1);
 }
+
+/* Mobile hit areas (2026-10-22): invisible, no visual change. Target >= 44px. */
+@media (max-width: 760px) {
+  .shimi-header .shimi-logo,
+  .block-head a {
+    position: relative;
+  }
+  .shimi-header .shimi-logo::after,
+  .block-head a::after {
+    content: "";
+    position: absolute;
+    inset: -8px -6px;
+  }
+}

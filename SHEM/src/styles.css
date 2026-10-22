@@ -3390,3 +3390,12 @@ footer,
 :root[dir="ltr"] .pdp-nav svg {
   transform: scaleX(-1);
 }
+
+/* Mobile hit areas (2026-10-22): invisible, no visual change. Target >= 44px. */
+@media (max-width: 760px) {
+  .product-card .favorite::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+}

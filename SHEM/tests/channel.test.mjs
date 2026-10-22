@@ -534,7 +534,7 @@ test("persisted demo catalogue stays separate and its prepared link synchronizes
     const localFixture = readFileSync(
       new URL(
         "./fixtures/demo-" +
-          (process.cwd().endsWith("shimi-store") ? "home" : "source") +
+          (/shimi/i.test(process.cwd().split(/[\\/]/).pop()) ? "home" : "source") +
           ".sql",
         import.meta.url,
       ),

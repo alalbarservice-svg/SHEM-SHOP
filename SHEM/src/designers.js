@@ -55,3 +55,26 @@ export function productType(p) {
     "clothing"
   );
 }
+
+/** A piece counts as displayed only when it is active, not archived and in stock. */
+export const hasStock = (p) => {
+  if (p.variants?.length) return p.variants.some((v) => v.stock > 0);
+  if (p.sizeStock && Object.keys(p.sizeStock).length)
+    return Object.values(p.sizeStock).some((n) => n > 0);
+  return p.stock > 0;
+};
+export const isListed = (p) => p.active !== false && !p.archived && hasStock(p);
+/** Designers with at least one displayed piece. Others disappear automatically. */
+export const visibleDesigners = (products) =>
+  designers.filter((d) =>
+    products.some((p) => isListed(p) && designerFor(p.brand)?.slug === d.slug),
+  );
+/** Product types of one designer with at least one displayed piece (gate=false: no stock rule). */
+export const visibleProductTypes = (products, designer, gate = true) => {
+  const keys = new Set(
+    designerProducts(products, designer)
+      .filter((p) => !gate || isListed(p))
+      .map(productType),
+  );
+  return productTypes.filter(([key]) => keys.has(key));
+};

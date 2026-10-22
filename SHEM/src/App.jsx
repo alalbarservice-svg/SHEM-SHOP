@@ -1,4 +1,4 @@
-import { designers, designerFor } from "./designers";
+import { designers, designerFor, visibleDesigners } from "./designers";
 import { shemMonogram } from "./brand-logo-assets";
 import {
   DesignerLogo,
@@ -326,7 +326,21 @@ export function App() {
     setError("");
     setPanel("cart");
   };
+  const designerGate = catalogueStatus === "ready" && catalogueConnected;
+  const shownDesigners =
+    catalogueStatus === "loading"
+      ? []
+      : designerGate
+        ? visibleDesigners(products)
+        : designers;
   const currentDesigner = designers.find((d) => route === `/brand/${d.slug}`);
+  const currentDesignerHidden =
+    !!currentDesigner &&
+    designerGate &&
+    !shownDesigners.some((d) => d.slug === currentDesigner.slug);
+  useEffect(() => {
+    if (currentDesignerHidden) shop();
+  }, [currentDesignerHidden]);
   const current = products.find((p) => route === `/product/${p.id}`);
   const selectedColor =
     colorChoice || current?.variants?.[0]?.color || current?.color || "";
@@ -653,7 +667,12 @@ export function App() {
                 </button>
               </div>
             </section>
-            <DesignerRails products={products} card={card} he={he} />
+            <DesignerRails
+              products={products}
+              card={card}
+              he={he}
+              designers={shownDesigners}
+            />
             <section className="selection clearance">
               <div className="section-heading">
                 <div>
@@ -690,7 +709,10 @@ export function App() {
               <p className="eyebrow">THE LABELS</p>
               <h2>{t("מותגי SHEM", "SHEM designers")}</h2>
               <div>
-                <DesignerChoices onChoose={(d) => go(`/brand/${d.slug}`)} />
+                <DesignerChoices
+                  designers={shownDesigners}
+                  onChoose={(d) => go(`/brand/${d.slug}`)}
+                />
               </div>
             </section>
             <section className="editorial">
@@ -1068,13 +1090,19 @@ export function App() {
             </section>
           </section>
         ) : currentDesigner ? (
-          <DesignerPage
-            key={currentDesigner.slug}
-            designer={currentDesigner}
-            products={products}
-            card={card}
-            he={he}
-          />
+          catalogueStatus === "loading" || currentDesignerHidden ? (
+            <section className="page catalogue" aria-busy="true" />
+          ) : (
+            <DesignerPage
+              key={currentDesigner.slug}
+              designer={currentDesigner}
+              products={products}
+              card={card}
+              he={he}
+              designers={shownDesigners}
+              gate={designerGate}
+            />
+          )
         ) : route === "/shop" || route === "/wishlist" || !!collection ? (
           <section className="page catalogue">
             <p className="eyebrow">
@@ -1096,6 +1124,7 @@ export function App() {
                   {t("הכול", "All")}
                 </button>
                 <DesignerChoices
+                  designers={shownDesigners}
                   selected={designerFor(brand)?.slug}
                   onChoose={(d) => setBrand(d.name)}
                 />
@@ -1324,7 +1353,10 @@ export function App() {
           <section className="page designers">
             <p className="eyebrow">THE LABELS</p>
             <h1>{t("מותגי SHEM", "SHEM designers")}</h1>
-            <DesignerChoices onChoose={(d) => go(`/brand/${d.slug}`)} />
+            <DesignerChoices
+                  designers={shownDesigners}
+                  onChoose={(d) => go(`/brand/${d.slug}`)}
+                />
           </section>
         ) : (
           <section className="page narrow story">
@@ -1595,7 +1627,10 @@ export function App() {
                   ))}
               </>
             ) : panel === "brands" ? (
-              <DesignerChoices onChoose={(d) => go(`/brand/${d.slug}`)} />
+              <DesignerChoices
+                  designers={shownDesigners}
+                  onChoose={(d) => go(`/brand/${d.slug}`)}
+                />
             ) : panel === "menu" ? (
               <nav className="drawer-menu">
                 <button onClick={() => go("/club")}>

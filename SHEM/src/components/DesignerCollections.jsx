@@ -4,9 +4,9 @@ import { matchesAvailability, matchesSearch } from "../experience";
 import { brandLogoAssets } from "../brand-logo-assets";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
 import {
-  designers,
+  designers as allDesigners,
   designerProducts,
-  productTypes,
+  visibleProductTypes,
   productType,
 } from "../designers";
 import { ProductRail } from "./ProductRail";
@@ -30,7 +30,12 @@ export function DesignerLogo({
     />
   );
 }
-export function DesignerChoices({ onChoose, selected, className = "" }) {
+export function DesignerChoices({
+  onChoose,
+  selected,
+  className = "",
+  designers = allDesigners,
+}) {
   return (
     <div className={`designer-choices ${className}`}>
       {designers.map((d) => (
@@ -47,7 +52,12 @@ export function DesignerChoices({ onChoose, selected, className = "" }) {
     </div>
   );
 }
-export function DesignerRails({ products, card, he }) {
+export function DesignerRails({
+  products,
+  card,
+  he,
+  designers = allDesigners,
+}) {
   const pad = (n) => String(n).padStart(2, "0");
   return (
     <div className="designer-collections">
@@ -103,12 +113,20 @@ export function DesignerRails({ products, card, he }) {
     </div>
   );
 }
-export function DesignerPage({ designer, products, card, he }) {
+export function DesignerPage({
+  designer,
+  products,
+  card,
+  he,
+  designers = allDesigners,
+  gate = true,
+}) {
   const [type, setType] = useState(""),
     [sort, setSort] = useState("featured");
-  const all = designerProducts(products, designer);
-  const groups = productTypes.filter(([key]) =>
-    all.some((p) => productType(p) === key),
+  const groups = visibleProductTypes(products, designer, gate);
+  const groupKeys = new Set(groups.map(([key]) => key));
+  const all = designerProducts(products, designer).filter((p) =>
+    groupKeys.has(productType(p)),
   );
   const [query, setQuery] = useState(""),
     [size, setSize] = useState(""),

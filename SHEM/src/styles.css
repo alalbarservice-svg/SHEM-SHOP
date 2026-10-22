@@ -2141,11 +2141,25 @@ footer nav {
 
 /* Designer identity: original sculpted artwork, generous negative space. */
 .designer-logo {
+  /* Optical balance: every logo is cropped to its ink, then sized so its visual weight
+     (area) matches the others, capped by the location box (--lw x --lh, px). */
+  --lw: 240;
+  --lh: 88;
+  --fill: 0.38;
   display: block;
   object-fit: contain;
   max-width: 100%;
-  width: 240px;
-  height: 88px;
+  width: calc(var(--lw) * 1px);
+  width: calc(
+    min(
+        var(--lw),
+        var(--lh) * var(--r),
+        sqrt(var(--fill) * var(--lw) * var(--lh) * var(--r))
+      ) * 1px
+  );
+  height: auto;
+  aspect-ratio: var(--r);
+  max-height: calc(var(--lh) * 1px);
   opacity: 1;
   transition:
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
@@ -2190,8 +2204,8 @@ footer nav {
   outline-offset: 6px;
 }
 .designer-choices .designer-logo {
-  width: 240px;
-  height: 88px;
+  --lw: 240;
+  --lh: 88;
 }
 .designer-collection {
   padding-inline: 0;
@@ -2221,8 +2235,8 @@ footer nav {
   margin: auto;
 }
 .designer-band .designer-logo {
-  width: 360px;
-  height: 110px;
+  --lw: 360;
+  --lh: 110;
   margin: auto;
 }
 .designer-collection .rail-wrap {
@@ -2285,8 +2299,8 @@ footer nav {
   padding: 16px;
 }
 .designer-drawer .designer-logo {
-  width: 190px;
-  height: 70px;
+  --lw: 190;
+  --lh: 70;
 }
 .designer-drawer
   .designer-choices
@@ -2336,8 +2350,9 @@ footer nav {
   margin: 38px auto 0;
 }
 .designer-page-hero .designer-logo {
-  width: min(440px, 80vw);
-  height: 150px;
+  --lw: 440;
+  max-width: 80vw;
+  --lh: 150;
   margin: auto;
 }
 .designer-back {
@@ -2429,8 +2444,8 @@ footer nav {
   min-height: 124px;
 }
 .catalogue-brand-filter .designer-logo {
-  width: 220px;
-  height: 74px;
+  --lw: 220;
+  --lh: 74;
 }
 .filter-bar {
   flex-wrap: wrap;
@@ -2447,13 +2462,13 @@ footer nav {
   border-color: #b89b63;
 }
 .pdp-designer-logo {
-  width: 230px;
-  height: 84px;
+  --lw: 230;
+  --lh: 84;
   margin-bottom: 26px;
 }
 .search-designer-logo {
-  width: 110px;
-  height: 38px;
+  --lw: 110;
+  --lh: 38;
   margin-top: 8px;
 }
 .header,
@@ -2616,8 +2631,8 @@ footer,
     padding: 18px 10px;
   }
   .designer-choices .designer-logo {
-    width: 170px;
-    height: 64px;
+    --lw: 170;
+    --lh: 64;
   }
   .designer-band {
     padding: 6px 20px;
@@ -2625,8 +2640,9 @@ footer,
     margin-bottom: 24px;
   }
   .designer-band .designer-logo {
-    width: min(290px, 75vw);
-    height: 84px;
+    --lw: 290;
+  max-width: 75vw;
+    --lh: 84;
   }
   .designer-collection {
     padding-top: 28px;
@@ -2672,8 +2688,8 @@ footer,
     padding: 12px 6px;
   }
   .designer-drawer .designer-logo {
-    width: 160px;
-    height: 60px;
+    --lw: 160;
+    --lh: 60;
   }
   .designer-page-hero {
     padding: 40px 20px 48px;
@@ -2682,7 +2698,7 @@ footer,
     margin-top: 28px;
   }
   .designer-page-hero .designer-logo {
-    height: 110px;
+    --lh: 110;
   }
   .designer-page-content {
     padding: 28px 20px 56px;
@@ -2704,8 +2720,8 @@ footer,
     padding: 14px 8px;
   }
   .catalogue-brand-filter .designer-logo {
-    width: 170px;
-    height: 58px;
+    --lw: 170;
+    --lh: 58;
   }
   .product-details {
     padding: 14px 12px 18px;
@@ -2757,8 +2773,9 @@ footer,
   margin: 0;
 }
 .designer-page-hero .designer-logo {
-  width: min(520px, 82vw);
-  height: 160px;
+  --lw: 520;
+  max-width: 82vw;
+  --lh: 160;
 }
 .designer-page-content {
   max-width: 1380px;
@@ -2956,8 +2973,8 @@ footer,
   transition: background 0.3s;
 }
 .designer-page-other-brands .designer-logo {
-  width: 190px;
-  height: 64px;
+  --lw: 190;
+  --lh: 64;
 }
 .designer-page-other-brands > a:focus-visible {
   outline: 2px solid #b89b63;
@@ -2991,8 +3008,9 @@ footer,
     margin: 0;
   }
   .designer-page-hero .designer-logo {
-    width: min(360px, 82vw);
-    height: 114px;
+    --lw: 360;
+  max-width: 82vw;
+    --lh: 114;
   }
   .designer-page-content {
     padding: 0 20px 56px;
@@ -3078,9 +3096,9 @@ footer,
     grid-column: 1/-1;
   }
   .designer-page-other-brands .designer-logo {
-    width: 170px;
+    --lw: 170;
     max-width: 100%;
-    height: 60px;
+    --lh: 60;
   }
 }
 @media (prefers-reduced-motion: reduce) {

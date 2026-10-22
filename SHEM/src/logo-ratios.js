@@ -1,0 +1,26 @@
+// Ink aspect ratio (width/height) of each cropped brand logo; drives optical size balancing in CSS.
+export const logoRatios = Object.freeze({
+  "loro-piana": 3.876,
+  "essentials": 4.055,
+  "ralph-lauren": 2.848,
+  "dior": 3.375,
+  "givenchy": 6.197,
+  "amiri": 5.427,
+  "stone-island": 2.533,
+  "loewe": 3.864,
+  "hermes": 3.1,
+  "rhun": 3.241,
+  "dolce-gabbana": 2.099,
+  "allsaints": 7.298,
+  "prada": 5.197,
+  "balenciaga": 6.391,
+  "jacquemus": 4.584,
+  "casablanca": 6.704,
+  "ami-paris": 1.992,
+  "celine": 4.191,
+  "louis-vuitton": 7.048,
+  "valentino": 2.828,
+  "alexander-mcqueen": 8.611,
+  "miu-miu": 5.29,
+  "moncler": 2.196
+});

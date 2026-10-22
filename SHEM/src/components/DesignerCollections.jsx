@@ -2,6 +2,7 @@ import { useState } from "react";
 import { InventoryFilters } from "./InventoryFilters";
 import { matchesAvailability, matchesSearch } from "../experience";
 import { brandLogoAssets } from "../brand-logo-assets";
+import { logoRatios } from "../logo-ratios";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
 import {
   designers as allDesigners,
@@ -17,13 +18,15 @@ export function DesignerLogo({
   priority = false,
 }) {
   if (!designer) return null;
+  const ratio = logoRatios[designer.slug] || 3;
   return (
     <img
       className={`designer-logo designer-logo--${tone} ${className} logo-${designer.slug}`}
       src={brandLogoAssets[`${designer.slug}-${tone}`]}
       alt={designer.name}
-      width={designer.width || 2172}
-      height={designer.height || 724}
+      style={{ "--r": ratio }}
+      width={Math.round(ratio * 100)}
+      height={100}
       loading="eager"
       fetchPriority={priority ? "high" : undefined}
       decoding="async"

@@ -1,5 +1,7 @@
-import { ChannelProduct, ChannelConsole } from "./ChannelManagement";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
+// The channel-link UI is loaded on demand from /admin-private/ so it is never part of the public bundle.
+const ChannelProduct = lazy(() => import("./ChannelManagement").then((m) => ({ default: m.ChannelProduct })));
+const ChannelConsole = lazy(() => import("./ChannelManagement").then((m) => ({ default: m.ChannelConsole })));
 import { adminApi } from "../admin-api";
 import { exportCSV } from "./AdminOperations";
 import { money } from "../commerce";
@@ -1232,7 +1234,7 @@ export function Management({ section, onChange }) {
             />
             {section === "products" && (
               <>
-                <ChannelProduct product={editor} onChange={setLinkedProduct} />
+                <Suspense fallback={null}><ChannelProduct product={editor} onChange={setLinkedProduct} /></Suspense>
                 <label>
                   תמונת מוצר
                   <input
@@ -1869,7 +1871,7 @@ export function Management({ section, onChange }) {
           </section>
           {section === "integrations" && (
             <>
-              <ChannelConsole />
+              <Suspense fallback={null}><ChannelConsole /></Suspense>
               <SettingForm
                 kind="invoice"
                 onNotice={async (message) => {

@@ -44,6 +44,7 @@ final class Shimi_Pay {
 
  /* ---------- 1. signed session creation (SHEM -> SHIMI) ---------- */
  static function create_session(WP_REST_Request $r){
+  if(!self::gate_ok())return self::fail(404,'not_found','Not found');
   $secret=self::secret(); if($secret===null)return self::fail(503,'not_configured','Not configured');
   $raw=$r->get_body(); if(strlen($raw)>65536)return self::fail(413,'too_large','Body too large');
   $ts=(string)$r->get_header('x-shem-timestamp'); $sig=strtolower((string)$r->get_header('x-shem-signature'));
@@ -251,3 +252,7 @@ if (defined('WP_CLI') && WP_CLI) {
    WP_CLI::line($sid.' order='.$rec['orderId'].' state='.$rec['state'].' attempts='.$rec['cbAttempts'].($rec['cbError']?' err='.$rec['cbError']:'')); }
  });
 }
+
+/* Proxy mode: the SHIMI domain reveals nothing without the proxy key: no namespace in the REST index, no route answers. */
+add_filter('rest_pre_dispatch',function($r,$server,$request){ if(Shimi_Pay::public_base()!==''&&defined('SHIMI_PAY_PROXY_KEY')&&strpos((string)$request->get_route(),'/'.Shimi_Pay::NS)===0&&!Shimi_Pay::gate_ok())return new WP_Error('rest_no_route','No route was found matching the URL and request method.',['status'=>404]); return $r; },10,3);
+add_filter('rest_index',function($resp){ if(Shimi_Pay::public_base()===''||!defined('SHIMI_PAY_PROXY_KEY'))return $resp; $d=$resp->get_data(); if(isset($d['namespaces']))$d['namespaces']=array_values(array_diff($d['namespaces'],[Shimi_Pay::NS])); if(isset($d['routes']))foreach(array_keys($d['routes']) as $k)if(strpos($k,'/'.Shimi_Pay::NS)===0)unset($d['routes'][$k]); $resp->set_data($d); return $resp; });

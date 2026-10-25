@@ -59,7 +59,7 @@ add_action('plugins_loaded', function () {
    if (is_wp_error($body)) { wc_add_notice('לא ניתן לפתוח תשלום להזמנה זו.', 'error'); $order->add_order_note('פתיחת תשלום נכשלה: ' . $body->get_error_message()); return ['result' => 'failure']; }
    $raw = wp_json_encode($body); $ts = (string)time();
    $sig = hash_hmac('sha256', $ts . '.' . $raw, SHEM_HOME_PAYMENT_SECRET);
-   $r = wp_remote_post(SHEM_PAY_SESSION_URL, ['timeout' => 20, 'headers' => ['Content-Type' => 'application/json', 'x-shem-timestamp' => $ts, 'x-shem-signature' => $sig], 'body' => $raw]);
+   $r = wp_remote_post(SHEM_PAY_SESSION_URL, ['timeout' => 20, 'headers' => ['Content-Type' => 'application/json', 'x-shem-timestamp' => $ts, 'x-shem-signature' => $sig] + (defined('SHEM_PAY_PROXY_KEY') ? ['x-pay-gw' => SHEM_PAY_PROXY_KEY] : []), 'body' => $raw]);
    $code = is_wp_error($r) ? 0 : (int)wp_remote_retrieve_response_code($r);
    $j = is_wp_error($r) ? [] : (json_decode(wp_remote_retrieve_body($r), true) ?: []);
    $embed = (string)($j['embedUrl'] ?? '');
@@ -82,13 +82,13 @@ add_action('plugins_loaded', function () {
    if ($order->is_paid()) { echo '<p>ההזמנה שולמה. <a href="' . esc_url($this->get_return_url($order)) . '">המשך</a></p>'; return; }
    $embed = (string)$order->get_meta('_shem_pay_embed');
    if ($embed === '') { echo '<p dir="rtl">התשלום טרם נפתח. חזרו לעמוד התשלום.</p>'; return; }
-   $origin = rtrim(SHEM_PAY_ALLOWED_ORIGIN, '/');
-   $cfg = ['status' => esc_url_raw(rest_url('shem-pay/v1/status')), 'order' => $order->get_id(), 'key' => $order->get_order_key(), 'origin' => $origin];
+   $u = wp_parse_url(SHEM_PAY_ALLOWED_ORIGIN); $origin = $u['scheme'] . '://' . $u['host'] . (isset($u['port']) ? ':' . $u['port'] : '');
+   $cfg = ['status' => esc_url_raw(rest_url('shem-pay/v1/status')), 'order' => $order->get_id(), 'key' => $order->get_order_key(), 'origin' => $origin, 'src' => (!empty($u['path']) && $u['path'] !== '/') ? 'pay-frame' : 'shimi-pay'];
    echo '<style>.shem-received{text-align:center;margin:1.2em 0 1.4em}.shem-received h1{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:700;line-height:1.25;margin:0}.shem-payframe{width:100%;min-height:560px;border:0}</style>';
    echo '<section class="shem-received" dir="rtl" lang="he"><h1>' . esc_html(self::heading()) . '</h1></section>';
    echo '<iframe class="shem-payframe" title="תשלום מאובטח" src="' . esc_url($embed) . '" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>';
    echo '<script>(function(){var C=' . wp_json_encode($cfg) . ';var done=false;function poll(){if(done)return;fetch(C.status+"?order="+C.order+"&key="+encodeURIComponent(C.key),{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){if(d&&d.paid&&d.redirect){done=true;location.href=d.redirect}}).catch(function(){})}';
-   echo 'window.addEventListener("message",function(e){if(e.origin===C.origin&&e.data&&e.data.source==="shimi-pay"&&e.data.status==="completed")poll()});setInterval(poll,4000);})();</script>';
+   echo 'window.addEventListener("message",function(e){if(e.origin===C.origin&&e.data&&e.data.source===C.src&&e.data.status==="completed")poll()});setInterval(poll,4000);})();</script>';
   }
   static function heading() { $s = get_option('shem_pay_received_heading', ''); return $s !== '' ? $s : 'הזמנתך התקבלה'; }
  }
@@ -124,3 +124,22 @@ add_action('plugins_loaded', function () {
   }]);
  });
 }, 20);
+
+/* Hide the signed callback route from the public REST index (route stays callable, HMAC-protected). */
+add_filter('rest_index', function ($resp) {
+    if (is_user_logged_in() && current_user_can('manage_options')) return $resp;
+    $d = $resp->get_data();
+    if (isset($d['routes'])) foreach (array_keys($d['routes']) as $k) if (strpos($k, '/shem-dok/v1/shimi') === 0) unset($d['routes'][$k]);
+    $resp->set_data($d);
+    return $resp;
+});
+add_filter('rest_post_dispatch', function ($result, $server, $request) {
+    if (strpos((string)$request->get_route(), '/shem-dok/v1') !== 0 && $request->get_route() !== '/shem-dok') return $result;
+    if (is_user_logged_in() && current_user_can('manage_options')) return $result;
+    if ($result instanceof WP_REST_Response && $request->get_route() === '/shem-dok/v1') {
+        $d = $result->get_data();
+        if (isset($d['routes'])) foreach (array_keys($d['routes']) as $k) if (strpos($k, '/shem-dok/v1/shimi') === 0) unset($d['routes'][$k]);
+        $result->set_data($d);
+    }
+    return $result;
+}, 10, 3);

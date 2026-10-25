@@ -23,3 +23,10 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 ## Update 19.10.2026 (evening)
 - Done on staging: approved thank-you wording (SHEM), order-received redirect, HMAC rotation (both sites), 30 SHIMI basics demo products in collection basics (staging only). Regression: cx 129/0, core, unit suites, admin 0 fail, live 49/49, DOK s1 43, s2 54, s3 52 (+2 blocked), s4 42, customer e2e 42/42.
 - Open: 25 product photos (placeholders), ui3.js DOK UI test needs fixture login files (not run this round), mPDF bundling decision for SHIMI production (owner has not answered), issuer details, hero slides 2-3 mobile images, hosting/payment provider/charging entity, cutover window and DNS.
+
+## Update 25.10.2026 (SHIMI linked items)
+- Staging was rebuilt from the repo (Docker project shem-staging, WooCommerce 11.2.1). SHEM has 57 imported items; the 48 priced 1.00 are the real ones, the other 9 are demo and are not linked.
+- Created on staging 48 real (non-demo) SHIMI items, each linked one-to-one to a real SHEM item (WP-TESTS/shimi-linked). SKU, price and previous price come from SHEM. Verified: 48 pairs, SKU equal, price equal, all connected, 48 distinct sources.
+- Verified: a price change on a real SHEM item reaches the linked SHIMI item in about 1 second and reverts correctly; the discount (previous price) syncs; stock 0 on SHEM keeps the item listed on SHIMI.
+- Regression on the rebuilt staging: unit 61/0, links 123/0, flow 98/0, payment 39/0 (1 not-run: real provider), woo 36/0, live two-site 49/0.
+- Open: SHEM active=false hides the linked SHIMI item (owner rule says SHIMI is not bound to published+in-stock - needs owner answer); payment equality was tested with fixtures only, not an end-to-end order on the real 48 items; 43 of 48 SHIMI images are placeholders (image generator limit); the 30 old SHIMI-B-* items no longer exist; SHIMI descriptions are empty.

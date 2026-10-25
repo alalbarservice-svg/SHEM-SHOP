@@ -19,7 +19,9 @@ def sign_many(site, path, bodies):
     f = tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False, dir='/tmp/claude-0/-home-claude/e0ee4ec4-b7c1-587c-9ba4-49b726b70a07/scratchpad'); f.write('\n'.join(bodies) + '\n'); f.close()
     # the file lives on the host; copy into the plugin dir that the wp container sees
     dst = '/home/claude/shem-shop/WP-PLUGIN/shem-shimi-commerce/tests/channel/live/_bodies.txt'; subprocess.run(['cp', f.name, dst]); os.unlink(f.name)
-    subprocess.run(['/home/claude/deploy-scc.sh'], capture_output=True)
+    for c in ('shem', 'shimi'):
+        subprocess.run(['docker', 'cp', dst, f'shem-staging-{c}-1:/var/www/html/wp-content/plugins/shem-shimi-commerce/tests/channel/live/_bodies.txt'], capture_output=True)
+        subprocess.run(['docker', 'exec', f'shem-staging-{c}-1', 'chown', 'www-data:www-data', '/var/www/html/wp-content/plugins/shem-shimi-commerce/tests/channel/live/_bodies.txt'], capture_output=True)
     return w(site, 'sign-many', path, 'wp-content/plugins/shem-shimi-commerce/tests/channel/live/_bodies.txt')
 def curl(site, path, body, ts, sig, extra=None):
     cmd = ['curl', '-s', '-m', '60', '-o', '-', '-w', '\n%{http_code}', '-H', 'content-type: application/json', '-H', 'x-channel-timestamp: ' + ts, '-H', 'x-channel-signature: ' + sig, '--data-binary', body, URL[site] + path]
@@ -56,7 +58,7 @@ ev = [r for r in ob if r['kind'] == 'refresh']
 check('exactly one refresh event queued by the save', len(ev) == 1 and ev[0]['state'] == 'pending', ob)
 before = w('shimi', 'show', 't-channel-live-h')
 check('SHIMI not changed before delivery', float(before['price']) == 100.0, before)
-out = wp('shem', 'action-scheduler', 'run', '--group=scc-channel')
+out = wp('shem', 'action-scheduler', 'run', '--hooks=scc_channel_deliver')
 ob = w('shem', 'outbox', 't-channel-live-a'); ev = [r for r in ob if r['kind'] == 'refresh']
 check('Action Scheduler delivered it', len(ev) == 1 and ev[0]['state'] == 'delivered' and int(ev[0]['attempts']) == 1, (ev, out[-200:]))
 after = w('shimi', 'show', 't-channel-live-h')

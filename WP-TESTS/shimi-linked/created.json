@@ -1,0 +1,482 @@
+[
+ {
+  "i": 0,
+  "shem_sku": "LP-TR-01",
+  "shem_id": "956638b6-ae97-4b18-9078-ff4ce1f63870",
+  "name": "מכנסיים בגזרה ישרה - נייבי",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "1bb203c3-0445-4036-bcde-80eacf172feb",
+  "link": 200
+ },
+ {
+  "i": 1,
+  "shem_sku": "LP-LT-03",
+  "shem_id": "63e65e14-6563-4096-bcaa-96085eae8aa8",
+  "name": "חולצת לונג סליב - אפור מרווה",
+  "created": true,
+  "real_image": true,
+  "shimi_id": "80f6df77-8430-46ac-87a0-63fe93683c54",
+  "link": 200
+ },
+ {
+  "i": 2,
+  "shem_sku": "LP-LT-02",
+  "shem_id": "cbe3987a-8ef3-4631-be3d-4f2449485968",
+  "name": "חולצת לונג סליב - טאופ",
+  "created": true,
+  "real_image": true,
+  "shimi_id": "31b9fee8-3181-4ba5-870b-9bb1b9a9e8c4",
+  "link": 200
+ },
+ {
+  "i": 3,
+  "shem_sku": "LP-LT-01",
+  "shem_id": "10bf8638-e6e8-4021-ae5e-b4b524062ef7",
+  "name": "חולצת לונג סליב - פחם",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "ec19b3eb-54e3-4fc7-84ed-47fa0040cee2",
+  "link": 200
+ },
+ {
+  "i": 4,
+  "shem_sku": "LP-BD-07",
+  "shem_id": "72b39d31-d320-4a3f-b339-a391858a1924",
+  "name": "חולצה מכופתרת אוקספורד - לבן",
+  "created": true,
+  "real_image": true,
+  "shimi_id": "911b813e-6080-461e-800e-b70e25604143",
+  "link": 200
+ },
+ {
+  "i": 5,
+  "shem_sku": "LP-BD-06",
+  "shem_id": "9462fd2a-f341-4be8-ba1c-4346b9c4d42f",
+  "name": "חולצה מכופתרת פופלין - שנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "6747ddcd-31fa-4d18-9239-3adfaa8e0bd3",
+  "link": 200
+ },
+ {
+  "i": 6,
+  "shem_sku": "LP-BD-05",
+  "shem_id": "8e25eb9a-9f69-4748-9138-2dcc382bb6e1",
+  "name": "חולצה מכופתרת פשתן - תכלת",
+  "created": true,
+  "real_image": true,
+  "shimi_id": "7e55f86b-fb76-4819-a2ae-c93077f1dcf1",
+  "link": 200
+ },
+ {
+  "i": 7,
+  "shem_sku": "LP-BD-04",
+  "shem_id": "32bc8e2f-baaa-4c02-a3a4-ed698f233ae4",
+  "name": "חולצה מכופתרת מחויטת - תכלת",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "f894cb6e-46c6-44ff-a5d1-08d20d5d52f3",
+  "link": 200
+ },
+ {
+  "i": 8,
+  "shem_sku": "LP-BD-03",
+  "shem_id": "8795af64-bb53-4a87-b62f-4bab08d23a7c",
+  "name": "חולצה מכופתרת מחויטת - אינדיגו",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "9de0674b-e86a-450f-a1d8-e3cc91bc918b",
+  "link": 200
+ },
+ {
+  "i": 9,
+  "shem_sku": "LP-BD-02",
+  "shem_id": "82f857d5-ef84-4060-9ed8-49e36ad4b431",
+  "name": "חולצה מכופתרת פופלין - אינדיגו",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "3f0167d8-5715-4502-894e-4d79712ebe46",
+  "link": 200
+ },
+ {
+  "i": 10,
+  "shem_sku": "LP-BD-01",
+  "shem_id": "b8469d2c-8063-42b7-aefb-e7d6a6663dfe",
+  "name": "חולצה מכופתרת פופלין - שיבולת שועל",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "11bd8921-b1ab-45da-944a-d3343c7495d6",
+  "link": 200
+ },
+ {
+  "i": 11,
+  "shem_sku": "LP-TEE-05",
+  "shem_id": "08b9dfcc-c308-4e1e-beaf-5aa6d7090ad7",
+  "name": "חולצת טי - שחור",
+  "created": true,
+  "real_image": true,
+  "shimi_id": "882a7262-8e39-473b-abc4-021790c3626f",
+  "link": 200
+ },
+ {
+  "i": 12,
+  "shem_sku": "LP-TEE-04",
+  "shem_id": "6b6119e1-bcbc-466a-b99a-41960e9092a8",
+  "name": "חולצת טי - נייבי ושנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "cbd28e20-ffc5-48de-bbce-e3558e6a17a5",
+  "link": 200
+ },
+ {
+  "i": 13,
+  "shem_sku": "LP-TEE-03",
+  "shem_id": "c82cbcb8-c88e-4c9f-9075-de21440304c7",
+  "name": "חולצת טי אוברסייז - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "77e4f930-0135-46c2-ad0f-d82c6d723697",
+  "link": 200
+ },
+ {
+  "i": 14,
+  "shem_sku": "LP-TEE-02",
+  "shem_id": "098a2471-bb89-496c-808d-c4efc6f69803",
+  "name": "חולצת טי - שנהב וטאופ",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "f0f89b98-4e17-46da-93ee-aa9aaee29e7b",
+  "link": 200
+ },
+ {
+  "i": 15,
+  "shem_sku": "LP-TEE-01",
+  "shem_id": "82fefc57-6398-4192-b921-e569f56ef377",
+  "name": "חולצת טי - שנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "0cf95095-0c24-4ae4-8a35-84ad5a4fc549",
+  "link": 200
+ },
+ {
+  "i": 16,
+  "shem_sku": "LP-SHO-10",
+  "shem_id": "655b98df-0bc1-4254-b172-7726ce559aef",
+  "name": "נעלי לואפר עור - בז'",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "c72a5f1e-e121-4e19-b6cf-97f1e796f997",
+  "link": 200
+ },
+ {
+  "i": 17,
+  "shem_sku": "LP-SHO-09",
+  "shem_id": "9eb3f003-a6e0-47ac-917e-a4a7dc94a1ef",
+  "name": "נעלי לואפר עור - נייבי",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "53efa112-0a62-49ab-bb53-a463dd6c3c18",
+  "link": 200
+ },
+ {
+  "i": 18,
+  "shem_sku": "LP-SHO-08",
+  "shem_id": "70d94f24-917e-4a76-a9ea-37914fd59dd8",
+  "name": "נעלי לואפר עור - חול",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "a81f864b-d9bb-4bde-b199-baefd83d7dc2",
+  "link": 200
+ },
+ {
+  "i": 19,
+  "shem_sku": "LP-SHO-07",
+  "shem_id": "65406033-a36f-4b61-8011-882d698a5be0",
+  "name": "נעלי לואפר עור - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "4fc48e41-acbd-4eb4-88be-80c086ab2fa7",
+  "link": 200
+ },
+ {
+  "i": 20,
+  "shem_sku": "LP-SHO-06",
+  "shem_id": "232108b1-9330-4867-86fa-4013edb973a9",
+  "name": "נעלי לואפר עור - זית",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "4cc2f77f-bb5e-45f2-985f-628a3a60a2d3",
+  "link": 200
+ },
+ {
+  "i": 21,
+  "shem_sku": "LP-SHO-05",
+  "shem_id": "738650f4-5557-433c-b08e-795c0a4aec03",
+  "name": "נעלי לואפר עור - אבן",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "46d599ab-ca00-463a-876d-1c7534829806",
+  "link": 200
+ },
+ {
+  "i": 22,
+  "shem_sku": "LP-SHO-04",
+  "shem_id": "46c08cf3-472f-483c-9cbe-8beda116442a",
+  "name": "נעלי לואפר עור - אפור כסוף",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "8d7274cb-782e-4d37-b937-0553a423eeb3",
+  "link": 200
+ },
+ {
+  "i": 23,
+  "shem_sku": "LP-SHO-03",
+  "shem_id": "abfe92ba-fee1-4f2b-aad3-7b92421a3bbc",
+  "name": "נעלי לואפר עור - טאופ",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "2d63fb95-73c1-4841-9583-a72f62cbd12e",
+  "link": 200
+ },
+ {
+  "i": 24,
+  "shem_sku": "LP-SHO-02",
+  "shem_id": "5d33d0d9-a1c8-44f4-b7ee-9ceac5e8b8c8",
+  "name": "נעלי לואפר עור עם רצועה - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "38d9b00b-f07d-4b3f-a926-41a8fdcb85c7",
+  "link": 200
+ },
+ {
+  "i": 25,
+  "shem_sku": "LP-SHO-01",
+  "shem_id": "49ea217f-14d5-4e05-bdfc-a2e9303ac983",
+  "name": "נעלי לואפר עור סוליית גומי - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "4d667f39-bc83-465e-aacc-e2cf3a12a4c5",
+  "link": 200
+ },
+ {
+  "i": 26,
+  "shem_sku": "RL-KN-07",
+  "shem_id": "e34d09d0-ec97-48bc-abd4-2f797f927ade",
+  "name": "סריג צמר - נייבי",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "c9ff9397-deb7-4c77-93e3-a9e3c75a0ffa",
+  "link": 200
+ },
+ {
+  "i": 27,
+  "shem_sku": "RL-KN-06",
+  "shem_id": "026dfd01-a277-4b73-a200-7f9c0b1daf64",
+  "name": "סריג צמר - שנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "176c72c5-96a9-4822-acc9-bce5767fda02",
+  "link": 200
+ },
+ {
+  "i": 28,
+  "shem_sku": "RL-KN-05",
+  "shem_id": "83e93570-5755-47ed-b695-27f5f1d1a30a",
+  "name": "סריג צמר - חול",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "1f258364-fafd-4b8e-a5ab-281b29189e25",
+  "link": 200
+ },
+ {
+  "i": 29,
+  "shem_sku": "RL-KN-04",
+  "shem_id": "bc8a6172-4814-4e4e-9598-cb6191e72499",
+  "name": "סריג צמר צווארון V - נייבי",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "2809f027-36d8-4ebc-a8ae-35b9876c9357",
+  "link": 200
+ },
+ {
+  "i": 30,
+  "shem_sku": "RL-KN-03",
+  "shem_id": "ff4165dc-1ab7-47de-9014-4f8c66f920ce",
+  "name": "סריג צמר - אפור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "17aac057-9241-4a30-b508-fefcff2bb956",
+  "link": 200
+ },
+ {
+  "i": 31,
+  "shem_sku": "RL-KN-02",
+  "shem_id": "3d204041-aa38-4a1a-9bf8-5d1fd5511f27",
+  "name": "סריג צמר - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "e8b42f41-26fd-401b-8103-b74f4f82d44e",
+  "link": 200
+ },
+ {
+  "i": 32,
+  "shem_sku": "RL-KN-01",
+  "shem_id": "d92e6cad-78d8-4a18-aa39-ceb825cdaffc",
+  "name": "סריג צמר צווארון V - שנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "011ea4c6-a931-41d3-be24-24dd7286cd13",
+  "link": 200
+ },
+ {
+  "i": 33,
+  "shem_sku": "RL-BD-04",
+  "shem_id": "84d417c8-bdb4-44c6-82e7-3965f8c47aa2",
+  "name": "חולצה מכופתרת פשתן - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "c5d0eb93-1ef6-4ec8-bc02-f0516536d626",
+  "link": 200
+ },
+ {
+  "i": 34,
+  "shem_sku": "RL-BD-03",
+  "shem_id": "cacf3575-2b69-45c1-bd70-91d321e27b18",
+  "name": "חולצה מכופתרת אוקספורד - אינדיגו",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "cc535b29-a94c-4647-b4c4-00803e7e1fa3",
+  "link": 200
+ },
+ {
+  "i": 35,
+  "shem_sku": "RL-BD-02",
+  "shem_id": "1e5edb54-f2b2-4630-9e08-a111cd4d46e7",
+  "name": "חולצה מכופתרת פופלין - תכלת",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "bc056311-4b47-4df0-b2b9-d38b8ce693b2",
+  "link": 200
+ },
+ {
+  "i": 36,
+  "shem_sku": "RL-BD-01",
+  "shem_id": "b6f5ae8c-5e88-4b41-a812-6b0d821f3296",
+  "name": "חולצה מכופתרת פופלין - לבן",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "5b6469d2-6ca3-4538-9928-3aea23f60df6",
+  "link": 200
+ },
+ {
+  "i": 37,
+  "shem_sku": "RL-TEE-03",
+  "shem_id": "12c68219-364d-47aa-8ca4-a93017bf4048",
+  "name": "חולצת טי - נייבי",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "af9dda9b-b833-444c-a96a-3b7fe765feff",
+  "link": 200
+ },
+ {
+  "i": 38,
+  "shem_sku": "RL-TEE-02",
+  "shem_id": "00bb6c26-ce1f-47b9-b804-157d0d5431a1",
+  "name": "חולצת טי צווארון V - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "2c2d0f23-548e-4e33-863b-102b3396ef93",
+  "link": 200
+ },
+ {
+  "i": 39,
+  "shem_sku": "RL-TEE-01",
+  "shem_id": "a00928b1-927b-4e3e-9894-c063d95075dd",
+  "name": "חולצת טי - לבן",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "4c7f851e-8247-4283-b1ba-5a300785ab6b",
+  "link": 200
+ },
+ {
+  "i": 40,
+  "shem_sku": "AMIRI-SHO-05",
+  "shem_id": "7b6f0a49-7001-4057-80fa-e26d68f68b14",
+  "name": "סניקרס עור מינימליסטיות - אפור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "6222f6a0-f764-4a40-b0b0-d849b3aef9f5",
+  "link": 200
+ },
+ {
+  "i": 41,
+  "shem_sku": "AMIRI-SHO-04",
+  "shem_id": "cdceb843-df68-4432-9df6-aaa520739446",
+  "name": "סניקרס עור מינימליסטיות - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "5051d0ea-fd06-44d8-8020-2c370989d054",
+  "link": 200
+ },
+ {
+  "i": 42,
+  "shem_sku": "AMIRI-SHO-03",
+  "shem_id": "2aed675b-fcbf-404e-a6cb-0e839b8c6646",
+  "name": "סניקרס עור מינימליסטיות - שנהב וירוק",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "b9148a53-2d0a-47f5-9da2-4b66a6744d53",
+  "link": 200
+ },
+ {
+  "i": 43,
+  "shem_sku": "AMIRI-SHO-02",
+  "shem_id": "716ecd95-29d5-470e-94c4-c55460104e86",
+  "name": "סניקרס עור מינימליסטיות - שנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "889a83f9-72be-4a32-a019-72e662619ba7",
+  "link": 200
+ },
+ {
+  "i": 44,
+  "shem_sku": "AMIRI-SHO-01",
+  "shem_id": "42ca269f-82dd-4db1-b0e5-d73ddcfdd0a2",
+  "name": "סניקרס עור מינימליסטיות עם סוליה עבה - שנהב",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "d431a689-7777-4c90-87ff-874d51893f32",
+  "link": 200
+ },
+ {
+  "i": 45,
+  "shem_sku": "AMIRI-TEE-03",
+  "shem_id": "2b8b2dec-18fd-435b-b173-321eb6dc53b8",
+  "name": "חולצת טי אוברסייז - לבן",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "c3460262-bd0b-4a60-b95a-d59fe2002365",
+  "link": 200
+ },
+ {
+  "i": 46,
+  "shem_sku": "AMIRI-TEE-02",
+  "shem_id": "45d8388b-9aae-48bf-9a6d-a08b42dcc248",
+  "name": "חולצת טי פולו פיקה - שחור",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "3bae58d0-05a2-40b6-9525-09c2b34141d4",
+  "link": 200
+ },
+ {
+  "i": 47,
+  "shem_sku": "AMIRI-TEE-01",
+  "shem_id": "0737dd17-0c86-452f-8072-1611b446e23e",
+  "name": "חולצת טי צווארון V - לבן",
+  "created": true,
+  "real_image": false,
+  "shimi_id": "bac26fd1-4793-4928-8172-bcbd947617bf",
+  "link": 200
+ }
+]

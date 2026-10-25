@@ -65,3 +65,7 @@
 - HMAC secret of the staging payment bridge rotated on both staging wp-config files (new random value, identical on both, never printed). The owner typed a password in chat in reply to this question; it was NOT used and NOT stored. Real secrets for production go in a vault only.
 - Owner decision for SHIMI: keep the existing products and add more basics-style items. 30 new demo products (10 shirts, 8 pants, 6 shoes, 6 hats, SKU SHIMI-B-*) created on STAGING only via the admin API and added to the collection "בייסיק ליום יום" (slug basics). Live SHIMI is untouched. 5 of 30 have generated photos; 25 carry a labeled "PHOTO PENDING" placeholder because the image generator hit its daily limit. Images to be replaced via the admin API when available.
 - Products created on staging do not exist on the live SHIMI; they reach it only if the owner adds them there or approves an import at go-live.
+
+## 25.10.2026 - SHIMI sync rule and real items (owner)
+- The rule "item shown only if published and in stock" does not apply to SHIMI. SKU, price, discounts and promotions come from SHEM items. Links are created, copied and edited only in the admin interfaces. A SHEM purchase is cleared on SHIMI and must match the SHEM order exactly (SKUs, discounts, price, total).
+- Real SHEM items are the 48 priced 1.00 ILS. The 9 others are demo and must not be linked. 48 real SHIMI items are linked one-to-one to them (staging).

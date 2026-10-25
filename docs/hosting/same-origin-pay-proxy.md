@@ -1,0 +1,36 @@
+# Same-origin payment proxy - staging experiment (2026-10-25)
+
+Status: EXPERIMENT on branch `experiment/pay-same-origin-proxy`. Not merged, not deployed.
+
+## Goal
+Customers' browsers should not see the SHIMI domain during checkout (iframe src, API calls, headers, JS identifiers).
+
+## Verified (real Chromium, local staging)
+- Baseline (original plugin): 12 leak hits for `8082|shimi` across URLs, headers and bodies (control: scan finds them).
+- Bare unauthenticated request to the SHIMI payment URL returns a CSP header `frame-ancestors <SHEM origin>`, which reveals the SHEM link.
+- Proxy mode: iframe and API both under the SHEM origin at `/pay-gw/...`: 0 leak hits.
+- API round trip reaches the backend (503 "PayPal not configured" proves routing and the gate).
+- postMessage delivered with origin = SHEM, source `pay-frame`.
+- Direct hits on the SHIMI domain to the payment endpoints return a bare 404 without the proxy key header.
+
+## Apache config used on the SHEM host (key is a placeholder)
+```
+RewriteEngine On
+RewriteRule "^/pay-gw/p/([a-f0-9]{24})/([a-f0-9]{16,64})$" "http://shimi/?shimi_pay=$1&token=$2" [P,L,E=PAYGW:1]
+RewriteRule "^/pay-gw/api/(paypal/(?:create|capture))$" "http://shimi/wp-json/shimi-pay/v1/$1" [P,L,E=PAYGW:1]
+RequestHeader set X-Pay-Gw "<KEY>" env=PAYGW
+```
+Modules: proxy, proxy_http, rewrite, headers.
+Notes: `Header unset` does not strip backend headers on proxied responses (fixed in the plugin). `ProxyPassMatch` with `?` encodes it as `%3F` and WP then 301-redirects, leaking the backend hostname, so use `RewriteRule [P]`.
+
+## Plugin changes (SHIMI-PAY)
+Constants `SHIMI_PAY_PUBLIC_BASE` and `SHIMI_PAY_PROXY_KEY`. When set: embed URL uses the public base, gate returns 404 without the key, JS names are neutral (`PF`, source `pay-frame`), `Link` header removed on the pay namespace.
+
+## NOT verified
+- Real PayPal JS SDK, buttons, popup and 3DS under the SHEM origin (no sandbox keys; PayPal-side origin settings unknown).
+- SHEM-PAY gateway changes (`SHEM_PAY_ALLOWED_ORIGIN` for a path origin, accept source `pay-frame`). SHEM-PAY is not installed on local staging.
+- Server-to-server paid callback through the proxy.
+- Cloudflare Worker/rules equivalent, nginx, hosts without Apache config access.
+- PayPal merchant name shown to customers.
+- iOS Safari and third-party cookies; latency of the extra hop.
+- Residual: the SHIMI domain still lists the `shimi-pay/v1` namespace under `/wp-json/`.

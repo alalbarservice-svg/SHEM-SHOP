@@ -81,3 +81,7 @@
 ## 2026-10-25 - verification of brand/category visibility (staging)
 - Admin suite regression: SHEM 326 pass / 7 fail, SHIMI 317 / 5 fail. The same 7 SHEM failures reproduce byte-for-byte on the pre-change plugin (email domain example.invalid, mail jobs in download mode, payment-link sandbox 501, invoiceStatus queued, mail-off message). Environmental, unrelated to itemTypes. Not fixed here.
 - Not tested: HawkScan (no API key), real iPad/iPhone, any live deploy.
+
+## 2026-10-25 - privacy fixes approved by the owner
+- Owner approved: keep the SHEM-SHIMI admin code out of public bundles (done), merge of that fix and of the neutral callback route into staging/shimi-linked-48 (done), rotation of the staging payment secret (done), documentation update (this entry).
+- Owner has NOT approved: any deploy, any hosting provider or plan, DNS changes.

@@ -30,3 +30,8 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Verified: a price change on a real SHEM item reaches the linked SHIMI item in about 1 second and reverts correctly; the discount (previous price) syncs; stock 0 on SHEM keeps the item listed on SHIMI.
 - Regression on the rebuilt staging: unit 61/0, links 123/0, flow 98/0, payment 39/0 (1 not-run: real provider), woo 36/0, live two-site 49/0.
 - Open: SHEM active=false hides the linked SHIMI item (owner rule says SHIMI is not bound to published+in-stock - needs owner answer); payment equality was tested with fixtures only, not an end-to-end order on the real 48 items; 43 of 48 SHIMI images are placeholders (image generator limit); the 30 old SHIMI-B-* items no longer exist; SHIMI descriptions are empty.
+
+## Update 25.10.2026 (privacy fixes on staging)
+- Merged to staging/shimi-linked-48 and pushed: (1) admin channel code removed from the public bundles and served to administrators only; (2) neutral callback route `/shem-dok/v1/pay/notify`. Staging payment secret rotated on both sites (new random value, identical, not stored in the repo).
+- Evidence: see docs/hosting/privacy-and-hosting-requirements.md. Not merged: experiment/pay-same-origin-proxy.
+- Open: hosting provider and plan (owner), same-origin proxy decision, 2 default "SHEM" strings in the SHIMI bundle, 43 placeholder images, real charged order, verified live backups, historical gateway-id mapping. No deploy approved.

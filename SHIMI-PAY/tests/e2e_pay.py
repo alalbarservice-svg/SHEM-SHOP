@@ -96,7 +96,7 @@ def mock_resp(f, cents=None, cur='ILS', status='COMPLETED', cap='COMPLETED', cus
     c = f['cents'] if cents is None else cents
     return {'id': f['pp'], 'status': status, 'payer': {'name': {'given_name': 'Test', 'surname': 'Buyer'}},
             'purchase_units': [{'custom_id': custom or f['sid'], 'payments': {'captures': [{'id': 'CAP%08d' % random.randint(0, 10**8), 'status': cap, 'amount': {'currency_code': cur, 'value': '%.2f' % (c / 100)}, 'custom_id': custom or f['sid']}]}}]}
-HOOK = r"""add_filter("pre_http_request",function($pre,$a,$u) use($mock,$cb){ if(strpos($u,"/capture")!==false) return ["response"=>["code"=>201,"message"=>"Created"],"body"=>$mock,"headers"=>[],"cookies"=>[]]; if($cb&&strpos($u,"shimi/paid")!==false) return ["response"=>["code"=>$cb,"message"=>"x"],"body"=>"{}","headers"=>[],"cookies"=>[]]; return $pre;},10,3);"""
+HOOK = r"""add_filter("pre_http_request",function($pre,$a,$u) use($mock,$cb){ if(strpos($u,"/capture")!==false) return ["response"=>["code"=>201,"message"=>"Created"],"body"=>$mock,"headers"=>[],"cookies"=>[]]; if($cb&&strpos($u,"pay/notify")!==false) return ["response"=>["code"=>$cb,"message"=>"x"],"body"=>"{}","headers"=>[],"cookies"=>[]]; return $pre;},10,3);"""
 def capture(f, mock, cbcode=None, ppid=None):
     code = '$mock=' + json.dumps(json.dumps(mock)) + ';$cb=' + (str(cbcode) if cbcode else 'null') + ';' + HOOK
     code += '$q=new WP_REST_Request("POST","/shimi-pay/v1/paypal/capture");$q->set_header("content-type","application/json");$q->set_body(wp_json_encode(["sid"=>"%s","token"=>"%s","paypalOrderId"=>"%s"]));$r=rest_do_request($q);echo wp_json_encode(["st"=>$r->get_status(),"d"=>$r->get_data()]);' % (f['sid'], f['tok'], ppid or f['pp'])
@@ -169,7 +169,7 @@ finally:
 
 
 # --- G. security / exposure / disabled-gateway checks that need no real payment (acceptance AC-023..026, AC-032, AC-036)
-CB = SHEM + '/?rest_route=/shem-dok/v1/shimi/paid'
+CB = SHEM + '/?rest_route=/shem-dok/v1/pay/notify'
 fl = new_flow('g'); raw = json.dumps({'orderId': str(fl['oid']), 'status': 'paid', 'currency': 'ILS', 'amountCents': fl['cents'], 'transactionId': 'FORGED1', 'paymentDetails': {'method': 'paypal'}}).encode()
 st, b, _ = http('POST', CB, raw, {'Content-Type': 'application/json', 'x-shem-timestamp': str(int(time.time())), 'x-shem-signature': 'a' * 64})
 ok('G1 forged callback (bad signature) rejected, order stays unpaid', st in (401, 403) and paid(fl) == 'unpaid', st)
@@ -185,7 +185,7 @@ key = php('shem', 'echo wc_get_order(%s)->get_order_key();' % fl['oid'])[0]
 st, b, _ = http('GET', SHEM + '/?rest_route=/shem-pay/v1/status&order=%s&key=%s' % (o2['oid'], key))
 ok('G5 status API with another order id + key -> 404, no order details', st == 404 and b'"paid":true' not in b and b'redirect' not in b, (st, b[:120]))
 # route sweep: every route in our namespaces must refuse an anonymous caller unless it is on the intended public list
-PUBLIC = {'/shem-dok/v1/shimi/paid', '/shem-dok/v1/customer/status', '/shem-pay/v1/status', '/shimi-pay/v1/session', '/shimi-pay/v1/paypal/create', '/shimi-pay/v1/paypal/capture'}
+PUBLIC = {'/shem-dok/v1/pay/notify', '/shem-dok/v1/customer/status', '/shem-pay/v1/status', '/shimi-pay/v1/session', '/shimi-pay/v1/paypal/create', '/shimi-pay/v1/paypal/capture'}
 bad = []; seen = 0
 for site, base_url in (('shem', SHEM), ('shimi', SHIMI)):
     idx = json.loads(http('GET', base_url + '/?rest_route=/')[1])

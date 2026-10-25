@@ -101,7 +101,7 @@ def callback(event, ts=None, secret=None, sig_override=None, headers_override=No
         hd = headers_override
     hd = dict(hd)
     hd['Content-Type'] = 'application/json'
-    return http('POST', '/shem-dok/v1/shimi/paid', headers=hd, data=body, user=None)
+    return http('POST', '/shem-dok/v1/pay/notify', headers=hd, data=body, user=None)
 
 ORDER_PHP = r'''
 function mk($s){

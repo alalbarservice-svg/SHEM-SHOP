@@ -283,7 +283,7 @@ if ($ROLE === 'shem' && $gw) {
         $iv0 = t_call('GET', "/api/checkout-invoice/$oid", null, ['token' => $vt], [], false); t_eq([$iv0['status'], $iv0['json']['error'] ?? null], [409, 'התשלום עדיין לא אושר.'], 'invoice before payment 409');
         t_eq(t_call('GET', "/api/checkout-invoice/$oid", null, ['token' => 'x'], [], false)['status'], 404, 'invoice wrong token 404');
         // rate limit for the same email is 10/hour: not exercised here (not-run)
-        // paid (what SHEM-DOK /shimi/paid does): meta first, then payment_complete
+        // paid (what SHEM-DOK /pay/notify does): meta first, then payment_complete
         $stk0 = t_wc_product_stock('t_core_knit', 't_core_knit-M');
         $woo->update_meta_data('_shem_pay_verified', '1'); $woo->update_meta_data('_shem_pay_method', 'card'); $woo->update_meta_data('_shem_pay_last4', '4242'); $woo->update_meta_data('_shem_pay_brand', 'visa'); $woo->update_meta_data('_shem_pay_auth', 'AUTH1'); $woo->update_meta_data('_shem_pay_installments', '3'); $woo->save();
         $woo->payment_complete('t_core_txn_1');

@@ -10,7 +10,7 @@
  *   SHIMI_PAYPAL_CLIENT_ID      PayPal REST app client id (public; shown to the browser by the PayPal SDK)
  *   SHIMI_PAYPAL_SECRET         PayPal REST app secret (server only)
  *   SHIMI_PAYPAL_ENV            'sandbox' (default). 'live' is refused unless SHIMI_PAYPAL_ALLOW_LIVE is true.
- *   SHIMI_SHEM_CALLBACK_URL     server-to-server URL of SHEM /shem-dok/v1/shimi/paid
+ *   SHIMI_SHEM_CALLBACK_URL     server-to-server URL of SHEM /shem-dok/v1/pay/notify
  *   SHIMI_SHEM_ORIGIN           browser origin of SHEM (frame-ancestors + postMessage target)
  */
 if (!defined('ABSPATH')) exit;

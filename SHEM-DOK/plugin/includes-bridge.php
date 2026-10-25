@@ -3,7 +3,7 @@
  * SHIMI paid-callback adapter.
  *
  * Contract (from SHEM/docs/home-site-protocol.md and shop-channel.md):
- *   POST /wp-json/shem-dok/v1/shimi/paid
+ *   POST /wp-json/shem-dok/v1/pay/notify
  *   headers  x-shem-timestamp (unix seconds, max 5 minutes old), x-shem-signature (hex HMAC-SHA256 of "timestamp.rawBody")
  *   body     { orderId, status:"paid", currency:"ILS", amountCents, transactionId, paymentDetails?:{ method, last4, cardholderName, brand, authorizationCode, installments } }
  * Only a validly signed callback can mark a shem_via_shimi order paid. A browser redirect never does.
@@ -19,7 +19,7 @@ final class ShemDok_Bridge {
  }
 
  static function routes(){
-  register_rest_route('shem-dok/v1','/shimi/paid',['methods'=>'POST','permission_callback'=>'__return_true','callback'=>[self::class,'handle']]);
+  register_rest_route('shem-dok/v1','/pay/notify',['methods'=>'POST','permission_callback'=>'__return_true','callback'=>[self::class,'handle']]);
  }
 
  private static function fail($status,$code,$message){return new WP_REST_Response(['ok'=>false,'code'=>$code,'message'=>$message],$status);}

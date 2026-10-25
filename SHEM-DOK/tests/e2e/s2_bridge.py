@@ -36,7 +36,7 @@ def run():
     r = callback(base, headers_override={}); check('D5 בלי כותרות: 401', r.status == 401, r.status)
     r = callback(base, secret='x' * 40); check('D6 סוד שגוי: 401', r.status == 401, r.status)
     body = json.dumps(base).encode(); hd = sign(body)
-    r = http('POST', '/shem-dok/v1/shimi/paid', headers={**hd, 'Content-Type': 'application/json'}, data=body + b' ', user=None)
+    r = http('POST', '/shem-dok/v1/pay/notify', headers={**hd, 'Content-Type': 'application/json'}, data=body + b' ', user=None)
     check('D7 גוף ששונה אחרי החתימה: 401', r.status == 401, r.status)
     r = callback(None, raw=b'{not json'); check('D8 JSON שבור (חתום): 400', r.status == 400, r.status)
     r = callback(None, raw=json.dumps({'pad': 'x' * 20000}).encode()); check('D9 גוף גדול: 413', r.status == 413, r.status)

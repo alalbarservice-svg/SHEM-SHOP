@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: SHEM Pay Gateway (staging prototype)
- * Description: WooCommerce gateway "shem_via_shimi". Opens a signed payment session at SHIMI (protocol shem-home-v1) and shows the SHIMI payment page embedded inside SHEM. An order becomes paid ONLY from SHIMI's signed callback (shem-dok /shimi/paid), never from the browser. Sandbox only.
+ * Description: WooCommerce gateway "shem_via_shimi". Opens a signed payment session at SHIMI (protocol shem-home-v1) and shows the SHIMI payment page embedded inside SHEM. An order becomes paid ONLY from SHIMI's signed callback (shem-dok /pay/notify), never from the browser. Sandbox only.
  * Version: 0.1.0
  * Requires Plugins: woocommerce
  *

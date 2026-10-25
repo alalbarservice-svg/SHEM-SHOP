@@ -11,7 +11,7 @@ out=wp('shem','eval',php).splitlines()[-1]; o=json.loads(out); print('order',o['
 e={'orderId':str(o['id']),'status':'paid','currency':'ILS','amountCents':o['cents'],'transactionId':'TX-TY-%d'%int(time.time()),'paymentDetails':{'method':'card','last4':'4242','cardholderName':'דנה כהן','brand':'Visa','authorizationCode':'AUTH77','installments':1}}
 body=json.dumps(e,ensure_ascii=False,separators=(',',':')).encode()
 ts=str(int(time.time())); sig=hmac.new(secret.encode(),(ts+'.').encode()+body,hashlib.sha256).hexdigest()
-req=urllib.request.Request('http://localhost:8081/?rest_route=/shem-dok/v1/shimi/paid',data=body,headers={'Content-Type':'application/json','x-shem-timestamp':ts,'x-shem-signature':sig},method='POST')
+req=urllib.request.Request('http://localhost:8081/?rest_route=/shem-dok/v1/pay/notify',data=body,headers={'Content-Type':'application/json','x-shem-timestamp':ts,'x-shem-signature':sig},method='POST')
 try: print('cb',urllib.request.urlopen(req,timeout=60).status)
 except Exception as ex: print('cb err',ex, getattr(ex,'read',lambda:b'')()[:200])
 for _ in range(10):

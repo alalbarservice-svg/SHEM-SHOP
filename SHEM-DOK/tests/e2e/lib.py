@@ -114,7 +114,7 @@ function mk($s){
  if(!empty($s['ship'])){$si=new WC_Order_Item_Shipping();$si->set_method_title('שליח עד הבית');$si->set_method_id('flat_rate');$si->set_total($s['ship']);$o->add_item($si);}
  if(!empty($s['fee'])){$f=new WC_Order_Item_Fee();$f->set_name('עמלה');$f->set_total($s['fee']);$o->add_item($f);}
  $o->set_currency($s['currency']??'ILS');
- $o->set_payment_method($s['gw']??'shem_via_shimi');$o->set_payment_method_title('SHIMI');
+ $o->set_payment_method($s['gw']??'shem_pay');$o->set_payment_method_title('SHIMI');
  if(!empty($s['sess']))$o->update_meta_data('_shem_session_id',$s['sess']);
  $o->calculate_totals(true);
  if(!empty($s['notax'])){foreach($o->get_items() as $i){$i->set_taxes(false);}$o->set_cart_tax(0);$o->set_total($o->get_subtotal());}

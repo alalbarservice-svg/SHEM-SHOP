@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) exit;
  *
  * Open payment, step by step (same order as the worker):
  *   gate -> terms -> customer -> rate limit -> quote -> review token (Scc_Channel_Review::validate_token) -> order draft ->
- *   WooCommerce order (pending, legacy document in meta) -> stock holds (Scc_Channel_Stock::reserve) -> gateway shem_via_shimi ->
+ *   WooCommerce order (pending, legacy document in meta) -> stock holds (Scc_Channel_Stock::reserve) -> gateway shem_pay ->
  *   201 {embedUrl, orderId (legacy UUID), viewToken}. On any failure the holds are released and the worker's error is returned;
  *   the unpaid order stays (like the worker's unpaid order document).
  * A WooCommerce order becomes paid only from the gateway's signed callback (SHEM-DOK /shimi/paid -> payment_complete), see core-orders.php.
@@ -21,7 +21,7 @@ require_once SCC_DIR . 'includes/lib/core-pricing.php';
 require_once SCC_DIR . 'includes/lib/core-order-store.php';
 
 final class Scc_Core_Checkout {
-    const GATEWAY = 'shem_via_shimi';
+    const GATEWAY = 'shem_pay';
 
     private static function gateway(): ?object {
         if (!function_exists('WC') || !WC() || !WC()->payment_gateways()) return null;

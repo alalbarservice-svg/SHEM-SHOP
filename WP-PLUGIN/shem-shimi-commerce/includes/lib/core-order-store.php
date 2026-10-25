@@ -13,7 +13,7 @@ require_once __DIR__ . '/core-products.php';
  */
 final class Scc_Core_Orders {
     const M_ID = '_scc_legacy_id', M_DOC = '_scc_legacy_order', M_UPD = '_scc_legacy_updated_at', M_EMAIL = '_scc_legacy_email', M_TOKEN = '_scc_view_token';
-    const GATEWAY = 'shem_via_shimi';
+    const GATEWAY = 'shem_pay';
 
     /* ------------------------------------------------------------------ lookup / read */
     public static function wc_id(string $legacy_id): int {

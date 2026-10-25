@@ -106,7 +106,7 @@ final class Scc_Admin_Documents {
     public static function payment_link($null, $order, $origin) {
         if ($null !== null || !is_array($order)) return $null;
         if (!function_exists('WC') || !WC() || !WC()->payment_gateways()) return null;
-        $gws = WC()->payment_gateways()->payment_gateways(); $gw = $gws['shem_via_shimi'] ?? null;
+        $gws = WC()->payment_gateways()->payment_gateways(); $gw = $gws['shem_pay'] ?? null;
         if (!is_object($gw) || !$gw->is_available()) return null;
         $found = wc_get_orders(['limit' => 1, 'return' => 'objects', 'meta_key' => '_scc_legacy_id', 'meta_value' => (string) ($order['id'] ?? '')]);
         $wc = $found[0] ?? null; if (!$wc || $wc->is_paid()) return null;

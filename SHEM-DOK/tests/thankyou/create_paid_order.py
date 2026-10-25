@@ -5,7 +5,7 @@ def wp(*a):
 secret=wp('shem','config','get','SHEM_HOME_PAYMENT_SECRET').splitlines()[-1].strip()
 php='''$o=wc_create_order();$o->add_product(wc_get_product(13),1);
 $o->set_billing_first_name("דנה");$o->set_billing_last_name("כהן");$o->set_billing_email("dana@example.test");$o->set_billing_country("IL");
-$o->set_payment_method("shem_via_shimi");$o->set_payment_method_title("SHIMI");$o->calculate_totals(true);$o->set_status("pending");$o->save();
+$o->set_payment_method("shem_pay");$o->set_payment_method_title("SHIMI");$o->calculate_totals(true);$o->set_status("pending");$o->save();
 echo json_encode(["id"=>$o->get_id(),"cents"=>(int)round($o->get_total()*100),"url"=>$o->get_checkout_order_received_url()]);'''
 out=wp('shem','eval',php).splitlines()[-1]; o=json.loads(out); print('order',o['id'])
 e={'orderId':str(o['id']),'status':'paid','currency':'ILS','amountCents':o['cents'],'transactionId':'TX-TY-%d'%int(time.time()),'paymentDetails':{'method':'card','last4':'4242','cardholderName':'דנה כהן','brand':'Visa','authorizationCode':'AUTH77','installments':1}}

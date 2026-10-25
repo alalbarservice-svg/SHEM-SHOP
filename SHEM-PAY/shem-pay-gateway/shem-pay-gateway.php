@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: SHEM Pay Gateway (staging prototype)
- * Description: WooCommerce gateway "shem_via_shimi". Opens a signed payment session at SHIMI (protocol shem-home-v1) and shows the SHIMI payment page embedded inside SHEM. An order becomes paid ONLY from SHIMI's signed callback (shem-dok /shimi/paid), never from the browser. Sandbox only.
+ * Description: WooCommerce gateway "shem_pay". Opens a signed payment session at SHIMI (protocol shem-home-v1) and shows the SHIMI payment page embedded inside SHEM. An order becomes paid ONLY from SHIMI's signed callback (shem-dok /shimi/paid), never from the browser. Sandbox only.
  * Version: 0.1.0
  * Requires Plugins: woocommerce
  *
@@ -17,7 +17,7 @@ add_action('plugins_loaded', function () {
 
  class WC_Gateway_Shem_Via_Shimi extends WC_Payment_Gateway {
   function __construct() {
-   $this->id = 'shem_via_shimi';
+   $this->id = 'shem_pay';
    $this->method_title = 'SHEM via SHIMI';
    $this->method_description = 'Payment is collected by SHIMI and embedded in SHEM.';
    $this->has_fields = false;
@@ -101,7 +101,7 @@ add_action('plugins_loaded', function () {
   if (!class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) return;
   if (!class_exists('Shem_Pay_Blocks')) {
    final class Shem_Pay_Blocks extends Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType {
-    protected $name = 'shem_via_shimi';
+    protected $name = 'shem_pay';
     public function initialize() {}
     public function is_active() { $g = new WC_Gateway_Shem_Via_Shimi(); return $g->is_available(); }
     public function get_payment_method_script_handles() {
@@ -118,7 +118,7 @@ add_action('plugins_loaded', function () {
  add_action('rest_api_init', function () {
   register_rest_route('shem-pay/v1', '/status', ['methods' => 'GET', 'permission_callback' => '__return_true', 'callback' => function (WP_REST_Request $r) {
    $o = wc_get_order((int)$r->get_param('order'));
-   if (!$o || $o->get_payment_method() !== 'shem_via_shimi' || !hash_equals($o->get_order_key(), (string)$r->get_param('key'))) return new WP_REST_Response(['paid' => false], 404);
+   if (!$o || $o->get_payment_method() !== 'shem_pay' || !hash_equals($o->get_order_key(), (string)$r->get_param('key'))) return new WP_REST_Response(['paid' => false], 404);
    $paid = $o->is_paid();
    return new WP_REST_Response(['paid' => $paid, 'redirect' => $paid ? $o->get_checkout_order_received_url() : ''], 200);
   }]);

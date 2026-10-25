@@ -34,3 +34,25 @@ Constants `SHIMI_PAY_PUBLIC_BASE` and `SHIMI_PAY_PROXY_KEY`. When set: embed URL
 - PayPal merchant name shown to customers.
 - iOS Safari and third-party cookies; latency of the extra hop.
 - Residual: the SHIMI domain still lists the `shimi-pay/v1` namespace under `/wp-json/`.
+
+## Test results, staging, 2026-10-25 (experiment branch, not merged)
+
+Measured in the staging containers (SHEM :8081, SHIMI :8082) with Chromium (Playwright) and curl.
+
+| Check | Result |
+|---|---|
+| Pay iframe served under the SHEM origin (/pay-gw/p/...) | pass, 0 hits for "shimi" or "8082" in URLs, headers and bodies |
+| PayPal SDK loads under the SHEM origin, buttons render | pass (client-id `sb`, demo id) |
+| postMessage listener with a path-based origin | pass |
+| Signed paid callback, then redirect to order-received | pass |
+| Gateway id renamed to `shem_pay` | pass (same E2E, order 159) |
+| SHIMI `/wp-json/`: no `shimi-pay/v1`, session and create endpoints return 404 without the key | pass; 200 with the key; `wp/v2` unaffected |
+| SHEM public REST index and `/wp-json/shem-dok/v1` listing no longer show the callback route | pass; the route still answers (401 unsigned) |
+| nginx proxy, same behavior as Apache | pass, body identical; needs `resolver` when `proxy_pass` has variables |
+| Third-party cookies blocked (Chromium flag) | pass; the pay frame sets 0 cookies |
+| Latency, 200 requests, 20 concurrent: direct / Apache / nginx p50 | 234 / 231 / 242 ms |
+| PayPal popup | opens from the SHEM-origin frame; order creation fails (502) because staging has no real sandbox REST credentials |
+
+Facts that cannot be tested from this sandbox: Cloudflare Tunnel (port 7844 and SRV DNS blocked), real PayPal order, capture and 3DS (needs sandbox client-id and secret from the owner), iOS Safari (webkit not installed), outgoing mail headers, Certificate Transparency (crt.sh blocked).
+
+Known residual: the callback path `/wp-json/shem-dok/v1/shimi/paid` contains the word "shimi" and is discoverable only by guessing or OPTIONS on that exact path. Public bundles of the live sites mention the link in admin UI strings (SHEM bundle: 5 mentions of SHIMI; SHIMI bundle: 10 mentions of SHEM).

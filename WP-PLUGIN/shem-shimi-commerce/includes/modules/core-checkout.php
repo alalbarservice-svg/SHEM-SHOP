@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) exit;
  *   WooCommerce order (pending, legacy document in meta) -> stock holds (Scc_Channel_Stock::reserve) -> gateway shem_via_shimi ->
  *   201 {embedUrl, orderId (legacy UUID), viewToken}. On any failure the holds are released and the worker's error is returned;
  *   the unpaid order stays (like the worker's unpaid order document).
- * A WooCommerce order becomes paid only from the gateway's signed callback (SHEM-DOK /shimi/paid -> payment_complete), see core-orders.php.
+ * A WooCommerce order becomes paid only from the gateway's signed callback (SHEM-DOK /pay/notify -> payment_complete), see core-orders.php.
  *
  * Filters: scc_core_checkout_enabled (bool $enabled, array $operations, array $home) -> bool, scc_core_require_home_sku (bool, default false).
  */

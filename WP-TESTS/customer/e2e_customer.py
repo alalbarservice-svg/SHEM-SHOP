@@ -61,12 +61,12 @@ try:
     ev = {'orderId': str(wc_id), 'status': 'paid', 'currency': 'ILS', 'amountCents': total_c, 'transactionId': 'TX-E2E-%d' % int(time.time()), 'paymentDetails': {'method': 'card', 'last4': '4242', 'cardholderName': 'דנה כהן', 'brand': 'Visa', 'authorizationCode': 'AUTH77', 'installments': 1}}
     body = json.dumps(ev, ensure_ascii=False, separators=(',', ':')).encode(); ts = str(int(time.time()))
     sig = hmac.new(secret.encode(), (ts + '.').encode() + body, hashlib.sha256).hexdigest()
-    st, cb, _ = http('POST', '/?rest_route=/shem-dok/v1/shimi/paid', None, {'x-shem-timestamp': ts, 'x-shem-signature': sig}) if False else (None, None, None)
-    req = urllib.request.Request(BASE + '/?rest_route=/shem-dok/v1/shimi/paid', data=body, headers={'Content-Type': 'application/json', 'x-shem-timestamp': ts, 'x-shem-signature': sig}, method='POST')
+    st, cb, _ = http('POST', '/?rest_route=/shem-dok/v1/pay/notify', None, {'x-shem-timestamp': ts, 'x-shem-signature': sig}) if False else (None, None, None)
+    req = urllib.request.Request(BASE + '/?rest_route=/shem-dok/v1/pay/notify', data=body, headers={'Content-Type': 'application/json', 'x-shem-timestamp': ts, 'x-shem-signature': sig}, method='POST')
     try: cbst = urllib.request.urlopen(req, timeout=90).status
     except urllib.error.HTTPError as e: cbst = e.code
     chk('signed paid callback accepted (200)', cbst == 200, cbst)
-    bad = urllib.request.Request(BASE + '/?rest_route=/shem-dok/v1/shimi/paid', data=body, headers={'Content-Type': 'application/json', 'x-shem-timestamp': ts, 'x-shem-signature': '0' * 64}, method='POST')
+    bad = urllib.request.Request(BASE + '/?rest_route=/shem-dok/v1/pay/notify', data=body, headers={'Content-Type': 'application/json', 'x-shem-timestamp': ts, 'x-shem-signature': '0' * 64}, method='POST')
     try: badst = urllib.request.urlopen(bad, timeout=60).status
     except urllib.error.HTTPError as e: badst = e.code
     chk('callback with a wrong signature is refused (401/403)', badst in (401, 403), badst)

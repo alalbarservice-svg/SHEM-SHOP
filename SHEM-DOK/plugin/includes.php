@@ -12,7 +12,7 @@ class ShemDokPermanent extends Exception {}
 final class ShemDok {
  const VERSION = '1.1.0';
  const DB_VERSION = 2;
- const GATEWAY = 'shem_via_shimi';
+ const GATEWAY = 'shem_pay';
 
  /* ---------- storage ---------- */
  static function table(){global $wpdb;return $wpdb->prefix.'shem_dok';}

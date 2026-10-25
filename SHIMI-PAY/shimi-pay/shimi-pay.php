@@ -44,6 +44,7 @@ final class Shimi_Pay {
 
  /* ---------- 1. signed session creation (SHEM -> SHIMI) ---------- */
  static function create_session(WP_REST_Request $r){
+  if(!self::gate_ok())return self::fail(404,'not_found','Not found');
   $secret=self::secret(); if($secret===null)return self::fail(503,'not_configured','Not configured');
   $raw=$r->get_body(); if(strlen($raw)>65536)return self::fail(413,'too_large','Body too large');
   $ts=(string)$r->get_header('x-shem-timestamp'); $sig=strtolower((string)$r->get_header('x-shem-signature'));
@@ -73,7 +74,11 @@ final class Shimi_Pay {
    return new WP_REST_Response(['embedUrl'=>self::embed_url($sid,$tok),'reused'=>false],200);
   });
  }
- static function embed_url($sid,$tok){ return add_query_arg(['shimi_pay'=>$sid,'token'=>$tok],home_url('/')); }
+ /* Optional same-origin mode: SHIMI_PAY_PUBLIC_BASE = URL under the SHEM domain that a reverse proxy maps to this site (/p/{sid}/{token} and /api/*). Unset = old behaviour. */
+ static function public_base(){ $b=defined('SHIMI_PAY_PUBLIC_BASE')?SHIMI_PAY_PUBLIC_BASE:''; return (is_string($b)&&strpos($b,'http')===0)?rtrim($b,'/'):''; }
+ /* Optional: SHIMI_PAY_PROXY_KEY. When set, the payment page and the two browser endpoints answer only requests that carry header X-Pay-Gw = key (added by the SHEM-side proxy); direct hits on this domain get a bare 404 with no CSP/frame-ancestors. */
+ static function gate_ok(){ if(!defined('SHIMI_PAY_PROXY_KEY')||!is_string(SHIMI_PAY_PROXY_KEY)||SHIMI_PAY_PROXY_KEY==='')return true; $h=(string)($_SERVER['HTTP_X_PAY_GW']??''); return $h!==''&&hash_equals(SHIMI_PAY_PROXY_KEY,$h); }
+ static function embed_url($sid,$tok){ $b=self::public_base(); if($b!=='')return $b.'/p/'.$sid.'/'.$tok; return add_query_arg(['shimi_pay'=>$sid,'token'=>$tok],home_url('/')); }
 
  /* A reused session cannot return the original token (only its hash is stored): issue a fresh token and replace the hash. */
  static function rotate_token(&$rec){ $tok=bin2hex(random_bytes(16)); $rec['th']=hash('sha256',$tok); return $tok; }
@@ -83,6 +88,7 @@ final class Shimi_Pay {
  /* ---------- 2. embeddable page ---------- */
  static function render_page(){
   if(!isset($_GET['shimi_pay']))return;
+  if(!self::gate_ok()){ status_header(404); exit; }
   $sid=(string)$_GET['shimi_pay']; $tok=(string)($_GET['token']??'');
   $rec=self::auth_session($sid,$tok);
   nocache_headers(); header('Referrer-Policy: no-referrer'); header('X-Content-Type-Options: nosniff');
@@ -91,23 +97,23 @@ final class Shimi_Pay {
   header('Content-Type: text/html; charset=utf-8');
   if(!$rec){ status_header(404); echo '<!doctype html><meta charset="utf-8"><body dir="rtl" style="font-family:Arial">קישור התשלום אינו תקף.'; exit; }
   $paid=in_array($rec['state'],['paid','callback_ok','callback_pending'],true);
-  $cfg=['api'=>esc_url_raw(rest_url(self::NS)),'sid'=>$sid,'token'=>$tok,'parent'=>$fa,'cid'=>(self::pp_ready()?SHIMI_PAYPAL_CLIENT_ID:''),'paid'=>$paid];
+  $pb=self::public_base(); $cfg=['api'=>$pb!==''?$pb.'/api':esc_url_raw(rest_url(self::NS)),'src'=>$pb!==''?'pay-frame':'shimi-pay','sid'=>$sid,'token'=>$tok,'parent'=>$fa,'cid'=>(self::pp_ready()?SHIMI_PAYPAL_CLIENT_ID:''),'paid'=>$paid];
   echo '<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>תשלום מאובטח</title>';
   echo '<style>body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:16px;color:#111}h2{margin:.2em 0}.amt{font-size:1.3rem;font-weight:700;margin:.6em 0}.msg{margin:1em 0;padding:.8em;border-radius:6px}.ok{background:#e8f5e9}.err{background:#fdecea}</style></head><body>';
   echo '<h2>תשלום מאובטח</h2><p>פרטי האשראי אינם נשמרים במערכת.</p><div class="amt">סכום לתשלום: '.esc_html(number_format($rec['amountCents']/100,2)).' ₪</div><div id="btns"></div><div id="msg"></div>';
-  echo '<script>window.SHIMI_PAY='.wp_json_encode($cfg).';</script>';
+  echo '<script>window.PF='.wp_json_encode($cfg).';</script>';
   echo '<script>'.self::page_js().'</script>';
-  if(!$paid&&self::pp_ready()) echo '<script src="https://www.paypal.com/sdk/js?client-id='.esc_attr(SHIMI_PAYPAL_CLIENT_ID).'&amp;currency=ILS&amp;intent=capture&amp;components=buttons&amp;locale=he_IL" onload="shimiInit()"></script>';
-  elseif(!$paid) echo '<script>shimiMsg("err","אפשרות התשלום אינה זמינה כרגע.")</script>';
+  if(!$paid&&self::pp_ready()) echo '<script src="https://www.paypal.com/sdk/js?client-id='.esc_attr(SHIMI_PAYPAL_CLIENT_ID).'&amp;currency=ILS&amp;intent=capture&amp;components=buttons&amp;locale=he_IL" onload="pfInit()"></script>';
+  elseif(!$paid) echo '<script>pfMsg("err","אפשרות התשלום אינה זמינה כרגע.")</script>';
   echo '</body></html>'; exit;
  }
  static function page_js(){ return <<<'JS'
-(function(){var C=window.SHIMI_PAY;
+(function(){var C=window.PF;
 function m(c,t){var e=document.getElementById('msg');e.className='msg '+c;e.textContent=t}
-window.shimiMsg=m;
+window.pfMsg=m;
 function post(p,b){return fetch(C.api+p,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){j._http=r.status;return j})})}
-function done(){m('ok','התשלום בוצע. ממשיכים לאישור ההזמנה...');if(C.parent&&window.parent!==window){window.parent.postMessage({source:'shimi-pay',status:'completed',sid:C.sid},C.parent)}}
-window.shimiInit=function(){if(typeof paypal==='undefined'){m('err','טעינת PayPal נכשלה.');return}
+function done(){m('ok','התשלום בוצע. ממשיכים לאישור ההזמנה...');if(C.parent&&window.parent!==window){window.parent.postMessage({source:C.src,status:'completed',sid:C.sid},C.parent)}}
+window.pfInit=function(){if(typeof paypal==='undefined'){m('err','טעינת PayPal נכשלה.');return}
 paypal.Buttons({
  createOrder:function(){return post('/paypal/create',{sid:C.sid,token:C.token}).then(function(d){if(!d.id)throw new Error(d.message||'create failed');return d.id})},
  onApprove:function(d){return post('/paypal/capture',{sid:C.sid,token:C.token,paypalOrderId:d.orderID}).then(function(r){if(r.ok)done();else m('err','התשלום לא הושלם. לא בוצע חיוב או שהתשלום ממתין לאישור.')})},
@@ -135,7 +141,7 @@ JS; }
  }
 
  /* ---------- 3. create PayPal order (amount comes from the server-side session, never from the browser) ---------- */
- static function pp_create(WP_REST_Request $r){
+ static function pp_create(WP_REST_Request $r){ if(!self::gate_ok())return self::fail(404,'not_found','Not found');
   if(!self::pp_ready())return self::fail(503,'not_configured','PayPal not configured');
   $p=$r->get_json_params()?:[]; $rec=self::auth_session((string)($p['sid']??''),(string)($p['token']??''));
   if(!$rec)return self::fail(404,'session','Invalid session');
@@ -152,7 +158,7 @@ JS; }
  }
 
  /* ---------- 4. capture + verification + signed callback ---------- */
- static function pp_capture(WP_REST_Request $r){
+ static function pp_capture(WP_REST_Request $r){ if(!self::gate_ok())return self::fail(404,'not_found','Not found');
   if(!self::pp_ready())return self::fail(503,'not_configured','PayPal not configured');
   $p=$r->get_json_params()?:[]; $rec=self::auth_session((string)($p['sid']??''),(string)($p['token']??''));
   if(!$rec)return self::fail(404,'session','Invalid session');
@@ -229,6 +235,8 @@ add_action('http_api_curl',function($h,$args,$url){
  if(defined('SHIMI_CA_BUNDLE'))curl_setopt($h,CURLOPT_CAINFO,SHIMI_CA_BUNDLE);
 },10,3);
 add_action('rest_api_init',['Shimi_Pay','routes']);
+/* same-origin mode: REST responses of this namespace must not announce this site's own URL (Link: <home/wp-json/>) to the browser */
+add_filter('rest_pre_serve_request',function($served,$result,$request){ if(Shimi_Pay::public_base()!==''&&strpos((string)$request->get_route(),'/'.Shimi_Pay::NS.'/')===0)header_remove('Link'); return $served; },10,3);
 add_action('init',['Shimi_Pay','render_page'],1);
 add_action('shimi_pay_retry',['Shimi_Pay','send_callback']);
 add_action('shimi_pay_reconcile',['Shimi_Pay','reconcile']);
@@ -244,3 +252,7 @@ if (defined('WP_CLI') && WP_CLI) {
    WP_CLI::line($sid.' order='.$rec['orderId'].' state='.$rec['state'].' attempts='.$rec['cbAttempts'].($rec['cbError']?' err='.$rec['cbError']:'')); }
  });
 }
+
+/* Proxy mode: the SHIMI domain reveals nothing without the proxy key: no namespace in the REST index, no route answers. */
+add_filter('rest_pre_dispatch',function($r,$server,$request){ if(Shimi_Pay::public_base()!==''&&defined('SHIMI_PAY_PROXY_KEY')&&strpos((string)$request->get_route(),'/'.Shimi_Pay::NS)===0&&!Shimi_Pay::gate_ok())return new WP_Error('rest_no_route','No route was found matching the URL and request method.',['status'=>404]); return $r; },10,3);
+add_filter('rest_index',function($resp){ if(Shimi_Pay::public_base()===''||!defined('SHIMI_PAY_PROXY_KEY'))return $resp; $d=$resp->get_data(); if(isset($d['namespaces']))$d['namespaces']=array_values(array_diff($d['namespaces'],[Shimi_Pay::NS])); if(isset($d['routes']))foreach(array_keys($d['routes']) as $k)if(strpos($k,'/'.Shimi_Pay::NS)===0)unset($d['routes'][$k]); $resp->set_data($d); return $resp; });

@@ -42,7 +42,7 @@ st, body, _ = http('POST', SHIMI + '/?rest_route=/shimi-pay/v1/session', b'{}', 
 ok('A7 unsigned -> 401', st == 401)
 
 # --- B. real WooCommerce order on SHEM through the gateway
-oid = php('shem', r'''$o=wc_create_order();$o->add_product(wc_get_product(13),1);$o->set_billing_first_name("Test");$o->set_billing_last_name("Buyer");$o->set_billing_email("buyer1@example.test");$o->set_payment_method("shem_via_shimi");$o->set_currency("ILS");$s=new WC_Order_Item_Shipping();$s->set_method_title("Courier");$s->set_total(5.10);$o->add_item($s);$o->calculate_totals();$o->save();echo $o->get_id();''')[0]
+oid = php('shem', r'''$o=wc_create_order();$o->add_product(wc_get_product(13),1);$o->set_billing_first_name("Test");$o->set_billing_last_name("Buyer");$o->set_billing_email("buyer1@example.test");$o->set_payment_method("shem_pay");$o->set_currency("ILS");$s=new WC_Order_Item_Shipping();$s->set_method_title("Courier");$s->set_total(5.10);$o->add_item($s);$o->calculate_totals();$o->save();echo $o->get_id();''')[0]
 ok('B1 order created', oid.isdigit(), oid)
 pay = php('shem', f'$o=wc_get_order({oid});$g=new WC_Gateway_Shem_Via_Shimi();$r=$g->process_payment({oid});echo wp_json_encode(["r"=>$r["result"],"u"=>$r["redirect"]??"","e"=>wc_get_order({oid})->get_meta("_shem_pay_embed"),"s"=>wc_get_order({oid})->get_status(),"t"=>wc_get_order({oid})->get_total()]);')[0]
 pj = json.loads(pay) if pay.startswith('{') else {}
@@ -87,7 +87,7 @@ poll = http('GET', SHEM + f'/?rest_route=/shem-pay/v1/status&order={oid}&key=bad
 #        card processing are available in this sandbox account); order creation, HMAC, the callback to SHEM and the invoice are real.
 import random
 def new_flow(tag):
-    o = php('shem', r"""$o=wc_create_order();$o->add_product(wc_get_product(13),1);$o->set_billing_first_name("Test");$o->set_billing_last_name("Buyer");$o->set_billing_email("buyer1@example.test");$o->set_payment_method("shem_via_shimi");$o->set_currency("ILS");$o->calculate_totals();$o->save();$g=new WC_Gateway_Shem_Via_Shimi();$g->process_payment($o->get_id());echo wp_json_encode(["id"=>$o->get_id(),"cents"=>(int)round($o->get_total()*100),"e"=>wc_get_order($o->get_id())->get_meta("_shem_pay_embed")]);""")[0]
+    o = php('shem', r"""$o=wc_create_order();$o->add_product(wc_get_product(13),1);$o->set_billing_first_name("Test");$o->set_billing_last_name("Buyer");$o->set_billing_email("buyer1@example.test");$o->set_payment_method("shem_pay");$o->set_currency("ILS");$o->calculate_totals();$o->save();$g=new WC_Gateway_Shem_Via_Shimi();$g->process_payment($o->get_id());echo wp_json_encode(["id"=>$o->get_id(),"cents"=>(int)round($o->get_total()*100),"e"=>wc_get_order($o->get_id())->get_meta("_shem_pay_embed")]);""")[0]
     j = json.loads(o); m = re.search(r'shimi_pay=([a-f0-9]{24})&token=([a-f0-9]{32})', j['e'].replace('&#038;', '&').replace('&amp;', '&'))
     s, k = m.group(1), m.group(2)
     st, d = jpost('/paypal/create', {'sid': s, 'token': k})
@@ -204,12 +204,12 @@ ok('G7 no secret in public pages / PayPal frame / receipt page (%d pages)' % len
 logs = subprocess.run('for c in shem-staging-shem-1 shem-staging-shimi-1; do docker exec $c sh -c "cat /var/www/html/wp-content/debug.log 2>/dev/null"; docker logs --tail 3000 $c 2>&1; done', shell=True, capture_output=True, text=True).stdout
 ok('G8 no secret in debug / web logs', not any(s and s in logs for s in secs.values()))
 # gateway switched off -> not offered (AC-032)
-php('shem', r'update_option("woocommerce_shem_via_shimi_settings",["enabled"=>"no"]);echo "ok";')
+php('shem', r'update_option("woocommerce_shem_pay_settings",["enabled"=>"no"]);echo "ok";')
 try:
-    avail = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_via_shimi",$a)?"offered":"hidden";')[0]
+    avail = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_pay",$a)?"offered":"hidden";')[0]
 finally:
-    php('shem', r'delete_option("woocommerce_shem_via_shimi_settings");echo "ok";')
-back = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_via_shimi",$a)?"offered":"hidden";')[0]
+    php('shem', r'delete_option("woocommerce_shem_pay_settings");echo "ok";')
+back = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_pay",$a)?"offered":"hidden";')[0]
 ok('G9 gateway disabled -> not offered; restored afterwards', avail == 'hidden' and back == 'offered', (avail, back))
 
 print(json.dumps({'oid': oid, 'sid': sid, 'ppid': ppid}))

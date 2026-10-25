@@ -6,7 +6,7 @@
  *   POST /wp-json/shem-dok/v1/pay/notify
  *   headers  x-shem-timestamp (unix seconds, max 5 minutes old), x-shem-signature (hex HMAC-SHA256 of "timestamp.rawBody")
  *   body     { orderId, status:"paid", currency:"ILS", amountCents, transactionId, paymentDetails?:{ method, last4, cardholderName, brand, authorizationCode, installments } }
- * Only a validly signed callback can mark a shem_via_shimi order paid. A browser redirect never does.
+ * Only a validly signed callback can mark a shem_pay order paid. A browser redirect never does.
  * The secret is read from the constant SHEM_HOME_PAYMENT_SECRET or the environment variable HOME_PAYMENT_SECRET. It is never stored in the database.
  * If no secret of at least 32 characters is configured, the endpoint answers 503 and does nothing (fail closed).
  */

@@ -93,6 +93,35 @@ add_action('plugins_loaded', function () {
   static function heading() { $s = get_option('shem_pay_received_heading', ''); return $s !== '' ? $s : 'הזמנתך התקבלה'; }
  }
 
+
+ /* In-WordPress pass-through for same-origin payment mode. The customer's browser talks only to this site (/pay-gw/...);
+    this code forwards the two allowed request shapes to the payment host with the shared key header. No web-server
+    (Apache/nginx/CDN) configuration is needed, so it works on any host. Requires SHEM_PAY_BACKEND and SHEM_PAY_PROXY_KEY. */
+ add_action('init', function () {
+  if (!defined('SHEM_PAY_BACKEND') || !defined('SHEM_PAY_PROXY_KEY') || SHEM_PAY_PROXY_KEY === '') return;
+  $path = (string) wp_parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+  if (!preg_match('#^/pay-gw/(?:p/([a-f0-9]{24})/([a-f0-9]{16,64})|api/paypal/(create|capture))$#', $path, $m)) return;
+  $isApi = !empty($m[3]);
+  $method = (string)($_SERVER['REQUEST_METHOD'] ?? 'GET');
+  if ($method !== ($isApi ? 'POST' : 'GET')) { status_header(405); header('Allow: ' . ($isApi ? 'POST' : 'GET')); exit; }
+  $base = rtrim((string) SHEM_PAY_BACKEND, '/');
+  $args = ['timeout' => 25, 'redirection' => 0, 'method' => $method, 'headers' => ['x-pay-gw' => SHEM_PAY_PROXY_KEY, 'Accept' => $isApi ? 'application/json' : 'text/html']];
+  if ($isApi) {
+   $body = (string) file_get_contents('php://input', false, null, 0, 65536);
+   $args['body'] = $body; $args['headers']['Content-Type'] = 'application/json';
+   $url = $base . '/wp-json/shimi-pay/v1/paypal/' . $m[3];
+  } else {
+   $url = $base . '/?shimi_pay=' . $m[1] . '&token=' . $m[2];
+  }
+  $r = wp_remote_request($url, $args);
+  if (is_wp_error($r)) { status_header(502); header('Cache-Control: no-store'); exit; }
+  status_header((int) wp_remote_retrieve_response_code($r));
+  foreach (['content-type', 'content-security-policy', 'referrer-policy'] as $h) { $v = wp_remote_retrieve_header($r, $h); if (is_string($v) && $v !== '') header($h . ': ' . $v); }
+  header('Cache-Control: no-store'); header('X-Content-Type-Options: nosniff');
+  echo wp_remote_retrieve_body($r);
+  exit;
+ }, 0);
+
  add_filter('woocommerce_payment_gateways', function ($g) { $g[] = 'WC_Gateway_Shem_Via_Shimi'; return $g; });
 
  /* Block checkout support: show the same gateway in the WooCommerce Blocks checkout. Payment still runs through process_payment() ->

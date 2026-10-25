@@ -16,12 +16,12 @@ tar -C "$R/$BRAND" --exclude=node_modules --exclude=dist -cf - . | tar -C "$S" -
 D=$S/dist/client
 for f in index admin order-complete; do test -s "$D/$f.html" || { echo "missing $f.html"; exit 1; }; done
 mkdir -p "$OUT"
-rm -rf "$OUT/shell" "$OUT/public" "$OUT/inc"
+rm -rf "$OUT/shell" "$OUT/public" "$OUT/inc" "$OUT/private"
 mkdir -p "$OUT/shell" "$OUT/public" "$OUT/inc"
 for f in index admin order-complete; do cp -p "$D/$f.html" "$OUT/shell/$f.html"; done
-( cd "$D" && find . -type f ! -name index.html ! -name admin.html ! -name order-complete.html -print0 | while IFS= read -r -d '' f; do mkdir -p "$OUT/public/$(dirname "$f")"; cp -p "$f" "$OUT/public/$f"; done )
+( cd "$D" && find . -type f ! -path './admin-private/*' ! -name index.html ! -name admin.html ! -name order-complete.html -print0 | while IFS= read -r -d '' f; do mkdir -p "$OUT/public/$(dirname "$f")"; cp -p "$f" "$OUT/public/$f"; done )
 cp "$T/_shared/functions.php" "$T/_shared/index.php" "$T/_shared/404.php" "$OUT/"
-cp "$T/_shared/inc/disable-extras.php" "$T/_shared/inc/shell.php" "$T/_shared/inc/static.php" "$OUT/inc/"
+cp "$T/_shared/inc/disable-extras.php" "$T/_shared/inc/shell.php" "$T/_shared/inc/static.php" "$T/_shared/inc/admin-private.php" "$OUT/inc/"
 cat > "$OUT/inc/config.php" <<PHP
 <?php
 if (!defined('ABSPATH')) exit;
@@ -38,7 +38,14 @@ Text Domain: $SLUG
 */
 CSS
 # byte-for-byte check of everything copied
-( cd "$D" && find . -type f ! -name index.html ! -name admin.html ! -name order-complete.html -exec sha256sum {} + | sort -k2 ) > "$S/src.sha"
+# admin-only lazy chunks go to private/ (never served by the web server; inc/admin-private.php serves them to administrators only)
+if [ -d "$D/admin-private" ]; then
+  mkdir -p "$OUT/private/admin-private"; cp -p "$D"/admin-private/*.js "$OUT/private/admin-private/"
+  printf 'Require all denied\n' > "$OUT/private/.htaccess"; printf '<?php // Silence is golden.\n' > "$OUT/private/index.php"
+  ( cd "$D/admin-private" && sha256sum *.js ) > "$S/priv-src.sha"; ( cd "$OUT/private/admin-private" && sha256sum *.js ) > "$S/priv-dst.sha"
+  diff -q "$S/priv-src.sha" "$S/priv-dst.sha" && echo "$SLUG: $(wc -l < "$S/priv-dst.sha") private admin chunk(s) byte-identical"
+fi
+( cd "$D" && find . -type f ! -path './admin-private/*' ! -name index.html ! -name admin.html ! -name order-complete.html -exec sha256sum {} + | sort -k2 ) > "$S/src.sha"
 ( cd "$OUT/public" && find . -type f -exec sha256sum {} + | sort -k2 ) > "$S/dst.sha"
 diff -q "$S/src.sha" "$S/dst.sha" && echo "$SLUG: $(wc -l < "$S/dst.sha") static files byte-identical to vite output"
 cp "$S/src.sha" "$OUT/public.sha256"

@@ -6,6 +6,8 @@ export default defineConfig({
   define: { "import.meta.env.VITE_SHOP_ROLE": JSON.stringify("home") },
   build: {
     outDir: "dist/client",
+    // Dynamic chunks (admin-only code) go to a path the WordPress theme serves to administrators only.
+    rollupOptions: { output: { chunkFileNames: "admin-private/[name]-[hash].js" } },
   },
   optimizeDeps: {
     include: ["react", "react-dom/client"],

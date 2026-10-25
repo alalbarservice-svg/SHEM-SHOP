@@ -12,3 +12,4 @@ define('STOREFRONT_CONFIG', require STOREFRONT_DIR . 'inc/config.php');
 require_once STOREFRONT_DIR . 'inc/disable-extras.php';
 require_once STOREFRONT_DIR . 'inc/shell.php';
 require_once STOREFRONT_DIR . 'inc/static.php';
+require_once STOREFRONT_DIR . 'inc/admin-private.php';

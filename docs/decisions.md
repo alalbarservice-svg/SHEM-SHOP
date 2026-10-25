@@ -69,3 +69,15 @@
 ## 25.10.2026 - SHIMI sync rule and real items (owner)
 - The rule "item shown only if published and in stock" does not apply to SHIMI. SKU, price, discounts and promotions come from SHEM items. Links are created, copied and edited only in the admin interfaces. A SHEM purchase is cleared on SHIMI and must match the SHEM order exactly (SKUs, discounts, price, total).
 - Real SHEM items are the 48 priced 1.00 ILS. The 9 others are demo and must not be linked. 48 real SHIMI items are linked one-to-one to them (staging).
+
+## 25.10.2026 - SHEM brand and category visibility mechanism (owner requirement, recorded late)
+- Required, SHEM storefront only: only brands with at least one shown item are displayed; within a brand only item categories (shoes, shirts, knitwear etc.) that have shown items are displayed. Empty brands or categories disappear by themselves and reappear by themselves when an item is added, with no design breakage.
+- A shown item = active and in stock. A brand whose items all sell out disappears until restocked. Does not apply to SHIMI.
+- Applies everywhere in the storefront: menu, home, filters, brand pages, designers page.
+- A direct link to an empty brand or category redirects to the shop.
+- The admin can add, edit and remove item categories. New brands are added only through work with the agent, not from the admin UI.
+- Status found on 25.10.2026 (measured on staging): only the hiding of empty categories inside a brand page worked. Empty brand still shown on home, no redirect, stock not checked, no category management in admin. This requirement was never in docs or acceptance before this entry. Build tracked as AC-083 to AC-089.
+
+## 2026-10-25 - verification of brand/category visibility (staging)
+- Admin suite regression: SHEM 326 pass / 7 fail, SHIMI 317 / 5 fail. The same 7 SHEM failures reproduce byte-for-byte on the pre-change plugin (email domain example.invalid, mail jobs in download mode, payment-link sandbox 501, invoiceStatus queued, mail-off message). Environmental, unrelated to itemTypes. Not fixed here.
+- Not tested: HawkScan (no API key), real iPad/iPhone, any live deploy.

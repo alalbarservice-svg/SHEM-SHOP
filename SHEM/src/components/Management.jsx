@@ -652,6 +652,16 @@ export function Management({ section, onChange }) {
     setError("");
     try {
       setProducts(await adminApi("products"));
+      try {
+        const st = (await adminApi("settings")).store;
+        if (Array.isArray(st?.itemTypes) && st.itemTypes.length)
+          options.productType = [
+            ["", "לפי סוג הפריט הקיים"],
+            ...st.itemTypes.map((t) => [t.key, t.he]),
+          ];
+      } catch {
+        /* keep the built-in list */
+      }
       if (def) setRows(await api(kind));
       if (section === "orders") {
         setLoyaltyCards(await api("cards"));

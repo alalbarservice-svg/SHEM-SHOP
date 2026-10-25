@@ -14,6 +14,32 @@ final class Scc_Admin_Settings {
     public static function mail_configured(): bool { return (bool) apply_filters('scc_admin_mail_configured', defined('SCC_RESEND_API_KEY') && defined('SCC_MAIL_FROM') && SCC_RESEND_API_KEY && SCC_MAIL_FROM); }
     public static function home_configured(): bool { return defined('SCC_HOME_CHECKOUT_URL') && defined('SCC_HOME_PAYMENT_SECRET') && SCC_HOME_CHECKOUT_URL && SCC_HOME_PAYMENT_SECRET; }
 
+    public const DEFAULT_ITEM_TYPES = ['shirts', 'trousers', 'knitwear', 'jackets', 'shoes', 'accessories', 'clothing'];
+    /** Configured item-category keys (store setting itemTypes), or the built-in 7 when none is configured. */
+    public static function item_type_keys(): array {
+        $st = Scc_Admin::setting('store');
+        $t = is_array($st) && is_array($st['itemTypes'] ?? null) ? array_column($st['itemTypes'], 'key') : [];
+        return $t ? array_values($t) : self::DEFAULT_ITEM_TYPES;
+    }
+    /** Validate [{key,he,en}]: key slug 1-30 [a-z0-9-], he/en 1-40 chars, unique, max 30. Fails with a Hebrew message. */
+    public static function sanitize_item_types($in): array {
+        if (!is_array($in) || !array_is_list($in)) Scc_Admin::fail('רשימת הקטגוריות אינה תקינה.');
+        $out = []; $seen = [];
+        foreach ($in as $t) {
+            if (!is_array($t)) Scc_Admin::fail('רשימת הקטגוריות אינה תקינה.');
+            $key = is_string($t['key'] ?? null) ? $t['key'] : '';
+            $he = Scc_Admin::str($t['he'] ?? null, 40);
+            $en = Scc_Admin::str($t['en'] ?? null, 40);
+            if (!preg_match('/^[a-z0-9-]{1,30}\z/', $key)) Scc_Admin::fail('מזהה קטגוריה חייב להיות באותיות לועזיות קטנות, ספרות ומקף, עד 30 תווים.');
+            if ($he === '') Scc_Admin::fail('לכל קטגוריה נדרש שם בעברית.');
+            if (isset($seen[$key])) Scc_Admin::fail('מזהה קטגוריה כפול.');
+            $seen[$key] = true;
+            $out[] = ['key' => $key, 'he' => $he, 'en' => $en !== '' ? $en : $he];
+        }
+        if (!$out || count($out) > 30) Scc_Admin::fail('מספר הקטגוריות חייב להיות בין 1 ל-30.');
+        return $out;
+    }
+
     /* ---- PUT /api/admin/settings (club|store|business|integrations) ---- */
     public static function put_setting(Scc_Request $r): Scc_Response {
         $d = Scc_Admin::body($r, 'en');
@@ -30,9 +56,23 @@ final class Scc_Admin_Settings {
                 Scc_Admin::fail('כדי להפעיל הרשמה יש להזין קישור למדיניות פרטיות.');
             $out = ['title' => $s('title', 150), 'description' => $s('description', 1000), 'benefits' => $s('benefits', 2000), 'enabled' => ($v['enabled'] ?? null) === true, 'privacyUrl' => $s('privacyUrl', 500)];
         } else { // store
+            $cur = Scc_Admin::setting('store'); if (!is_array($cur)) $cur = [];
+            if (array_key_exists('itemTypes', $v)) {
+                $types = self::sanitize_item_types($v['itemTypes']);
+                $removed = array_diff(self::item_type_keys(), array_column($types, 'key'));
+                if ($removed) {
+                    foreach (Scc_Admin::store('products')->rows() as $p) {
+                        if (!empty($p['archived'])) continue;
+                        if (in_array($p['productType'] ?? '', $removed, true)) Scc_Admin::fail('לא ניתן להסיר קטגוריה שיש בה פריטים. העבירו את הפריטים לקטגוריה אחרת ונסו שוב.', 409);
+                    }
+                }
+            } else {
+                $types = is_array($cur['itemTypes'] ?? null) ? $cur['itemTypes'] : null;
+            }
             $brands = [];
             if (is_array($v['brands'] ?? null) && array_is_list($v['brands'])) foreach ($v['brands'] as $b) { $b = Scc_Admin::str($b, 80); if ($b !== '') $brands[] = $b; }
             $out = ['heroTitle' => $s('heroTitle', 100), 'heroSubtitle' => $s('heroSubtitle', 200), 'contactEmail' => Scc_Admin::cfg_email(), 'warehouseSystem' => $s('warehouseSystem', 200), 'brands' => array_slice($brands, 0, 100)];
+            if ($types !== null) $out['itemTypes'] = $types;
         }
         Scc_Admin::save_setting($key, $out);
         return Scc_Admin::json(['ok' => true]);

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { adminApi } from "../admin-api";
 import { money } from "../commerce";
 import { products as examples } from "../catalogue";
+import { defaultProductTypes } from "../designers";
 import {
   List,
   X,
@@ -76,6 +77,23 @@ const initialStore = {
     "Ralph Lauren",
     "Essential",
   ],
+};
+const defaultItemTypes = defaultProductTypes.map(([key, he, en]) => ({
+  key,
+  he,
+  en,
+}));
+const itemTypeKey = (en, taken) => {
+  const base =
+    String(en || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 24) || "cat";
+  let key = base,
+    n = 2;
+  while (taken.includes(key)) key = `${base}-${n++}`;
+  return key;
 };
 export function Admin({ route }) {
   const section =
@@ -181,6 +199,11 @@ export function Admin({ route }) {
       setEdit(null);
     }, "המוצר נשמר בשרת.");
   };
+  const itemTypes =
+    Array.isArray(store.itemTypes) && store.itemTypes.length
+      ? store.itemTypes
+      : defaultItemTypes;
+  const [newType, setNewType] = useState({ he: "", en: "" });
   const saveSetting = (key, value) =>
     action(
       () =>
@@ -606,6 +629,127 @@ export function Admin({ route }) {
                               שמירת מותגים
                             </button>
                           </form>
+                          <h2>קטגוריות פריטים</h2>
+                          <p>
+                            קטגוריות מוצגות בעמוד כל מותג רק כשיש בהן פריט פעיל
+                            ובמלאי. לא ניתן להסיר קטגוריה שיש בה פריטים.
+                          </p>
+                          <form
+                            className="admin-item-types"
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              saveSetting("store", { ...store, itemTypes });
+                            }}
+                          >
+                            {itemTypes.map((t, i) => (
+                              <div className="admin-form-grid" key={t.key}>
+                                <label>
+                                  שם בעברית
+                                  <input
+                                    value={t.he}
+                                    maxLength={40}
+                                    onChange={(e) =>
+                                      setStore({
+                                        ...store,
+                                        itemTypes: itemTypes.map((x, j) =>
+                                          j === i
+                                            ? { ...x, he: e.target.value }
+                                            : x,
+                                        ),
+                                      })
+                                    }
+                                  />
+                                </label>
+                                <label>
+                                  שם באנגלית
+                                  <input
+                                    value={t.en}
+                                    maxLength={40}
+                                    dir="ltr"
+                                    onChange={(e) =>
+                                      setStore({
+                                        ...store,
+                                        itemTypes: itemTypes.map((x, j) =>
+                                          j === i
+                                            ? { ...x, en: e.target.value }
+                                            : x,
+                                        ),
+                                      })
+                                    }
+                                  />
+                                </label>
+                                <button
+                                  type="button"
+                                  disabled={busy || itemTypes.length < 2}
+                                  aria-label={`הסרת הקטגוריה ${t.he}`}
+                                  onClick={() => {
+                                    const next = itemTypes.filter(
+                                      (_, j) => j !== i,
+                                    );
+                                    setStore({ ...store, itemTypes: next });
+                                    saveSetting("store", {
+                                      ...store,
+                                      itemTypes: next,
+                                    });
+                                  }}
+                                >
+                                  הסרה
+                                </button>
+                              </div>
+                            ))}
+                            <button className="admin-primary" disabled={busy}>
+                              שמירת קטגוריות
+                            </button>
+                          </form>
+                          <form
+                            className="admin-item-types-add"
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              if (!newType.he.trim()) return;
+                              const next = [
+                                ...itemTypes,
+                                {
+                                  key: itemTypeKey(
+                                    newType.en,
+                                    itemTypes.map((x) => x.key),
+                                  ),
+                                  he: newType.he.trim(),
+                                  en: newType.en.trim() || newType.he.trim(),
+                                },
+                              ];
+                              setStore({ ...store, itemTypes: next });
+                              setNewType({ he: "", en: "" });
+                              saveSetting("store", {
+                                ...store,
+                                itemTypes: next,
+                              });
+                            }}
+                          >
+                            <label>
+                              קטגוריה חדשה - בעברית
+                              <input
+                                value={newType.he}
+                                maxLength={40}
+                                onChange={(e) =>
+                                  setNewType({ ...newType, he: e.target.value })
+                                }
+                              />
+                            </label>
+                            <label>
+                              באנגלית
+                              <input
+                                value={newType.en}
+                                maxLength={40}
+                                dir="ltr"
+                                onChange={(e) =>
+                                  setNewType({ ...newType, en: e.target.value })
+                                }
+                              />
+                            </label>
+                            <button className="admin-primary" disabled={busy}>
+                              הוספת קטגוריה
+                            </button>
+                          </form>
                         </section>
                       )}
                       {section === "orders" && (
@@ -1027,13 +1171,7 @@ export function Admin({ route }) {
                 >
                   {[
                     ["", "לפי סוג הפריט הקיים"],
-                    ["shirts", "חולצות"],
-                    ["trousers", "מכנסיים"],
-                    ["knitwear", "סריגים"],
-                    ["jackets", "ז׳קטים"],
-                    ["shoes", "נעליים"],
-                    ["accessories", "אקססוריז"],
-                    ["clothing", "בגדים נוספים"],
+                    ...itemTypes.map((t) => [t.key, t.he]),
                   ].map(([v, label]) => (
                     <option key={v} value={v}>
                       {label}

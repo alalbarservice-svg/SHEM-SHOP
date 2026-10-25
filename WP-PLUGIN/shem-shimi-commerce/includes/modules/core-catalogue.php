@@ -61,6 +61,7 @@ final class Scc_Core_Catalogue {
         };
         foreach (['heroTitle', 'heroSubtitle'] as $k) { [$has, $v] = $pick($k); if ($has) $out[$k] = $v; else unset($out[$k]); }
         if (property_exists($store, 'brands')) $out['brands'] = $store->brands; else unset($out['brands']);
+        if (!empty($store->itemTypes) && is_array($store->itemTypes)) $out['itemTypes'] = $store->itemTypes; else unset($out['itemTypes']);
         $out['business'] = self::obj_setting('business');
         return $out;
     }

@@ -216,7 +216,7 @@ final class Scc_Admin_Catalog {
         $record += ['sku' => $sku, 'homeSku' => $S('homeSku', 100), 'homeProductId' => $S('homeProductId', 100), 'variants' => $variants];
         if ($sizeStock !== null) { $o = new stdClass(); foreach ($sizeStock as $k => $n) $o->{(string) $k} = Scc_Admin::nv($n); $record['sizeStock'] = $o; }
         $record += ['description' => $S('description', 3000), 'material' => $S('material', 500), 'care' => $S('care', 500), 'demo' => ($d['demo'] ?? null) === true, 'he' => $S('he'), 'en' => $S('en') ?: $S('he'), 'brand' => $S('brand')];
-        if (SCC_ROLE === 'shem') $record['productType'] = in_array($d['productType'] ?? null, ['shirts', 'trousers', 'knitwear', 'jackets', 'shoes', 'accessories', 'clothing'], true) ? $d['productType'] : '';
+        if (SCC_ROLE === 'shem') $record['productType'] = in_array($d['productType'] ?? null, Scc_Admin_Settings::item_type_keys(), true) ? $d['productType'] : '';
         $record += ['cat' => in_array($d['cat'] ?? null, ['clothing', 'shoes', 'accessories'], true) ? $d['cat'] : 'clothing', 'price' => Scc_Admin::nv(Scc_Admin::round($price * 100) / 100)];
         if ($previous > $price) $record['previousPrice'] = Scc_Admin::nv($previous);
         $record += ['stock' => Scc_Admin::nv($stock), 'sizes' => $sizes, 'color' => $S('color', 50), 'image' => $image, 'imageUrl' => $imageUrl, 'active' => ($d['active'] ?? null) !== false];

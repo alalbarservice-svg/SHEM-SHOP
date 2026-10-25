@@ -1,4 +1,11 @@
-import { designers, designerFor } from "./designers";
+import {
+  designers,
+  designerFor,
+  designerProducts,
+  visibleDesigners,
+  normalizeItemTypes,
+  productType,
+} from "./designers";
 import { shemMonogram } from "./brand-logo-assets";
 import {
   DesignerLogo,
@@ -324,7 +331,34 @@ export function App() {
     setError("");
     setPanel("cart");
   };
-  const currentDesigner = designers.find((d) => route === `/brand/${d.slug}`);
+  const brandRoute = /^\/brand\/([^/]+)(?:\/([^/]+))?$/.exec(route);
+  const currentDesigner = brandRoute
+    ? designers.find((d) => d.slug === brandRoute[1])
+    : undefined;
+  const brandRouteType = brandRoute?.[2] || "";
+  const itemTypes = normalizeItemTypes(storeContent.itemTypes);
+  const shownDesigners = visibleDesigners(products);
+  // A direct link to an empty brand or category goes to the shop.
+  useEffect(() => {
+    if (!brandRoute || catalogueStatus !== "ready" || !catalogueConnected) return;
+    if (!currentDesigner) {
+      location.hash = "/shop";
+      return;
+    }
+    const items = designerProducts(products, currentDesigner);
+    const emptyType =
+      brandRouteType &&
+      !items.some((p) => productType(p, itemTypes) === brandRouteType);
+    if (!items.length || emptyType) location.hash = "/shop";
+  }, [
+    route,
+    currentDesigner,
+    brandRouteType,
+    catalogueStatus,
+    catalogueConnected,
+    products,
+    storeContent.itemTypes,
+  ]);
   const current = products.find((p) => route === `/product/${p.id}`);
   const selectedColor =
     colorChoice || current?.variants?.[0]?.color || current?.color || "";
@@ -582,9 +616,11 @@ export function App() {
           <button onClick={() => shop("accessories")}>
             {t("אקססוריז", "Accessories")}
           </button>
-          <button onClick={() => setPanel("brands")}>
-            {t("מותגי SHEM", "SHEM designers")}
-          </button>
+          {shownDesigners.length > 0 && (
+            <button onClick={() => setPanel("brands")}>
+              {t("מותגי SHEM", "SHEM designers")}
+            </button>
+          )}
           <button onClick={() => shop()}>{t("חדש באתר", "New in")}</button>
           <button onClick={() => go("/club")}>
             {t("מועדון חברים", "Members club")}
@@ -684,13 +720,18 @@ export function App() {
                 )}
               </p>
             </section>
-            <section className="designer-strip">
-              <p className="eyebrow">THE LABELS</p>
-              <h2>{t("מותגי SHEM", "SHEM designers")}</h2>
-              <div>
-                <DesignerChoices onChoose={(d) => go(`/brand/${d.slug}`)} />
-              </div>
-            </section>
+            {shownDesigners.length > 0 && (
+              <section className="designer-strip">
+                <p className="eyebrow">THE LABELS</p>
+                <h2>{t("מותגי SHEM", "SHEM designers")}</h2>
+                <div>
+                  <DesignerChoices
+                    list={shownDesigners}
+                    onChoose={(d) => go(`/brand/${d.slug}`)}
+                  />
+                </div>
+              </section>
+            )}
             <section className="editorial">
               <div>
                 <span className="eyebrow">MORE THAN A LABEL</span>
@@ -1059,6 +1100,8 @@ export function App() {
             products={products}
             card={card}
             he={he}
+            itemTypes={itemTypes}
+            initialType={brandRouteType}
           />
         ) : route === "/shop" || route === "/wishlist" || !!collection ? (
           <section className="page catalogue">
@@ -1071,20 +1114,23 @@ export function App() {
                 : collection?.title || t("הקולקציה", "The collection")}
             </h1>
             <div className="filter-bar">
-              <fieldset className="catalogue-brand-filter">
-                <legend>{t("מותגי SHEM", "SHEM designers")}</legend>
-                <button
-                  className="text-button"
-                  aria-pressed={!brand}
-                  onClick={() => setBrand("")}
-                >
-                  {t("הכול", "All")}
-                </button>
-                <DesignerChoices
-                  selected={designerFor(brand)?.slug}
-                  onChoose={(d) => setBrand(d.name)}
-                />
-              </fieldset>
+              {shownDesigners.length > 0 && (
+                <fieldset className="catalogue-brand-filter">
+                  <legend>{t("מותגי SHEM", "SHEM designers")}</legend>
+                  <button
+                    className="text-button"
+                    aria-pressed={!brand}
+                    onClick={() => setBrand("")}
+                  >
+                    {t("הכול", "All")}
+                  </button>
+                  <DesignerChoices
+                    list={shownDesigners}
+                    selected={designerFor(brand)?.slug}
+                    onChoose={(d) => setBrand(d.name)}
+                  />
+                </fieldset>
+              )}
               <label>
                 {t("קטגוריה", "Category")}
                 <select value={cat} onChange={(e) => setCat(e.target.value)}>
@@ -1309,7 +1355,10 @@ export function App() {
           <section className="page designers">
             <p className="eyebrow">THE LABELS</p>
             <h1>{t("מותגי SHEM", "SHEM designers")}</h1>
-            <DesignerChoices onChoose={(d) => go(`/brand/${d.slug}`)} />
+            <DesignerChoices
+              list={shownDesigners}
+              onChoose={(d) => go(`/brand/${d.slug}`)}
+            />
           </section>
         ) : (
           <section className="page narrow story">
@@ -1580,7 +1629,10 @@ export function App() {
                   ))}
               </>
             ) : panel === "brands" ? (
-              <DesignerChoices onChoose={(d) => go(`/brand/${d.slug}`)} />
+              <DesignerChoices
+                list={shownDesigners}
+                onChoose={(d) => go(`/brand/${d.slug}`)}
+              />
             ) : panel === "menu" ? (
               <nav className="drawer-menu">
                 <button onClick={() => go("/club")}>
@@ -1595,9 +1647,11 @@ export function App() {
                     {t(h, e)}
                   </button>
                 ))}
-                <button onClick={() => setPanel("brands")}>
-                  {t("מותגי SHEM", "SHEM designers")}
-                </button>
+                {shownDesigners.length > 0 && (
+                  <button onClick={() => setPanel("brands")}>
+                    {t("מותגי SHEM", "SHEM designers")}
+                  </button>
+                )}
                 <button onClick={() => go("/wishlist")}>
                   {t("המועדפים שלי", "My wishlist")}
                 </button>

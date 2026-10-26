@@ -32,3 +32,26 @@ Once live, for BOTH stores: no one can tell the server IP or location, who owns 
 
 ## Not verifiable from the sandbox (environment facts)
 Cloudflare Tunnel, real PayPal order/capture/3DS, iOS Safari, outgoing mail headers, Certificate Transparency lookups, HawkScan (no API key).
+
+## Pre-purchase test results (2026-10-26)
+
+Measured with: RDAP (rdap.godaddy.com, rdap.verisign.com), Python HTTP scan of both staging sites, Chromium e2e, PayPal developer docs.
+
+### Domains (live RDAP, both registered 2026-10-12 at GoDaddy)
+- shem-shop.com and shimishop.co: registrant and technical contact show "Domains By Proxy, LLC, Tempe, Arizona" (GoDaddy privacy proxy). The owner's name, email, address and country are NOT in public RDAP. The country shown is the proxy's, not the owner's.
+- Keep the registrar at GoDaddy and only point the nameservers at Cloudflare. A registrar transfer is not needed.
+- Public link signals that cannot be changed: both domains were created 12 seconds apart at the same registrar. Both currently resolve to the same two GoDaddy-side IPs (this changes when DNS moves to the new servers).
+- .co: IANA has no RDAP for .co and port 43 is blocked in the sandbox; the .co record above came from the registrar RDAP.
+
+### PayPal
+- SHIMI create-order already sends experience_context.brand_name = "SHEM". PayPal docs: brand_name overrides the business name from the PayPal account on the PayPal site.
+- Not covered by brand_name: the card statement name is a separate field in the PayPal account (Business information, "Credit Card Statement Name"); set it to a SHEM-neutral name in the SHIMI PayPal account. Receipts: the PayPal docs checked do not state which seller fields appear; verify with one real sandbox or small live payment before go-live.
+
+### Staging public-surface scan (before and after fix/public-surface-hardening)
+Before: X-Powered-By PHP version, /wp-json/wp/v2/users listing "admin", /?author=1 redirect, xmlrpc.php answering, readme.html and license.txt public.
+After (core-hardening.php module): no X-Powered-By on PHP responses, users endpoint 404 for anonymous (200 for admin), ?author=1 404, xmlrpc 403, no X-Pingback, no outbound self-pings, no generator tags. Payment e2e re-run: pay frame found, callback ok, order-received, 0 requests to SHIMI.
+Still web-server level (go-live checklist): deny readme.html, license.txt, xmlrpc.php; ServerTokens Prod / hide Server header; Cloudflare replaces the Server header at the edge (confirm in the post-setup tests).
+
+### Tunnel
+- cloudflared needs outbound TCP/UDP 7844 to region1.v2.argotunnel.com and region2.v2.argotunnel.com. The sandbox cannot resolve these hosts, so Tunnel cannot run here. It can only be proven on a real server.
+- Proof plan: 1-day hourly VPS (a few cents), full stack, all post-setup tests, then destroy before buying permanent servers.

@@ -85,3 +85,9 @@
 ## 2026-10-25 - privacy fixes approved by the owner
 - Owner approved: keep the SHEM-SHIMI admin code out of public bundles (done), merge of that fix and of the neutral callback route into staging/shimi-linked-48 (done), rotation of the staging payment secret (done), documentation update (this entry).
 - Owner has NOT approved: any deploy, any hosting provider or plan, DNS changes.
+
+## 2026-10-26/27 - hosting decisions (owner)
+- Owner goal: SHEM and SHIMI on separate servers. No outgoing email is needed; customer service will be a bot that forwards cases to the owner.
+- Owner already set a SHEM-neutral statement/business name in the SHIMI PayPal account (owner statement, not verified by an agent).
+- Owner approved merging fix/public-surface-hardening into staging/shimi-linked-48 (done, 1ec8a8b).
+- Agent recommendation, NOT yet approved: Hetzner CPX22 (SHEM) and Linode Shared 4GB (SHIMI), Cloudflare Tunnel, one-day hourly test on both before any permanent purchase. Owner asked to pause the purchase 1 to 2 days. See docs/hosting/HANDOFF-server-selection-and-prepurchase-tests.md.

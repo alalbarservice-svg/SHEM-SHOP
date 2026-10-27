@@ -1,3 +1,7 @@
+# PINNED - hosting servers and pre-purchase tests (2026-10-27)
+- Waiting for owner approval to open hourly-billed test servers (Hetzner CPX22 for SHEM, Linode Shared 4GB for SHIMI, one per store). Nothing bought or deployed. Next important step on the hosting track, delayed 1 to 2 days by the owner.
+- Full context, decisions, test plan T1-T8, costs and the open access problem: docs/hosting/HANDOFF-server-selection-and-prepurchase-tests.md. Do not let this drop between other tasks.
+
 # מצב פרויקט - 18.10.2026
 
 - שלב: 1, סטייג'ינג מקומי ב-Docker (שתי התקנות WordPress + WooCommerce 11.2.1, PHP 8.3, MariaDB 11). אין חיבור לדומיינים.

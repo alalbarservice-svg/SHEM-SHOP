@@ -1,5 +1,7 @@
 # Hosting and privacy requirements - SHEM and SHIMI (2026-10-25)
 
+PINNED TASK and full context for continuing: see `HANDOFF-server-selection-and-prepurchase-tests.md` in this folder (updated 2026-10-27).
+
 Status: requirements and current state. No hosting provider, plan, payment provider or DNS plan has been chosen. These are owner decisions and nothing is purchased or deployed until the owner approves.
 
 ## Owner requirements (stated 2026-10-25)
@@ -12,10 +14,10 @@ Once live, for BOTH stores: no one can tell the server IP or location, who owns 
 | Public JS bundles do not carry the SHEM-SHIMI admin strings | Done on branch staging/shimi-linked-48 (commit e731760) | SHEM public bundle: 0 SHIMI strings (was 5). Chunk served only to a logged-in administrator: anonymous 404, subscriber 404, admin 200. Admin screenshots identical before and after. |
 | SHIMI public bundle still has 2 default "SHEM" strings | Open | `OrderComplete` default prop. Fix needs owner approval (text/design area). |
 | Server-to-server callback route has a neutral name | Done on staging/shimi-linked-48 (commit 014d68d) | New route `/shem-dok/v1/pay/notify`: signed callback ok and SHEM order moves to processing; unsigned 401; old route 404. |
-| Customer browser does not see the SHIMI domain during checkout (iframe, API) | EXPERIMENT only, branch experiment/pay-same-origin-proxy, not merged | 0 leak hits in Chromium with a same-origin proxy under `/pay-gw/`. Needs web-server config on the SHEM host (Apache and nginx both tested), or an equivalent rule at the CDN. |
+| Customer browser does not see the SHIMI domain during checkout (iframe, API) | Done on staging: PHP pass-through inside the gateway (cbe0e77), merged into staging/shimi-linked-48. The earlier web-server-config experiment is superseded. | 0 requests to the SHIMI host in Chromium e2e (order 175, 2026-10-26). Real two-server topology not yet tested (test T5 in the handoff). |
 | Server IP and location hidden | Depends on hosting decision | Cloudflare Tunnel could not be tested from the sandbox (port 7844 and SRV DNS blocked). |
-| Domain registrant hidden | Depends on the registrar (WHOIS privacy) | Not checked: registrar not chosen. |
-| PayPal merchant name shown to customers | Not checked | Needs the PayPal account and sandbox keys. |
+| Domain registrant hidden | Done at GoDaddy (Domains By Proxy), both domains incl. .co | Live RDAP 2026-10-26, see results below. |
+| PayPal merchant name shown to customers | brand_name SHEM in code; owner set a neutral statement name in the SHIMI PayPal account (owner statement, not read back) | Receipt contents not verified; needs sandbox keys or one small real payment. |
 
 ## Server requirements found during testing
 - `private/` folder inside each storefront theme holds admin-only JS. Apache: the shipped `.htaccess` denies it. nginx ignores `.htaccess`, so add: `location ~ ^/wp-content/themes/[^/]+/private/ { deny all; }`
@@ -31,7 +33,7 @@ Once live, for BOTH stores: no one can tell the server IP or location, who owns 
 6. Verified live backups, then the deploy-readiness gate, then the owner's explicit "פרוס".
 
 ## Not verifiable from the sandbox (environment facts)
-Cloudflare Tunnel, real PayPal order/capture/3DS, iOS Safari, outgoing mail headers, Certificate Transparency lookups, HawkScan (no API key).
+Cloudflare Tunnel, real PayPal order/capture/3DS, iOS Safari, Certificate Transparency lookups, HawkScan (no API key).
 
 ## Pre-purchase test results (2026-10-26)
 

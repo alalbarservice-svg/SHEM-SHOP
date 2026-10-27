@@ -67,13 +67,16 @@ export function OrderComplete({ brand = "SHEM" }) {
         </span>
         <h1 id="order-complete-title">
           {paid
-            ? `תודה שרכשת אצלנו ${brand}${brand === "SHEM" ? " מותגים" : ""}`
+            ? `לקוח יקר, תודה שרכשת ב${brand}${brand === "SHEM" ? " מותגים" : ""}`
             : "מאמתים את ההזמנה שלך"}
         </h1>
         {paid ? (
           <>
             <p className="order-complete-caption">
-              לצפייה והורדה של החשבונית לחצו כאן
+              הזמנתך נקלטה, והתשלום בוצע!
+            </p>
+            <p className="order-complete-caption">
+              <b>חשבונית עסקה</b>
             </p>
             {state.invoiceReady ? (
               <div className="order-complete-actions">
@@ -86,15 +89,12 @@ export function OrderComplete({ brand = "SHEM" }) {
                   צפייה בחשבונית העסקה <span aria-hidden="true">↗</span>
                 </a>
                 <a className="invoice-download" href={url + "&download=1"}>
-                  הורדת PDF למכשיר
+                  הורדת חשבונית עסקה
                 </a>
               </div>
             ) : (
               <p role="status" className="order-complete-message">
-                התשלום אושר. חשבונית העסקה עדיין אינה זמינה. לקבלת המסמך ניתן
-                לפנות ל-
-                <a href="mailto:your.shem88@gmail.com">your.shem88@gmail.com</a>
-                .
+                החשבונית בהפקה. הכפתור יופיע כאן בעוד רגע.
               </p>
             )}
             <p className="order-complete-reference">

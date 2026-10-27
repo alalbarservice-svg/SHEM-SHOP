@@ -39,3 +39,7 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Merged to staging/shimi-linked-48 and pushed: (1) admin channel code removed from the public bundles and served to administrators only; (2) neutral callback route `/shem-dok/v1/pay/notify`. Staging payment secret rotated on both sites (new random value, identical, not stored in the repo).
 - Evidence: see docs/hosting/privacy-and-hosting-requirements.md. Not merged: experiment/pay-same-origin-proxy.
 - Open: hosting provider and plan (owner), same-origin proxy decision, 2 default "SHEM" strings in the SHIMI bundle, 43 placeholder images, real charged order, verified live backups, historical gateway-id mapping. No deploy approved.
+
+## Update 27.10.2026 (order-pay, invoice, wording)
+- Branch fix/order-complete-approved-wording: owner-approved thank-you wording restored in SHEM source and theme rebuilt; e2e_customer 42/0 on staging. Report: docs/reports/2026-10-27-order-pay-and-invoice-diagnosis.md.
+- Open: merge approval, delete order 176, keep/revert shem_dok_settings.auto on staging, PDF engine packaging for production, SHIMI wording check.

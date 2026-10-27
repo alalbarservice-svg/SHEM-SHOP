@@ -26,7 +26,7 @@ snap = subprocess.run([W, 'shem', 'db', 'query', "SELECT id, HEX(data) FROM wp_s
 prev = dict(l.split('\t') for l in snap if '\t' in l); open(OUT + '/settings-backup.json', 'w').write(json.dumps(prev))
 def restore():
     subprocess.run([W, 'shem', 'db', 'query', "DELETE FROM wp_scc_settings WHERE id IN ('operations','home')"], capture_output=True)
-    for k, hx in prev.items(): subprocess.run([W, 'shem', 'db', 'query', f"INSERT INTO wp_scc_settings (id, data) SELECT '{k}', UNHEX('{hx}')"], capture_output=True)
+    for k, hx in prev.items(): subprocess.run([W, 'shem', 'db', 'query', f"INSERT INTO wp_scc_settings (id, data, updated_at) SELECT '{k}', UNHEX('{hx}'), NOW()"], capture_output=True)
 wo = json.loads(bytes.fromhex(prev['operations']))['value'] if 'operations' in prev else {}
 wh = json.loads(bytes.fromhex(prev['home']))['value'] if 'home' in prev else {}
 php = ("$o=Scc_Docs::setting('operations',[]);$o=is_array($o)?$o:[];$o['checkoutEnabled']=true;Scc_Docs::set_setting('operations',$o);"

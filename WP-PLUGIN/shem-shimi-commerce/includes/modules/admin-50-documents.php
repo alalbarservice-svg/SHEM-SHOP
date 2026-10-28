@@ -7,9 +7,10 @@
  *   scc_admin_payment_link     unpaid order -> {embedUrl, orderId}
  *   scc_admin_mail_process     mail is OFF while SCC_INVOICE_DELIVERY_MODE === 'download' (admin-30 already short-circuits); no sender is registered.
  *
- * Rendering only: this module never issues a SHEM-DOK tax invoice and never consumes a SHEM-DOK number.
- * The number printed on the page is the legacy document number (or the order id for an unpaid order). Paid orders get their
- * tax invoice from SHEM-DOK (see core-orders.php); the admin page is a view of the order/legacy document.
+ * With SHEM-DOK active the SHEM-DOK invoice is THE document of a paid order: the admin list/links read it (Scc_Core_Admin_InvoiceDocs),
+ * the PDF kinds serve its stored, integrity-checked PDF (byte-identical to the customer copy) and "issue document" issues it through
+ * ShemDok::issue_for_order (idempotent per order, so it never makes a second document or number). Legacy documents stay readable.
+ * Without SHEM-DOK, or for an unpaid order / template preview, this module renders the legacy document and issues nothing.
  * PDF engine: mPDF from this plugin's vendor dir, otherwise from the SHEM-DOK plugin's vendor dir (same site). If neither exists
  * the PDF kinds answer 501 with the reason; html and the other kinds still work.
  */
@@ -88,8 +89,36 @@ final class Scc_Admin_Documents {
             'vatCents' => (($b['vatMode'] ?? '') === 'included') ? (int) round(24900 * (float) ($b['vatRate'] ?? 0) / (100 + (float) ($b['vatRate'] ?? 0))) : 0]];
     }
 
+    /** SHEM-DOK is the document engine when the plugin is loaded. */
+    private static function dok(): bool { return class_exists('ShemDok') && method_exists('ShemDok', 'issue_for_order'); }
+
+    /** Admin "issue document" for a paid order: the SHEM-DOK invoice (an existing one is returned by the store overlay before this runs). */
+    public static function issue($null, $order) {
+        if ($null !== null || !self::dok() || !is_array($order) || !function_exists('wc_get_order')) return $null;
+        // A payment the admin confirmed by hand was not verified by a signed SHIMI callback, so SHEM-DOK refuses to invoice it by design:
+        // that order keeps the legacy document path (template check, legacy number) exactly as before.
+        if (($order['paymentSource'] ?? '') === 'manual-external') return $null;
+        $wc = Scc_Core_Orders::wc_id((string) ($order['id'] ?? '')); $o = $wc ? wc_get_order($wc) : null;
+        if (!$o) return $null; // document-table-only order: no WooCommerce order to invoice, the legacy path applies
+        try { ShemDok::issue_for_order($o); }
+        catch (Throwable $e) { Scc_Admin::fail('הפקת החשבונית נכשלה: ' . $e->getMessage(), $e instanceof ShemDokPermanent ? 409 : 502); }
+        $doc = Scc_Admin::store('invoice_documents')->get((string) $order['id']);
+        if (!$doc) Scc_Admin::fail('החשבונית לא נמצאה לאחר ההפקה.', 502);
+        return ['document' => $doc, 'mail' => Scc_Admin_Manage::process_mail(false)];
+    }
+
+    /** PDF of a SHEM-DOK invoice: the stored copy, never re-rendered and never a new number. */
+    private static function dok_pdf(array $doc, string $kind) {
+        if ($kind === 'html') Scc_Admin::fail('תצוגת HTML אינה זמינה למסמך SHEM-DOK. יש להשתמש ב-PDF.', 501);
+        try { $bytes = ShemDok::stored_pdf((int) $doc['dokId']); }
+        catch (ShemDokHttp $e) { Scc_Admin::fail($e->getMessage(), (int) $e->getCode() ?: 502); }
+        return Scc_Response::raw($bytes, 'application/pdf', 200, ['content-disposition' => 'inline; filename="SHEM-' . (int) $doc['dokId'] . '.pdf"', 'x-content-type-options' => 'nosniff']);
+    }
+
     public static function render($null, string $kind, array $ctx) {
         if ($null !== null) return $null;
+        $dd = $kind === 'order-pdf' ? ($ctx['invoice'] ?? null) : ($ctx['doc'] ?? null);
+        if (self::dok() && is_array($dd) && ($dd['engine'] ?? '') === 'shem-dok' && in_array($kind, ['html', 'pdf', 'order-pdf'], true)) return self::dok_pdf($dd, $kind);
         if (!in_array($kind, ['html', 'pdf', 'order-pdf', 'template-preview'], true)) return null;
         $preview = $kind === 'template-preview';
         if ($preview) { $want_pdf = !empty($ctx['pdf']); $ctx = self::sample(); }
@@ -119,4 +148,5 @@ final class Scc_Admin_Documents {
     }
 }
 add_filter('scc_admin_document_render', ['Scc_Admin_Documents', 'render'], 10, 3);
+add_filter('scc_admin_issue_document', ['Scc_Admin_Documents', 'issue'], 10, 2);
 add_filter('scc_admin_payment_link', ['Scc_Admin_Documents', 'payment_link'], 10, 3);

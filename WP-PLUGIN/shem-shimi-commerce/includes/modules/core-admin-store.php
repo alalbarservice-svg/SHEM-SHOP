@@ -138,5 +138,49 @@ final class Scc_Core_Admin_Orders extends Scc_Admin_Store {
     }
 }
 
+/**
+ * invoice_documents with SHEM-DOK active: the SHEM-DOK invoice IS the document of a paid order (one order, one document, one number).
+ * Read view over the SHEM-DOK table keyed by the legacy order id, so the admin list, the "invoice PDF" links and issue-document
+ * (which answers with the existing document instead of building a second, legacy one) work unchanged. Legacy rows stay readable.
+ * Writes are not redirected: the invoice is only ever created by SHEM-DOK (see Scc_Admin_Documents::issue).
+ */
+final class Scc_Core_Admin_InvoiceDocs extends Scc_Admin_Store {
+    public function __construct() { parent::__construct('invoice_documents'); }
+    /** @return array<int,array> SHEM-DOK invoices linked to a WooCommerce order, newest first (optionally one order). */
+    private function dok_rows(int $limit, int $wc = 0): array {
+        global $wpdb; $t = ShemDok::table();
+        $sql = "SELECT id,order_id,gross_cents,created_at,updated_at FROM $t WHERE doc_type='invoice' AND deleted=0 AND order_id>0" . ($wc > 0 ? ' AND order_id=%d ORDER BY id ASC LIMIT 1' : ' ORDER BY id DESC LIMIT %d');
+        return (array) $wpdb->get_results($wpdb->prepare($sql, $wc > 0 ? $wc : $limit), ARRAY_A);
+    }
+    private static function view(array $r, string $legacy): array {
+        $at = (string) ($r['created_at'] ?? '');
+        return ['id' => $legacy, 'orderId' => $legacy, 'number' => (string) (int) $r['id'], 'engine' => 'shem-dok', 'dokId' => (int) $r['id'],
+            'totalCents' => (int) $r['gross_cents'], 'issuedAt' => $at, 'revision' => (string) ($r['updated_at'] ?? $at)];
+    }
+    public function rows(int $limit = 1000): array {
+        $rows = [];
+        if (function_exists('wc_get_order')) {
+            foreach ($this->dok_rows($limit) as $r) {
+                $o = wc_get_order((int) $r['order_id']); if (!$o) continue;
+                $legacy = (string) $o->get_meta(Scc_Core_Orders::M_ID); if ($legacy === '') continue;
+                if (isset($rows[$legacy]) && $rows[$legacy]['dokId'] < (int) $r['id']) continue; // the first invoice of an order is the order's document
+                $rows[$legacy] = self::view($r, $legacy);
+            }
+        }
+        foreach (parent::rows($limit) as $r) if (!isset($rows[$r['id']])) $rows[$r['id']] = $r;
+        $rows = array_values($rows);
+        usort($rows, fn($a, $b) => strcmp((string) $b['revision'], (string) $a['revision']) ?: strcmp((string) $b['id'], (string) $a['id']));
+        return array_slice($rows, 0, $limit);
+    }
+    public function get(string $id): ?array {
+        $wc = function_exists('wc_get_order') ? Scc_Core_Orders::wc_id($id) : 0;
+        if ($wc > 0) { $r = $this->dok_rows(1, $wc)[0] ?? null; if ($r) return self::view($r, $id); }
+        return parent::get($id);
+    }
+    public function exists(string $id): bool { return $this->get($id) !== null; }
+    public function count(): int { return count($this->rows(5000)); }
+}
+
 add_filter('scc_admin_store_products', function ($s) { return $s ?: new Scc_Core_Admin_Products(); });
 add_filter('scc_admin_store_orders', function ($s) { return $s ?: new Scc_Core_Admin_Orders(); });
+add_filter('scc_admin_store_invoice_documents', function ($s) { return $s ?: (class_exists('ShemDok') ? new Scc_Core_Admin_InvoiceDocs() : null); });

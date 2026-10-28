@@ -945,9 +945,18 @@ export function Management({ section, onChange }) {
                         )}
                       </td>
                       <td>
-                        {r.archived
-                          ? "בארכיון"
-                          : r.status || (r.active ? "מפורסם" : "טיוטה")}
+                        <span
+                          className="admin-badge"
+                          data-status={
+                            r.archived
+                              ? "archived"
+                              : r.status || (r.active ? "active" : "draft")
+                          }
+                        >
+                          {r.archived
+                            ? "בארכיון"
+                            : r.status || (r.active ? "מפורסם" : "טיוטה")}
+                        </span>
                       </td>
                       <td>
                         <div className="admin-row-actions">

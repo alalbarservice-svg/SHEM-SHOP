@@ -14,31 +14,54 @@ import {
   SlidersHorizontal,
   House,
   Storefront,
+  SquaresFour,
+  Cube,
+  Stack,
+  Warehouse,
+  AddressBook,
+  IdentificationCard,
+  CreditCard,
+  ArrowUUpLeft,
+  Crown,
+  SealPercent,
+  Article,
+  Lifebuoy,
+  Gear,
+  Buildings,
+  RocketLaunch,
+  ClockCounterClockwise,
+  ArrowSquareOut,
 } from "@phosphor-icons/react";
 import "./admin.css";
 import { AdminOperations, exportCSV } from "./AdminOperations";
 import { Integrations } from "./Integrations";
 const tabs = [
-  ["overview", "סקירה", House],
-  ["products", "מוצרים", Package],
-  ["brands", "מותגים", Storefront],
-  ["collections", "קולקציות", Package],
-  ["inventory", "מלאי", Package],
-  ["orders", "הזמנות", Receipt],
-  ["customers", "לקוחות מהזמנות", Users],
-  ["crm", "כרטיסי לקוח", Users],
-  ["cards", "כרטיסי מועדון", Users],
-  ["requests", "שירות והחזרות", Receipt],
-  ["members", "מועדון חברים", Users],
-  ["promotions", "מבצעים", Tag],
-  ["content", "תוכן האתר", SlidersHorizontal],
-  ["experience", "עזרה ושירות עצמי", Users],
-  ["settings", "הגדרות", SlidersHorizontal],
-  ["business", "פרטי העסק", Storefront],
-  ["control", "בקרה והשקה", House],
-  ["audit", "יומן פעולות", Receipt],
-  ["integrations", "סליקה וחשבוניות", Receipt],
+  ["overview", "סקירה", SquaresFour, ""],
+  ["products", "מוצרים", Cube, "קטלוג"],
+  ["brands", "מותגים", Storefront, "קטלוג"],
+  ["collections", "קולקציות", Stack, "קטלוג"],
+  ["inventory", "מלאי", Warehouse, "קטלוג"],
+  ["orders", "הזמנות", Receipt, "מכירות ולקוחות"],
+  ["customers", "לקוחות מהזמנות", Users, "מכירות ולקוחות"],
+  ["crm", "כרטיסי לקוח", AddressBook, "מכירות ולקוחות"],
+  ["cards", "כרטיסי מועדון", IdentificationCard, "מכירות ולקוחות"],
+  ["requests", "שירות והחזרות", ArrowUUpLeft, "מכירות ולקוחות"],
+  ["members", "מועדון חברים", Crown, "מכירות ולקוחות"],
+  ["promotions", "מבצעים", SealPercent, "מכירות ולקוחות"],
+  ["content", "תוכן האתר", Article, "האתר"],
+  ["experience", "עזרה ושירות עצמי", Lifebuoy, "האתר"],
+  ["settings", "הגדרות", Gear, "מערכת"],
+  ["business", "פרטי העסק", Buildings, "מערכת"],
+  ["control", "בקרה והשקה", RocketLaunch, "מערכת"],
+  ["audit", "יומן פעולות", ClockCounterClockwise, "מערכת"],
+  ["integrations", "סליקה וחשבוניות", CreditCard, "מערכת"],
 ];
+const tabGroups = tabs.reduce((groups, tab) => {
+  const last = groups[groups.length - 1];
+  if (last && last.name === tab[3]) last.items.push(tab);
+  else groups.push({ name: tab[3], items: [tab] });
+  return groups;
+}, []);
 const blank = {
   he: "",
   en: "",
@@ -174,6 +197,12 @@ export function Admin({ route }) {
     setNotice("");
     setMobile(false);
   }, [section]);
+  useEffect(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    document
+      .querySelector(".admin-sidebar nav .selected")
+      ?.scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
+  }, [section]);
   const action = async (fn, message) => {
     if (busy) return;
     setBusy(true);
@@ -282,20 +311,39 @@ export function Admin({ route }) {
           <X />
         </button>
         <nav aria-label="ניהול החנות">
-          {tabs.map(([key, label, Icon]) => (
-            <a
-              key={key}
-              href={`#/admin/${key}`}
-              className={section === key ? "selected" : ""}
-              aria-current={section === key ? "page" : undefined}
+          {tabGroups.map((group) => (
+            <div
+              key={group.name || "main"}
+              className="admin-nav-group"
+              role="group"
+              aria-label={group.name || undefined}
             >
-              <Icon size={20} />
-              {label}
-            </a>
+              {group.name && (
+                <span className="admin-nav-label" aria-hidden="true">
+                  {group.name}
+                </span>
+              )}
+              {group.items.map(([key, label, Icon]) => (
+                <a
+                  key={key}
+                  href={`#/admin/${key}`}
+                  className={section === key ? "selected" : ""}
+                  aria-current={section === key ? "page" : undefined}
+                >
+                  <Icon
+                    size={20}
+                    weight={section === key ? "fill" : "regular"}
+                    aria-hidden="true"
+                  />
+                  <span>{label}</span>
+                </a>
+              ))}
+            </div>
           ))}
         </nav>
         <a className="admin-store-link" href="#/">
-          תצוגת החנות
+          <span>תצוגת החנות</span>
+          <ArrowSquareOut size={16} aria-hidden="true" />
         </a>
       </aside>
       <div
@@ -779,7 +827,14 @@ export function Admin({ route }) {
                                       <td>{o.id}</td>
                                       <td>{o.customer?.name}</td>
                                       <td>{money(o.total || 0)}</td>
-                                      <td>{o.status}</td>
+                                      <td>
+                                        <span
+                                          className="admin-badge"
+                                          data-status={o.status}
+                                        >
+                                          {o.status}
+                                        </span>
+                                      </td>
                                       <td>
                                         <button onClick={() => setOrder(o)}>
                                           פתיחה

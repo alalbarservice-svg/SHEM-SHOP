@@ -43,3 +43,7 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 ## Update 27.10.2026 (order-pay, invoice, wording)
 - Branch fix/order-complete-approved-wording: owner-approved thank-you wording restored in SHEM source and theme rebuilt; e2e_customer 42/0 on staging. Report: docs/reports/2026-10-27-order-pay-and-invoice-diagnosis.md.
 - Open: merge approval, delete order 176, keep/revert shem_dok_settings.auto on staging, PDF engine packaging for production, SHIMI wording check.
+
+## Update 28.10.2026 (SHEM-DOK 360)
+- Branch test/shem-dok-360. SHEM-DOK installed and works (auto from signed callback, manual from WP-admin). React admin does NOT embed it (finding F1). Report: docs/reports/2026-10-28-shem-dok-360.md
+- Open: approve F1 fix, real 3DS and HawkScan need owner-provided sandbox keys / StackHawk key, live WC taxes on.

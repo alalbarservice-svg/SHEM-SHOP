@@ -47,3 +47,8 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 ## Update 28.10.2026 (SHEM-DOK 360)
 - Branch test/shem-dok-360. SHEM-DOK installed and works (auto from signed callback, manual from WP-admin). React admin does NOT embed it (finding F1). Report: docs/reports/2026-10-28-shem-dok-360.md
 - Open: approve F1 fix, real 3DS and HawkScan need owner-provided sandbox keys / StackHawk key, live WC taxes on.
+
+## Update 28.10.2026 (F1 admin-DOK bridge)
+- Done on staging: admin "issue document" now returns the SHEM-DOK invoice (no second legacy document). Merged locally (ff) into staging/shimi-linked-48, not pushed. Customer 42/0, legacy-template 21/21, manual payment 12/12 and 11/11, s4 42/42.
+- Open: F2 (manual-external gets no DOK invoice, owner decision), HawkScan needs StackHawk key, real 3DS needs sandbox keys, master has unrelated history (do not push to it).
+- Report: docs/reports/2026-10-28-f1-verification-and-plan.md

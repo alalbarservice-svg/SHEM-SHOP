@@ -91,3 +91,5 @@
 - Owner already set a SHEM-neutral statement/business name in the SHIMI PayPal account (owner statement, not verified by an agent).
 - Owner approved merging fix/public-surface-hardening into staging/shimi-linked-48 (done, 1ec8a8b).
 - Agent recommendation, NOT yet approved: Hetzner CPX22 (SHEM) and Linode Shared 4GB (SHIMI), Cloudflare Tunnel, one-day hourly test on both before any permanent purchase. Owner asked to pause the purchase 1 to 2 days. See docs/hosting/HANDOFF-server-selection-and-prepurchase-tests.md.
+
+- 28.10.2026: owner approved merging fix/order-complete-approved-wording, test/shem-dok-360, fix/admin-dok-bridge and deleting staging test order 176. Done locally via fast-forward into staging/shimi-linked-48; master not used (unrelated history). shem_dok_settings.auto left true pending confirmation.

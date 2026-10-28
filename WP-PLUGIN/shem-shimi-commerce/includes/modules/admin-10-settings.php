@@ -113,7 +113,7 @@ final class Scc_Admin_Settings {
         $unpaid = 0; foreach ($orders as $o) if (($o['paymentStatus'] ?? '') !== 'paid' && empty($o['archived'])) $unpaid++;
         $failed = 0; foreach (Scc_Admin::store('mail_jobs')->rows() as $j) if (($j['status'] ?? '') === 'failed') $failed++;
         return Scc_Admin::json([
-            'database' => true, 'media' => self::media_available(), 'invoiceComplete' => self::invoice_complete(is_array($b) ? $b : []),
+            'database' => true, 'media' => self::media_available(), 'invoiceComplete' => (SCC_ROLE === 'shem' && class_exists('ShemDok')) ? (ShemDok::engine_ready() && trim((string) (array_merge((array) ShemDok::defaults(), (array) (ShemDok::settings()['defaults'] ?? []))['businessId'] ?? '')) !== '') : self::invoice_complete(is_array($b) ? $b : []),
             'mailConfigured' => self::mail_configured(), 'homeConfigured' => self::home_configured(), 'homeEnabled' => (is_array($home) ? ($home['enabled'] ?? null) : null) === true,
             'unmapped' => $unmapped, 'lowStock' => $low, 'outOfStock' => $out, 'archivedProducts' => $arch, 'openReturns' => $reqs, 'unpaid' => $unpaid, 'failedMail' => $failed,
             'checkedAt' => gmdate('Y-m-d\TH:i:s') . '.' . sprintf('%03d', Scc_Admin::ms() % 1000) . 'Z',
@@ -125,6 +125,7 @@ final class Scc_Admin_Settings {
         $d = Scc_Admin::body($r, 'he'); $v = [];
         $s = static fn($k, $n = 500) => Scc_Admin::str($d[$k] ?? null, $n);
         $or = static fn($k) => Scc_Admin::truthy($d[$k] ?? null) ? $d[$k] : 0;
+        if ($key === 'invoice' && Scc_Admin_Manage::legacy_invoice_off()) Scc_Admin::fail('פרטי החשבונית מנוהלים ב-SHEM DOK בלבד.', 410);
         if ($key === 'invoice') {
             $cur = Scc_Admin::setting('invoice');
             if (SCC_ROLE === 'shem' && is_array($cur) && ($cur['registrationNumberScope'] ?? null) === 'invoice') $v['registrationNumberScope'] = 'invoice';
@@ -218,6 +219,7 @@ Scc_Admin::route('GET', '#^/api/admin/manage/settings/(invoice|loyalty|home|oper
 Scc_Admin::route('PUT', '#^/api/admin/manage/settings/(invoice|loyalty|home|operations|content|business)$#', fn(Scc_Request $r) => Scc_Admin_Settings::put_manage_setting($r->params[1], $r));
 // Document rendering is owned by the documents module (filter scc_admin_document_render); until it registers, these answer 501.
 Scc_Admin::route('GET', '#^/api/admin/manage/template-preview(\.pdf)?$#', function (Scc_Request $r) {
+    if (Scc_Admin_Manage::legacy_invoice_off()) Scc_Admin::fail('תצוגת התבנית הוסרה. חשבוניות מנוהלות ב-SHEM DOK.', 410);
     $res = apply_filters('scc_admin_document_render', null, 'template-preview', ['pdf' => !empty($r->params[1])]);
     if ($res instanceof Scc_Response) return $res;
     Scc_Admin::fail('מנוע המסמכים אינו מחובר עדיין (scc_admin_document_render).', 501);

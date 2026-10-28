@@ -37,7 +37,7 @@
  {
   "name": "mobile: editor page renders",
   "ok": true,
-  "detail": "Skip to main content\nMenu\nSHEM staging\nCtrl+K\nOpen command palette\nNew\nHowdy, shopmgr\n\nSHEM DOK: יש 1 התראות פתוחות. למס"
+  "detail": "Skip to main content\nMenu\nshem staging\nCtrl+K\nOpen command palette\nNew\nHowdy, shopmgr\n\nSHEM DOK: יש 1 התראות פתוחות. למס"
  },
  {
   "name": "mobile: no horizontal overflow",

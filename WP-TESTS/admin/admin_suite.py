@@ -337,10 +337,14 @@ def run():
     eq('loyalty stored (typed)', {k: (r.j or {}).get(k) for k in loy}, loy)
     eq('loyalty GET equals PUT', call('manage/settings/loyalty').j, r.j)
     inv_s = {'displayName': BRAND, 'legalName': 'Example business', 'registrationNumber': 'TEST-ONLY', 'address': 'Test address', 'phone': '0500000000', 'email': 'support@example.test', 'vatMode': 'included', 'vatRate': 18, 'numberPrefix': 'T_ADMIN-', 'documentTitle': 'חשבונית עסקה', 'documentFooter': 'Testing'}
-    st('invoice: bad vat mode', call('manage/settings/invoice', 'PUT', {**inv_s, 'vatMode': 'zero'}), 400, 'מצב מע״מ אינו תקין.')
-    st('invoice: bad e-mail', call('manage/settings/invoice', 'PUT', {**inv_s, 'email': 'nope'}), 400, 'אימייל עסק אינו תקין.')
-    r = st('invoice PUT', call('manage/settings/invoice', 'PUT', inv_s), 200)
-    eq('invoice GET vatRate', (call('manage/settings/invoice').j or {}).get('vatRate'), 18)
+    if IS_SHEM:
+        st('invoice settings PUT is closed on SHEM (single path: SHEM DOK) -> 410', call('manage/settings/invoice', 'PUT', inv_s), 410)
+        st('template-preview is closed on SHEM -> 410', call('manage/template-preview'), 410)
+    else:
+        st('invoice: bad vat mode', call('manage/settings/invoice', 'PUT', {**inv_s, 'vatMode': 'zero'}), 400, 'מצב מע״מ אינו תקין.')
+        st('invoice: bad e-mail', call('manage/settings/invoice', 'PUT', {**inv_s, 'email': 'nope'}), 400, 'אימייל עסק אינו תקין.')
+        r = st('invoice PUT', call('manage/settings/invoice', 'PUT', inv_s), 200)
+        eq('invoice GET vatRate', (call('manage/settings/invoice').j or {}).get('vatRate'), 18)
     st('home: http rejected', call('manage/settings/home', 'PUT', {'siteUrl': 'http://x.test'}), 400, 'כתובת אתר הבית חייבת להיות HTTPS.')
     st('home: creds in URL rejected', call('manage/settings/home', 'PUT', {'siteUrl': 'https://u:p@x.test'}), 400, 'כתובת אתר הבית אינה תקינה.')
     st('home: protocol', call('manage/settings/home', 'PUT', {'protocolVersion': 'v9'}), 400, 'גרסת החיבור הנתמכת היא shem-home-v1.')
@@ -423,7 +427,7 @@ def run():
     r = st('loyalty-adjust +5', call('manage/loyalty-adjust', 'POST', {'memberId': card['id'], 'amount': 5, 'reason': 'manual QA'}), 201)
     ok('adjust entry', (r.j or {}).get('deltaCents') == 500 and (r.j or {}).get('type') == 'manual' and (r.j or {}).get('system') is False and (r.j or {}).get('revision'), r.t[:200])
     r = st('mark paid (manual-external)', call('manage/orders/' + o['id'] + '/paid', 'POST', {'reference': 'EXTERNAL-TEST-1', 'paymentDetails': {'method': 'card', 'last4': '1234', 'cardholderName': 'QA Holder', 'brand': 'Visa', 'installments': 1, 'authorizationCode': 'TEST-APPROVAL', 'pan': 'ignored', 'cvv': 'ignored'}}), 200); pd = r.j or {}
-    eq('paid order', (pd.get('paymentStatus'), pd.get('paid'), pd.get('status'), pd.get('paymentSource'), pd.get('paymentReference'), pd.get('invoiceDocumentId')), ('paid', True, 'processing', 'manual-external', 'EXTERNAL-TEST-1', o['id']))
+    eq('paid order', (pd.get('paymentStatus'), pd.get('paid'), pd.get('status'), pd.get('paymentSource'), pd.get('paymentReference'), pd.get('invoiceDocumentId')), ('paid', True, 'processing', 'manual-external', 'EXTERNAL-TEST-1', None if IS_SHEM else o['id']))
     eq('paymentDetails sanitised', (pd['paymentDetails'].get('last4'), pd['paymentDetails'].get('cardholderName'), 'pan' in pd['paymentDetails'], 'cvv' in pd['paymentDetails'], pd['paymentDetails'].get('installments')), ('1234', 'QA Holder', False, False, 1))
     eq('vatItemsCents of paid order', pd.get('vatItemsCents'), round(59970 * 18 / 118))
     ps = call('products/' + v['id']).j or {}
@@ -433,8 +437,8 @@ def run():
     mv = [m for m in (call('manage/stock').j or []) if m.get('productId') == v['id'] and m.get('reason', '').startswith('תשלום הזמנה')]
     eq('payment movements', sorted(m['delta'] for m in mv), [-2, -1])
     docs = [d for d in (call('manage/documents').j or []) if d['id'] == o['id']]
-    eq('invoice document created', len(docs), 1)
-    if docs:
+    eq('SHEM: no legacy document is created for a manual payment' if IS_SHEM else 'invoice document created', len(docs), 0 if IS_SHEM else 1)
+    if docs and not IS_SHEM:
         d = docs[0]
         ok('document fields', d.get('totalCents') == 64870 and d['customer']['name'] == cust['name'] and re.fullmatch(r'T_ADMIN-\d{6}', d.get('number', '')) and d.get('paymentReference') == 'EXTERNAL-TEST-1' and d.get('vatCents') == round(64870 * 18 / 118) and d.get('orderId') == o['id'], d)
     ml = call('manage/mail').j or []
@@ -445,13 +449,13 @@ def run():
     st('payment-details update', call('manage/orders/' + o['id'] + '/payment-details', 'POST', {'paymentDetails': {'method': 'card', 'last4': '4321', 'cardholderName': 'Updated holder'}}), 200)
     eq('payment-details persisted', (call('manage/orders/' + o['id']).j or {}).get('paymentDetails', {}).get('last4'), '4321')
     st('archive paid order -> 409', call('manage/orders/' + o['id'] + '/archive', 'POST', {}), 409, 'הזמנה ששולמה נשמרת לתיעוד. אפשר לעדכן מצב טיפול.')
-    st('archive document -> 409', call('manage/documents/' + o['id'] + '/archive', 'POST', {}), 409, 'תיעוד זה נשמר ללא מחיקה.')
+    if not IS_SHEM: st('archive document -> 409', call('manage/documents/' + o['id'] + '/archive', 'POST', {}), 409, 'תיעוד זה נשמר ללא מחיקה.')
     st('documents POST -> 405', call('manage/documents', 'POST', {}), 405, 'יש להשתמש בפעולה הייעודית.')
     cur = call('manage/orders/' + o['id']).j
     r = st('PUT paid order only changes status/tracking/notes', call('manage/orders/' + o['id'], 'PUT', {**cur, 'customer': {**cust, 'name': 'tampered'}, 'total': 1, 'status': 'shipped', 'tracking': 'T9', 'notes': 'kept'}), 200)
     after = call('manage/orders/' + o['id']).j or {}
     eq('paid order immutable core', (after['customer']['name'], after['totalCents'], after['status'], after['tracking']), (cust['name'], 64870, 'shipped', 'T9'))
-    eq('document untouched', [d['totalCents'] for d in (call('manage/documents').j or []) if d['id'] == o['id']], [64870])
+    eq('document untouched', [d['totalCents'] for d in (call('manage/documents').j or []) if d['id'] == o['id']], [] if IS_SHEM else [64870])
     led = call('manage/loyalty').j or []
     earned = [l for l in led if l.get('type') == 'earned' and l.get('orderId') == o['id']]
     eq('loyalty earned entry (3% of 59970)', [l['deltaCents'] for l in earned], [1799])
@@ -481,23 +485,33 @@ def run():
     else:
         st('payment-link on SHIMI (home, no provider connected) -> 501', call('manage/orders/' + small['id'] + '/payment-link', 'POST', {}), 501)
         blocked('manage/orders/:id/payment-link (SHIMI)', 'SHIMI is the home store; its own checkout stays disabled until a provider adapter is connected (owner decision: no provider now)')
-    # issue-document on a paid order without a document (business details were incomplete)
-    sv = call('manage/settings/invoice').j; call('manage/settings/invoice', 'PUT', {**inv_s, 'legalName': ''})
-    r = st('second order paid while invoice details incomplete', call('manage/orders/' + small['id'] + '/paid', 'POST', {'reference': 'EXTERNAL-TEST-2'}), 200)
-    eq('invoiceStatus missing-business-details', (r.j or {}).get('invoiceStatus'), 'missing-business-details')
-    eq('no document for it yet', [d['id'] for d in (call('manage/documents').j or []) if d['id'] == small['id']], [])
-    st('issue-document with incomplete business -> 409', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 409, 'יש להשלים תחילה את פרטי העסק בתבנית חשבונית העסקה.')
-    call('manage/settings/invoice', 'PUT', inv_s)
-    r = st('issue-document now succeeds -> 201', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 201)
-    ok('issue-document body {document,mail}', set((r.j or {}).keys()) == {'document', 'mail'} and re.fullmatch(r'T_ADMIN-\d{6}', (r.j or {}).get('document', {}).get('number', '')), r.t[:300])
-    eq('document count after issue', len([d for d in (call('manage/documents').j or []) if d['id'] in (o['id'], small['id'])]), 2)
-    r2 = st('issue-document again returns the same document (200)', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 200)
-    eq('same number', (r2.j or {}).get('document', {}).get('number'), (r.j or {}).get('document', {}).get('number'))
-    eq('invoiceStatus available (download mode)', (call('manage/orders/' + small['id']).j or {}).get('invoiceStatus'), 'available')
+    if IS_SHEM:
+        # single path: a manual payment is never auto-invoiced; the admin issues the PDF in SHEM DOK
+        r = st('second order paid manually (SHEM)', call('manage/orders/' + small['id'] + '/paid', 'POST', {'reference': 'EXTERNAL-TEST-2'}), 200)
+        eq('no auto invoice for manual payment', ((r.j or {}).get('invoiceDocumentId'), (r.j or {}).get('invoiceStatus')), (None, None))
+        r = st('issue-document hands over to the SHEM DOK editor -> 201', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 201)
+        ok('issue-document body {document:null, editorUrl}', (r.j or {}).get('document') is None and re.search(r'page=shem-dok&order=\d+$', str((r.j or {}).get('editorUrl', ''))), r.t[:300])
+        eq('no legacy document row for it', [d['id'] for d in (call('manage/documents').j or []) if d['id'] in (o['id'], small['id'])], [])
+    else:
+        # issue-document on a paid order without a document (business details were incomplete)
+        sv = call('manage/settings/invoice').j; call('manage/settings/invoice', 'PUT', {**inv_s, 'legalName': ''})
+        r = st('second order paid while invoice details incomplete', call('manage/orders/' + small['id'] + '/paid', 'POST', {'reference': 'EXTERNAL-TEST-2'}), 200)
+        eq('invoiceStatus missing-business-details', (r.j or {}).get('invoiceStatus'), 'missing-business-details')
+        eq('no document for it yet', [d['id'] for d in (call('manage/documents').j or []) if d['id'] == small['id']], [])
+        st('issue-document with incomplete business -> 409', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 409, 'יש להשלים תחילה את פרטי העסק בתבנית חשבונית העסקה.')
+        call('manage/settings/invoice', 'PUT', inv_s)
+        r = st('issue-document now succeeds -> 201', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 201)
+        ok('issue-document body {document,mail}', set((r.j or {}).keys()) == {'document', 'mail'} and re.fullmatch(r'T_ADMIN-\d{6}', (r.j or {}).get('document', {}).get('number', '')), r.t[:300])
+        eq('document count after issue', len([d for d in (call('manage/documents').j or []) if d['id'] in (o['id'], small['id'])]), 2)
+        r2 = st('issue-document again returns the same document (200)', call('manage/orders/' + small['id'] + '/issue-document', 'POST', {}), 200)
+        eq('same number', (r2.j or {}).get('document', {}).get('number'), (r.j or {}).get('document', {}).get('number'))
+        eq('invoiceStatus available (download mode)', (call('manage/orders/' + small['id']).j or {}).get('invoiceStatus'), 'available')
     eq('stock after both payments', (call('products/' + v['id']).j or {}).get('stock'), 4)
     # documents render (documents module)
     for path, what in [('manage/documents/%s/html', 'html'), ('manage/documents/%s/pdf', 'pdf'), ('manage/orders/%s/order-pdf', 'order-pdf'), ('manage/template-preview', 'template-preview'), ('manage/template-preview.pdf', 'template-preview.pdf')]:
         r = call(path % o['id']) if '%s' in path else call(path)
+        if IS_SHEM and what != 'order-pdf':
+            ok('SHEM GET ' + path + ' has no legacy renderer (404/410/501)', r.status in (404, 410, 501), (r.status, r.t[:120])); continue
         if r.status == 501: blocked('GET ' + path.replace('%s', ':id'), 'document renderer missing: filter scc_admin_document_render')
         else: st('GET ' + path, r, 200)
     st('documents html for unknown id -> 404', call('manage/documents/nope/html'), 404, 'מסמך לא נמצא.')

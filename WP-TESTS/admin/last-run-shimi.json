@@ -80,8 +80,8 @@
  {
   "screen": "auth+session",
   "check": "GET /api/session (logged in)",
-  "status": "PASS",
-  "detail": ""
+  "status": "FAIL",
+  "detail": "got \"(True, 'scc_test_admin@example.invalid')\" want \"(True, 'scc_test_admin@example.test')\""
  },
  {
   "screen": "auth+session",
@@ -1621,15 +1621,15 @@
  },
  {
   "screen": "orders",
-  "check": "GET manage/documents/%s/pdf",
-  "status": "PASS",
-  "detail": ""
+  "check": "GET manage/documents/:id/pdf",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
  },
  {
   "screen": "orders",
-  "check": "GET manage/orders/%s/order-pdf",
-  "status": "PASS",
-  "detail": ""
+  "check": "GET manage/orders/:id/order-pdf",
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
  },
  {
   "screen": "orders",
@@ -1640,8 +1640,8 @@
  {
   "screen": "orders",
   "check": "GET manage/template-preview.pdf",
-  "status": "PASS",
-  "detail": ""
+  "status": "BLOCKED",
+  "detail": "document renderer missing: filter scc_admin_document_render"
  },
  {
   "screen": "orders",

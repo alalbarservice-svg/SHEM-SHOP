@@ -107,3 +107,7 @@ Dyn segments (`{kind}/{id}/{action}`, settings kinds, AdminOperations endpoint m
 | /payment/* | handled by Scc_Router prefix (original worker routed it to api()); no reference in src (grep) | plugin, not implemented |
 | /media/products/{key} | original worker served R2 objects here; no reference in src (grep); not verified whether media upload responses contain /media/ URLs | NOT served by the theme (plain 404); needs plugin or uploads rewrite |
 | /order-complete.html#params | redirected to by HomeCheckout.jsx:125 after payment | served by the theme (200, shell) |
+
+## Update 28.10.2026 (SHEM single invoice path)
+- SHEM Management.jsx no longer calls `manage/settings/invoice` or `manage/template-preview(.pdf)`. The server answers 410 for both on SHEM. SHIMI is unchanged (its own copy of the UI still uses them).
+- `manage/orders/{id}/issue-document` on SHEM returns `{document:null, editorUrl}` for manual orders; the admin button opens the SHEM DOK editor (`/wp-admin/admin.php?page=shem-dok&order=<woo id>`).

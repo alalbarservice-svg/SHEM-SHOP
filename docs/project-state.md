@@ -52,3 +52,8 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Done on staging: admin "issue document" now returns the SHEM-DOK invoice (no second legacy document). Merged locally (ff) into staging/shimi-linked-48, not pushed. Customer 42/0, legacy-template 21/21, manual payment 12/12 and 11/11, s4 42/42.
 - Open: F2 (manual-external gets no DOK invoice, owner decision), HawkScan needs StackHawk key, real 3DS needs sandbox keys, master has unrelated history (do not push to it).
 - Report: docs/reports/2026-10-28-f1-verification-and-plan.md
+
+## Update 28.10.2026 (single invoice path, staging)
+- Branch fix/single-invoice-dok merged locally into staging/shimi-linked-48 (no push). SHEM invoices only via SHEM DOK; SHIMI legacy path unchanged.
+- Verified on staging: DOK unit 152/0; manual-payment e2e 30/0; auto card/PayPal e2e 30/0 (1 info); customer e2e 42/0; admin suite SHEM 323 pass, SHIMI 318 pass (1 known fail each: test admin email .invalid vs .test); Playwright admin PASS on both.
+- Open: owner approval to delete legacy staging data and to push; HawkScan needs HAWK_API_KEY; real 3DS needs sandbox keys; SCC_INVOICE_DELIVERY_MODE disappears from staging wp-config (set again on SHIMI, put it in the deployment files); PDF engine packaging for production.

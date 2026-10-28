@@ -194,29 +194,6 @@ const definitions = {
   },
 };
 const settingsDefinitions = {
-  invoice: {
-    title: "תבנית חשבונית עסקה של SHEM",
-    defaults: {
-      displayName: "SHEM",
-      documentTitle: "חשבונית עסקה",
-      numberPrefix: "SHEM-",
-      vatMode: "",
-      vatRate: 0,
-    },
-    fields: [
-      text("legalName", "שם העסק המשפטי"),
-      text("registrationNumber", "מספר עסק"),
-      text("address", "כתובת העסק"),
-      text("phone", "טלפון העסק"),
-      text("email", "אימייל העסק", "email"),
-      text("displayName", "שם מסחרי במסמך"),
-      text("documentTitle", "כותרת מסמך"),
-      text("numberPrefix", "קידומת מספור"),
-      text("vatMode", "מצב מע״מ", "vatMode"),
-      text("vatRate", "אחוז מע״מ", "number"),
-      text("documentFooter", "טקסט תחתון במסמך", "textarea"),
-    ],
-  },
   home: {
     title: "חיבור סליקה דרך אתר הבית",
     defaults: { enabled: false, protocolVersion: "shem-home-v1" },
@@ -467,12 +444,6 @@ function SettingForm({ kind, onNotice }) {
   return (
     <section className="admin-panel">
       <h2>{def.title}</h2>
-      {kind === "invoice" && (
-        <p>
-          המסמך יופק לאחר אישור תשלום, עם פרטי ההזמנה והלקוח. חשבונית עסקה אינה
-          חשבונית מס או קבלה. יש לבחור מעמד מע״מ בהתאם לעסק.
-        </p>
-      )}
       {kind === "home" && (
         <p>
           התשלום יוצג בתוך SHEM דרך מסך מאובטח של אתר הבית. כתובת חיבור ומפתח
@@ -608,15 +579,6 @@ function SettingForm({ kind, onNotice }) {
           שמירת הגדרות {def.title}
         </button>
       </form>
-      {kind === "invoice" && (
-        <a
-          href="/api/admin/manage/template-preview.pdf"
-          target="_blank"
-          rel="noreferrer"
-        >
-          תצוגה מקדימה של התבנית עם נתוני דוגמה
-        </a>
-      )}
     </section>
   );
 }
@@ -1057,17 +1019,25 @@ export function Management({ section, onChange }) {
                             r.paymentStatus === "paid" && (
                               <button
                                 disabled={busy}
-                                onClick={() =>
-                                  run(() =>
-                                    api(
-                                      "orders/" + r.id + "/issue-document",
-                                      "POST",
-                                      {},
-                                    ),
-                                  )
-                                }
+                                onClick={() => {
+                                  const w = window.open("about:blank", "_blank");
+                                  run(async () => {
+                                    try {
+                                      const d = await api(
+                                        "orders/" + r.id + "/issue-document",
+                                        "POST",
+                                        {},
+                                      );
+                                      if (d?.editorUrl && w) w.location.href = d.editorUrl;
+                                      else if (w) w.close();
+                                    } catch (e) {
+                                      if (w) w.close();
+                                      throw e;
+                                    }
+                                  });
+                                }}
                               >
-                                הפקת מסמך / ניסיון שליחה
+                                הפקת חשבונית ב-SHEM DOK
                               </button>
                             )}
                           {section === "orders" &&
@@ -1782,7 +1752,7 @@ export function Management({ section, onChange }) {
                 {[
                   ["database", "מסד נתונים"],
                   ["media", "אחסון תמונות"],
-                  ["invoiceComplete", "פרטי תבנית חשבונית מלאים"],
+                  ["invoiceComplete", "SHEM DOK מוכן להפקת חשבוניות"],
                   ["mailConfigured", "שירות מייל מוגדר"],
                   ["homeConfigured", "סודות חיבור אתר הבית מוגדרים"],
                   ["homeEnabled", "חיבור אתר הבית מאושר בממשק"],
@@ -1887,19 +1857,16 @@ export function Management({ section, onChange }) {
                   }
                 }}
               />
-              <SettingForm
-                kind="invoice"
-                onNotice={async (message) => {
-                  setNotice(message);
-                  if (["integrations", "control"].includes(section)) {
-                    try {
-                      setHealth(await api("status"));
-                    } catch (e) {
-                      setError(e.message);
-                    }
-                  }
-                }}
-              />
+              <section className="admin-panel">
+                <h2>חשבוניות</h2>
+                <p>
+                  חשבוניות מופקות ומנוהלות בממשק SHEM DOK בלבד: הפקה אוטומטית
+                  לתשלום בכרטיס או PayPal, והפקה ידנית לכל אמצעי תשלום.
+                </p>
+                <a href="/wp-admin/admin.php?page=shem-dok" target="_blank" rel="noreferrer">
+                  פתיחת SHEM DOK
+                </a>
+              </section>
             </>
           )}
         </>

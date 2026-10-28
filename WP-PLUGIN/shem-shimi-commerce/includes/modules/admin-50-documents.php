@@ -95,11 +95,12 @@ final class Scc_Admin_Documents {
     /** Admin "issue document" for a paid order: the SHEM-DOK invoice (an existing one is returned by the store overlay before this runs). */
     public static function issue($null, $order) {
         if ($null !== null || !self::dok() || !is_array($order) || !function_exists('wc_get_order')) return $null;
-        // A payment the admin confirmed by hand was not verified by a signed SHIMI callback, so SHEM-DOK refuses to invoice it by design:
-        // that order keeps the legacy document path (template check, legacy number) exactly as before.
-        if (($order['paymentSource'] ?? '') === 'manual-external') return $null;
         $wc = Scc_Core_Orders::wc_id((string) ($order['id'] ?? '')); $o = $wc ? wc_get_order($wc) : null;
-        if (!$o) return $null; // document-table-only order: no WooCommerce order to invoice, the legacy path applies
+        if (!$o) return $null; // document-table-only order: no WooCommerce order to invoice, the legacy path applies (SHIMI only)
+        // A payment the admin confirmed by hand (cash, transfer, other) is never invoiced automatically. The admin issues it from the
+        // SHEM-DOK editor, where the payment method and its details are entered; the order opens there prefilled.
+        if (($order['paymentSource'] ?? '') === 'manual-external' || (string) $o->get_meta('_shem_manual_payment') === '1')
+            return ['document' => null, 'editorUrl' => admin_url('admin.php?page=shem-dok&order=' . (int) $wc)];
         try { ShemDok::issue_for_order($o); }
         catch (Throwable $e) { Scc_Admin::fail('הפקת החשבונית נכשלה: ' . $e->getMessage(), $e instanceof ShemDokPermanent ? 409 : 502); }
         $doc = Scc_Admin::store('invoice_documents')->get((string) $order['id']);
@@ -121,6 +122,7 @@ final class Scc_Admin_Documents {
         if (self::dok() && is_array($dd) && ($dd['engine'] ?? '') === 'shem-dok' && in_array($kind, ['html', 'pdf', 'order-pdf'], true)) return self::dok_pdf($dd, $kind);
         if (!in_array($kind, ['html', 'pdf', 'order-pdf', 'template-preview'], true)) return null;
         $preview = $kind === 'template-preview';
+        if ($preview && Scc_Admin_Manage::legacy_invoice_off()) return null; // SHEM has no legacy template to preview
         if ($preview) { $want_pdf = !empty($ctx['pdf']); $ctx = self::sample(); }
         else $want_pdf = $kind !== 'html';
         $m = self::model($ctx, $preview);

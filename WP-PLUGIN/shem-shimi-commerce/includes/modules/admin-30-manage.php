@@ -22,6 +22,8 @@ final class Scc_Admin_Manage {
     public static function jsstr(mixed $v): string { return is_bool($v) ? ($v ? 'true' : 'false') : (is_scalar($v) ? (string) $v : ''); }
     public static function stamp(): string { return Scc_Admin::stamp(); }
     public static function plus_days(float $days): string { return Scc_Admin::iso_ms(Scc_Admin::ms() + (int) round($days * 86400000)); }
+    /** SHEM has exactly one invoice path: the SHEM-DOK admin. The legacy template builder stays only for SHIMI, which has no SHEM-DOK. */
+    public static function legacy_invoice_off(): bool { return defined('SCC_ROLE') && SCC_ROLE === 'shem'; }
     public static function delivery_download(): bool { return defined('SCC_INVOICE_DELIVERY_MODE') && SCC_INVOICE_DELIVERY_MODE === 'download'; }
     /** Date.parse for ISO-ish strings (ms), NaN when unparsable. */
     public static function date_ms(mixed $s): float { if (!is_string($s) || $s === '') return NAN; $t = strtotime($s); if ($t === false) return NAN; $ms = 0; if (preg_match('/\.(\d{1,3})\d*(Z|[+-]\d\d:?\d\d)?$/', $s, $m)) $ms = (int) str_pad($m[1], 3, '0'); return $t * 1000 + $ms; }
@@ -173,11 +175,13 @@ final class Scc_Admin_Manage {
                 if (!$products->cas($pid, self::fix_sizes(self::plain($p)), $oldRev[$pid], $rev)) throw $generic();
                 Scc_Admin_Catalog::guard_stock($p, $orderId);
             }
+            $legacy = !self::legacy_invoice_off();
             $paid = array_merge(self::plain($order), ['paymentStatus' => 'paid', 'paid' => true, 'paidAt' => $stamp, 'paymentReference' => $reference, 'paymentSource' => $source,
-                'paymentDetails' => self::clean_payment($details), 'invoiceDocumentId' => $orderId, 'status' => 'processing']);
-            $business = Scc_Admin::setting('invoice'); $business = is_array($business) ? $business : [];
-            $complete = Scc_Admin_Settings::invoice_complete($business);
-            if (!$complete) $paid['invoiceStatus'] = 'missing-business-details';
+                'paymentDetails' => self::clean_payment($details), 'status' => 'processing']);
+            if ($legacy) $paid['invoiceDocumentId'] = $orderId;
+            $business = $legacy ? Scc_Admin::setting('invoice') : []; $business = is_array($business) ? $business : [];
+            $complete = $legacy && Scc_Admin_Settings::invoice_complete($business);
+            if ($legacy && !$complete) $paid['invoiceStatus'] = 'missing-business-details';
             if (!$orders->cas($orderId, $paid, $order['revision'], $rev)) throw $generic();
             if (!Scc_Admin::store('payment_transactions')->insert($source . ':' . $reference, ['order_id' => $orderId], $rev)) throw $generic();
             $download = self::delivery_download();
@@ -322,6 +326,7 @@ final class Scc_Admin_Manage {
         if ($existing) return Scc_Admin::json(['document' => $existing, 'mail' => self::process_mail(false)]);
         $res = apply_filters('scc_admin_issue_document', null, $old);
         if (is_array($res)) return Scc_Admin::json($res, 201);
+        if (self::legacy_invoice_off()) Scc_Admin::fail('חשבוניות מופקות בממשק SHEM DOK בלבד, והוא אינו פעיל באתר זה.', 501);
         $business = Scc_Admin::setting('invoice'); $business = is_array($business) ? $business : [];
         if (!Scc_Admin_Settings::invoice_complete($business)) Scc_Admin::fail('יש להשלים תחילה את פרטי העסק בתבנית חשבונית העסקה.', 409);
         $doc = Scc_Admin::tx(function () use ($id, $old, $business) {

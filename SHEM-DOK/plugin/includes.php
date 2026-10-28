@@ -512,7 +512,7 @@ final class ShemDok {
   $asset=plugin_dir_url(__FILE__).'assets/';
   wp_enqueue_style('shem-dok',$asset.'editor.css',[],self::VERSION);
   wp_enqueue_script('shem-dok',$asset.'editor.js',[],self::VERSION,true);
-  wp_add_inline_script('shem-dok','window.SHEM_DOK='.wp_json_encode(['api'=>rest_url('shem-dok/v1/'),'nonce'=>wp_create_nonce('wp_rest'),'logo'=>$asset.'logo.png','download'=>admin_url('admin-post.php?action=shem_dok_pdf')]).';','before');
+  wp_add_inline_script('shem-dok','window.SHEM_DOK='.wp_json_encode(['api'=>rest_url('shem-dok/v1/'),'nonce'=>wp_create_nonce('wp_rest'),'logo'=>$asset.'logo.png','download'=>admin_url('admin-post.php?action=shem_dok_pdf'),'order'=>isset($_GET['order'])?absint(wp_unslash($_GET['order'])):0]).';','before');
   echo '<div id="shem-dok-root" dir="rtl"></div>';
  }
  static function download_url($id){return add_query_arg(['action'=>'shem_dok_pdf','id'=>(int)$id,'_wpnonce'=>wp_create_nonce('shem_dok_pdf_'.(int)$id)],admin_url('admin-post.php'));}

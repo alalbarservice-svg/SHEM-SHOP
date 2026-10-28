@@ -128,6 +128,8 @@ final class Scc_Core_Admin_Orders extends Scc_Admin_Store {
             if ($paid && !$o->is_paid()) {
                 $o->set_order_stock_reduced(true);
                 if (!empty($new['paymentReference'])) $o->set_transaction_id((string) $new['paymentReference']);
+                // A payment the admin confirmed by hand: SHEM-DOK never invoices it automatically; the admin issues it from the DOK editor.
+                if (($new['paymentSource'] ?? '') === 'manual-external') $o->update_meta_data('_shem_manual_payment', '1');
                 $o->set_date_paid(time());
                 $o->set_status('processing', 'אושר תשלום בממשק הניהול.');
                 $o->save();

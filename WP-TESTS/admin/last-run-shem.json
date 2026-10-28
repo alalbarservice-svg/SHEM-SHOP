@@ -80,8 +80,8 @@
  {
   "screen": "auth+session",
   "check": "GET /api/session (logged in)",
-  "status": "PASS",
-  "detail": ""
+  "status": "FAIL",
+  "detail": "got \"(True, 'scc_test_admin@example.invalid')\" want \"(True, 'scc_test_admin@example.test')\""
  },
  {
   "screen": "auth+session",
@@ -961,25 +961,13 @@
  },
  {
   "screen": "settings (loyalty/invoice/ops/content/home/business)",
-  "check": "invoice: bad vat mode",
+  "check": "invoice settings PUT is closed on SHEM (single path: SHEM DOK) -> 410",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "settings (loyalty/invoice/ops/content/home/business)",
-  "check": "invoice: bad e-mail",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "settings (loyalty/invoice/ops/content/home/business)",
-  "check": "invoice PUT",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "settings (loyalty/invoice/ops/content/home/business)",
-  "check": "invoice GET vatRate",
+  "check": "template-preview is closed on SHEM -> 410",
   "status": "PASS",
   "detail": ""
  },
@@ -1411,13 +1399,7 @@
  },
  {
   "screen": "orders",
-  "check": "invoice document created",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "document fields",
+  "check": "SHEM: no legacy document is created for a manual payment",
   "status": "PASS",
   "detail": ""
  },
@@ -1460,12 +1442,6 @@
  {
   "screen": "orders",
   "check": "archive paid order -> 409",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "archive document -> 409",
   "status": "PASS",
   "detail": ""
  },
@@ -1615,61 +1591,31 @@
  },
  {
   "screen": "orders",
-  "check": "second order paid while invoice details incomplete",
+  "check": "second order paid manually (SHEM)",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "invoiceStatus missing-business-details",
+  "check": "no auto invoice for manual payment",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "no document for it yet",
+  "check": "issue-document hands over to the SHEM DOK editor -> 201",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "issue-document with incomplete business -> 409",
+  "check": "issue-document body {document:null, editorUrl}",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "issue-document now succeeds -> 201",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "issue-document body {document,mail}",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "document count after issue",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "issue-document again returns the same document (200)",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "same number",
-  "status": "PASS",
-  "detail": ""
- },
- {
-  "screen": "orders",
-  "check": "invoiceStatus available (download mode)",
+  "check": "no legacy document row for it",
   "status": "PASS",
   "detail": ""
  },
@@ -1681,13 +1627,13 @@
  },
  {
   "screen": "orders",
-  "check": "GET manage/documents/%s/html",
+  "check": "SHEM GET manage/documents/%s/html has no legacy renderer (404/410/501)",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "GET manage/documents/%s/pdf",
+  "check": "SHEM GET manage/documents/%s/pdf has no legacy renderer (404/410/501)",
   "status": "PASS",
   "detail": ""
  },
@@ -1699,13 +1645,13 @@
  },
  {
   "screen": "orders",
-  "check": "GET manage/template-preview",
+  "check": "SHEM GET manage/template-preview has no legacy renderer (404/410/501)",
   "status": "PASS",
   "detail": ""
  },
  {
   "screen": "orders",
-  "check": "GET manage/template-preview.pdf",
+  "check": "SHEM GET manage/template-preview.pdf has no legacy renderer (404/410/501)",
   "status": "PASS",
   "detail": ""
  },

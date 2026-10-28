@@ -1,0 +1,45 @@
+name: shem-staging
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT}
+      MARIADB_USER: wp
+      MARIADB_PASSWORD: ${DB_PASS}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  shem:
+    image: wordpress:php8.3-apache
+    depends_on: [db]
+    ports: ["8081:80"]
+    environment: &wpenv
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: ${DB_PASS}
+      WORDPRESS_DB_NAME: wp_shem
+      WP_ENVIRONMENT_TYPE: staging
+      WORDPRESS_CONFIG_EXTRA: |
+        define('SCC_ROLE','shem');
+        define('SCC_PEER_URL','http://shimi');
+        define('SCC_PEER_PUBLIC_URL','http://localhost:8082');
+        define('SCC_CHANNEL_SECRET','${CHANNEL_SECRET}');
+        define('SCC_HOME_PAYMENT_SECRET','${HOME_PAY_SECRET}');
+        define('WP_HOME','http://localhost:8081'); define('WP_SITEURL','http://localhost:8081');
+    volumes: [shemhtml:/var/www/html]
+  shimi:
+    image: wordpress:php8.3-apache
+    depends_on: [db]
+    ports: ["8082:80"]
+    environment:
+      <<: *wpenv
+      WORDPRESS_DB_NAME: wp_shimi
+      WORDPRESS_CONFIG_EXTRA: |
+        define('SCC_ROLE','shimi');
+        define('SCC_PEER_URL','http://shem');
+        define('SCC_PEER_PUBLIC_URL','http://localhost:8081');
+        define('SCC_CHANNEL_SECRET','${CHANNEL_SECRET}');
+        define('SCC_HOME_PAYMENT_SECRET','${HOME_PAY_SECRET}');
+        define('WP_HOME','http://localhost:8082'); define('WP_SITEURL','http://localhost:8082');
+    volumes: [shimihtml:/var/www/html]
+volumes: {dbdata: {}, shemhtml: {}, shimihtml: {}}

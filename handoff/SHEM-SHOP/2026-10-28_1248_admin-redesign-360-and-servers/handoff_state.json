@@ -1,0 +1,63 @@
+{
+  "project": "SHEM-SHOP (SHEM + SHIMI migration to WordPress/WooCommerce)",
+  "status": "in_progress",
+  "current_stop_point": "2026-10-28 12:48. SHEM admin luxury redesign and two stale test fixes merged locally into staging/shimi-linked-48 (863f434), pushed and equal to origin. Full 360 green on local Docker staging. Servers/pre-purchase tests still awaiting owner approval. Nothing deployed or bought. docs/project-state.md and docs/decisions.md updated locally, uncommitted.",
+  "first_next_action": "Read handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/SERVERS_DECISION.md and docs/hosting/HANDOFF-server-selection-and-prepurchase-tests.md, run the 5-line readiness summary, then ask the owner (Hebrew, short) whether to approve the hourly test servers and which access method (vault API token, owner-run scripts, or linked computer) to use. Do not start any provider action before approval.",
+  "sync_status": "PENDING_USER_FORWARD_OR_MANAGER_ACK",
+  "confidence": "MEDIUM",
+  "must_read_files": [
+    "handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/handoff_report.md",
+    "handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/SERVERS_DECISION.md",
+    "handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/1_project_brief.md",
+    "docs/project-state.md",
+    "docs/decisions.md",
+    "docs/hosting/HANDOFF-server-selection-and-prepurchase-tests.md",
+    "docs/hosting/privacy-and-hosting-requirements.md",
+    "docs/AGENT-RULES.md",
+    "HANDOFF_OPEN_QUESTIONS.md"
+  ],
+  "open_items": [
+    "Owner approval of hourly test servers (Hetzner CPX22 SHEM, Linode Shared 4GB SHIMI) and T1-T8 run",
+    "Agent access method to test servers (undecided)",
+    "Three pre-purchase questions: PayPal window business name, billing exposure of host/registrar/Cloudflare, domain owner hiding .co/.com plus Tunnel check (staging only)",
+    "HawkScan needs HAWK_API_KEY via vault",
+    "Real 3DS sandbox keys from owner",
+    "Live WooCommerce tax 18 percent",
+    "PDF engine (mPDF) packaging for production and SHIMI",
+    "Keep SCC_INVOICE_DELIVERY_MODE=download in deployment files (disappears from staging wp-config, cause unverified)",
+    "Legacy invoice rows (invoice_documents, invoice setting row) not deleted, await explicit owner approval",
+    "Owner decision: SHIMI visibility rule when SHEM item inactive",
+    "Placeholder images (43 SHIMI, hero slides 2-3 mobile), issuer details, charging entity, payment provider, cutover window and DNS",
+    "Local branches not pushed: feat/admin-tabs-redesign, fix/legacy-tests"
+  ],
+  "risks": [
+    "Repo is public: never commit secrets, customer data or private documents",
+    "Docker daemon was down at handoff time; run bash /home/claude/dstart.sh before any staging work",
+    "e2e_customer needs fixture stock 10/10 on variation 59 and crashed runs leave held reservations for about 20 minutes",
+    "master has unrelated history: never push to it",
+    "Server prices come from third-party pages and are unverified",
+    "Tunnel behaviour and origin-IP hiding are unproven until a real server test",
+    "Hetzner may refuse a new account (third-party report), unverified"
+  ],
+  "requires_approval": [
+    "Any provider account, purchase, test server, DNS or nameserver change",
+    "Any deploy or go-live",
+    "git push (owner must write: דחוף)",
+    "Any deletion (legacy invoice rows, test data, branches, backups)",
+    "Any design or wording change",
+    "Sending any email or message",
+    "Live payments, real charges, live keys"
+  ],
+  "unverified": [
+    "Provider prices and Hetzner new-account policy",
+    "Cloudflare Tunnel behaviour from provider network and origin IP concealment",
+    "Whether two Cloudflare zones in one account share the same nameserver pair",
+    "PayPal receipt and window seller display (needs sandbox)",
+    "Current PayPal statement name value (owner set it, not read back)",
+    "Billing detail exposure of host/registrar/Cloudflare to customers",
+    "Whether 4GB per store is enough under load",
+    "Real 3DS, iOS Safari, HawkScan scan, CT records",
+    "Root cause of SCC_INVOICE_DELIVERY_MODE disappearing",
+    "Whether any pre-purchase run happened after 2026-10-27"
+  ]
+}

@@ -57,3 +57,8 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Branch fix/single-invoice-dok merged locally into staging/shimi-linked-48 (no push). SHEM invoices only via SHEM DOK; SHIMI legacy path unchanged.
 - Verified on staging: DOK unit 152/0; manual-payment e2e 30/0; auto card/PayPal e2e 30/0 (1 info); customer e2e 42/0; admin suite SHEM 323 pass, SHIMI 318 pass (1 known fail each: test admin email .invalid vs .test); Playwright admin PASS on both.
 - Open: owner approval to delete legacy staging data and to push; HawkScan needs HAWK_API_KEY; real 3DS needs sandbox keys; SCC_INVOICE_DELIVERY_MODE disappears from staging wp-config (set again on SHIMI, put it in the deployment files); PDF engine packaging for production.
+
+## Update 28.10.2026 (admin redesign, legacy tests, handoff)
+- SHEM admin luxury redesign (b3fa448) and two stale-test fixes (de97361) merged locally into staging/shimi-linked-48; branch at 863f434 pushed and equal to origin. Full 360 green on local staging (SHEM unit 32/32, SHIMI unit 21/21, customer e2e 42/42, admin_suite SHEM 324/0, SHIMI 319/0 with 4 blocked by design, sync 48/48, UI sweep 38 views 0 issues). Not verified: HawkScan, real 3DS, every modal state.
+- Handoff package: handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/ (servers decision in SERVERS_DECISION.md). Open questions file: HANDOFF_OPEN_QUESTIONS.md.
+- Open: owner approval of hourly test servers plus access method, HawkScan key, 3DS sandbox keys, live tax 18 percent, PDF engine packaging, SCC_INVOICE_DELIVERY_MODE in deployment files, legacy invoice rows deletion approval. Local branches not pushed: feat/admin-tabs-redesign, fix/legacy-tests.

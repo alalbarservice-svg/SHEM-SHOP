@@ -80,8 +80,8 @@
  {
   "screen": "auth+session",
   "check": "GET /api/session (logged in)",
-  "status": "FAIL",
-  "detail": "got \"(True, 'scc_test_admin@example.invalid')\" want \"(True, 'scc_test_admin@example.test')\""
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "auth+session",

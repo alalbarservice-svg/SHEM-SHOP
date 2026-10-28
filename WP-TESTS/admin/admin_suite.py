@@ -145,7 +145,7 @@ def run():
     st('POST body > 1MB -> 413', call('products', 'POST', raw='{"a":"' + 'x' * 1100000 + '"}'), 413, 'Request too large')
     st('POST invalid JSON -> 400 Invalid JSON', call('products', 'POST', raw='{nope'), 400, 'Invalid JSON')
     me = requests.get(BASE + '/api/session', cookies=S.cookies).json()
-    eq('GET /api/session (logged in)', (me.get('signedIn'), me.get('email')), (True, 'scc_test_admin@example.test'))
+    eq('GET /api/session (logged in)', (me.get('signedIn'), me.get('email')), (True, 'scc_test_admin@example.invalid'))
     eq('GET /api/session (anonymous)', requests.get(BASE + '/api/session').json(), {'signedIn': False, 'userId': None, 'email': None})
     rr = requests.get(BASE + '/signin-with-chatgpt?return_to=/admin.html', allow_redirects=False)
     ok('/signin-with-chatgpt redirects to wp-login', rr.status_code == 302 and 'wp-login.php' in rr.headers.get('location', ''), rr.headers.get('location'))

@@ -135,8 +135,8 @@ final class ShemDok {
   if($route==='order/(?P<id>\d+)'){
    if(!function_exists('wc_get_order'))throw new Exception('WooCommerce אינו פעיל');
    $order=wc_get_order($id);if(!$order)throw new Exception('הזמנה לא נמצאה');
-   if(!$order->is_paid()||!$order->get_transaction_id())throw new Exception('להזמנה עדיין אין תשלום מאומת ואסמכתה');
-   return self::from_order($order);
+   if(!$order->is_paid()||(!$order->get_transaction_id()&&!self::is_manual($order)))throw new Exception('להזמנה עדיין אין תשלום מאומת ואסמכתה');
+   return self::from_order($order,true);
   }
   if($route==='order/(?P<id>\d+)/retry'){
    if(!function_exists('wc_get_order'))throw new Exception('WooCommerce אינו פעיל');
@@ -175,7 +175,10 @@ final class ShemDok {
  }
 
  /* ---------- validation helpers ---------- */
- static function default_keys(){return array_merge(array_keys(self::defaults()),['orderNumber','customer','customerPhone','customerEmail','customerAddress','orderDate','method','holder','brand','last4','installments','reference','paypalEmail','shipping','discount','description']);}
+ static function default_keys(){return array_merge(array_keys(self::defaults()),['orderNumber','customer','customerPhone','customerEmail','customerAddress','orderDate','method','holder','brand','last4','installments','reference','paypalEmail','bank','branch','account','transferDate','receivedDate','methodLabel','shipping','discount','description']);}
+ const METHODS=['card','paypal','transfer','cash','other'];
+ static function valid_date($d){return is_string($d)&&preg_match('/^\d{4}-\d{2}-\d{2}$/',$d)&&checkdate((int)substr($d,5,2),(int)substr($d,8,2),(int)substr($d,0,4));}
+ static function is_manual($o){return $o&&$o->get_meta('_shem_manual_payment')==='1';}
  static function decimal($v,$max=10000000){if(!is_numeric($v)||!is_finite((float)$v)||(float)$v<0||(float)$v>$max)throw new Exception('ערך מספרי אינו תקין');return round((float)$v,2);}
  static function cents($n){return (int)round((float)$n*100);}
 
@@ -185,11 +188,17 @@ final class ShemDok {
    if(in_array($key,['vat','shipping','discount'],true))$p[$key]=self::decimal($input[$key]??0,$key==='vat'?100:10000000);
    else $p[$key]=sanitize_textarea_field($input[$key]??'');
   }
-  if(!in_array($p['method'],['card','paypal'],true))throw new Exception('יש לבחור אשראי או PayPal');
-  if($p['method']==='paypal'){$p['last4']='';$p['brand']='';$p['installments']='';}else{$p['paypalEmail']='';}
+  if(!in_array($p['method'],self::METHODS,true))throw new Exception('יש לבחור אמצעי תשלום');
+  $keep=['card'=>['holder','brand','last4','installments'],'paypal'=>['holder','paypalEmail'],'transfer'=>['holder','bank','branch','account','transferDate'],'cash'=>['receivedDate'],'other'=>['methodLabel']][$p['method']];
+  foreach(['holder','brand','last4','installments','paypalEmail','bank','branch','account','transferDate','receivedDate','methodLabel'] as $k)if(!in_array($k,$keep,true))$p[$k]='';
+  foreach(['bank','methodLabel','holder','brand','reference'] as $k)if(mb_strlen($p[$k])>120)throw new Exception('אחד מפרטי התשלום ארוך מדי');
+  if($p['branch']!==''&&!preg_match('/^[0-9\-]{1,20}$/',$p['branch']))throw new Exception('מספר סניף אינו תקין');
+  if($p['account']!==''&&!preg_match('/^[0-9\-]{1,20}$/',$p['account']))throw new Exception('מספר חשבון אינו תקין');
+  foreach(['transferDate','receivedDate'] as $k)if($p[$k]!==''&&!self::valid_date($p[$k]))throw new Exception('תאריך התשלום אינו תקין');
+  if($p['method']==='other'&&trim($p['methodLabel'])==='')throw new Exception('יש לתאר את אמצעי התשלום');
   if($p['last4']!==''&&!preg_match('/^\d{4}$/',$p['last4']))throw new Exception('יש להזין ארבע ספרות אחרונות בלבד');
   if($p['installments']!==''&&(!ctype_digit($p['installments'])||(int)$p['installments']<1||(int)$p['installments']>60))throw new Exception('מספר תשלומים אינו תקין');
-  if(!preg_match('/^\d{4}-\d{2}-\d{2}$/',$p['orderDate'])||!checkdate((int)substr($p['orderDate'],5,2),(int)substr($p['orderDate'],8,2),(int)substr($p['orderDate'],0,4)))throw new Exception('יש להזין תאריך');
+  if(!self::valid_date($p['orderDate']))throw new Exception('יש להזין תאריך');
   foreach(['email','customerEmail','paypalEmail'] as $key)if($p[$key]!==''&&!is_email($p[$key]))throw new Exception('כתובת המייל אינה תקינה');
   if(!$p['business']||!$p['businessId']||!$p['customer']||!$p['address'])throw new Exception('יש להשלים שם ומספר עסק, כתובת עסק ושם לקוח');
   $items=$input['items']??[];
@@ -224,8 +233,8 @@ final class ShemDok {
   if(!empty($body['document']['sourceOrderId'])){
    $oid=absint($body['document']['sourceOrderId']);
    $o=function_exists('wc_get_order')?wc_get_order($oid):false;
-   if(!$o||!$o->is_paid()||!$o->get_transaction_id())throw new Exception('ההזמנה אינה משולמת');
-   self::from_order($o);
+   if(!$o||!$o->is_paid()||(!$o->get_transaction_id()&&!self::is_manual($o)))throw new Exception('ההזמנה אינה משולמת');
+   self::from_order($o,true);
    $p=self::clean($body['document']);$p['sourceOrderId']=$oid;
    if(self::totals($p)['tax']!==self::cents($o->get_total_tax()))throw new Exception('המע״מ במסמך חייב להתאים להזמנה');
    if(self::totals($p)['gross']!==self::cents($o->get_total()))throw new Exception('סכום המסמך חייב להתאים להזמנה');
@@ -286,15 +295,16 @@ final class ShemDok {
   return $method;
  }
 
- static function from_order($o){
+ static function from_order($o,$manual=false){
   if($o->get_currency()!=='ILS')throw new ShemDokPermanent('המערכת מוגדרת לשקלים בלבד');
-  $method=self::method_for_order($o);
+  $manual=$manual&&self::is_manual($o);
+  $method=$manual?'other':self::method_for_order($o);
   $p=array_merge(self::defaults(),self::settings()['defaults'],[
    'customer'=>trim($o->get_billing_first_name().' '.$o->get_billing_last_name()),
    'customerPhone'=>$o->get_billing_phone(),'customerEmail'=>$o->get_billing_email(),
    'customerAddress'=>trim($o->get_billing_address_1().' '.$o->get_billing_address_2().', '.$o->get_billing_city()),
    'orderDate'=>$o->get_date_created()->date('Y-m-d'),'sourceOrderId'=>$o->get_id(),'orderNumber'=>(string)$o->get_order_number(),
-   'method'=>$method,'holder'=>'','brand'=>'','last4'=>'','installments'=>'','paypalEmail'=>'','reference'=>$o->get_transaction_id(),
+   'method'=>$method,'methodLabel'=>$manual?'תשלום ידני':'','holder'=>'','brand'=>'','last4'=>'','installments'=>'','paypalEmail'=>'','bank'=>'','branch'=>'','account'=>'','transferDate'=>'','receivedDate'=>'','reference'=>$o->get_transaction_id(),
    'discount'=>0,'shipping'=>(float)$o->get_shipping_total()+(float)$o->get_shipping_tax(),'items'=>[],
   ]);
   if($o->get_payment_method()===self::GATEWAY){
@@ -344,6 +354,7 @@ final class ShemDok {
  static function paid($order_id,$attempt=0){
   if(!self::settings()['auto']||!function_exists('wc_get_order'))return;
   $o=wc_get_order($order_id);if(!$o||!$o->is_paid())return;
+  if(self::is_manual($o))return; // paid by hand: the admin issues it from the editor, never automatically
   if(!$o->get_transaction_id()){
    if($o->get_payment_method()===self::GATEWAY)self::alert('no_txn','להזמנה ששולמה דרך SHIMI אין אסמכתת תשלום',$order_id);
    return;

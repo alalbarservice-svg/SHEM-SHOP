@@ -7,6 +7,7 @@ class PaidOrder extends FakeOrder {
  public $paid=true,$transaction='TX-99',$meta=[],$notes=[];
  function is_paid(){return $this->paid;}
  function get_transaction_id(){return $this->transaction;}
+ function get_meta($k){return $this->meta[$k]??'';}
  function update_meta_data($k,$v){$this->meta[$k]=$v;}
  function delete_meta_data($k){unset($this->meta[$k]);}
  function save(){}
@@ -21,3 +22,10 @@ $GLOBALS['paidOrder']->paid=true;$GLOBALS['paidOrder']->transaction='';ShemDok::
 $GLOBALS['paidOrder']->transaction='TX-99';ShemDok::paid(99);ShemDok::paid(99);check(count($wpdb->rows)===1&&$wpdb->next===7002,'duplicate payment events produce one PDF');
 $wpdb=new FakeDB();$GLOBALS['paidOrder']->total='999.00';ShemDok::paid(99);check(count($wpdb->rows)===0&&isset($GLOBALS['paidOrder']->meta['_shem_dok_error']),'mapping failure logged without issuing');check(count($GLOBALS['scheduled'])===0,'permanent mapping failure does not schedule useless retries');check(count(ShemDok::alerts())>=1,'permanent mapping failure raises an alert');ShemDok::paid(99,3);check(count($GLOBALS['scheduled'])===0,'no retries after final failure');
 $GLOBALS['paidOrder']->total='155.20';ShemDok::paid(99,1);check(count($wpdb->rows)===1&&!isset($GLOBALS['paidOrder']->meta['_shem_dok_error']),'successful retry issues once and clears error');
+$wpdb=new FakeDB();$GLOBALS['paidOrder']->meta=['_shem_manual_payment'=>'1'];$GLOBALS['paidOrder']->transaction='';ShemDok::paid(99);ShemDok::paid(99,1);
+check(count($wpdb->rows)===0&&!isset($GLOBALS['paidOrder']->meta['_shem_dok_error'])&&count($GLOBALS['scheduled'])===0,'order paid by hand is never invoiced automatically and raises no error');
+$GLOBALS['paidOrder']->total='155.20';$GLOBALS['paidOrder']->method='bacs';$m=ShemDok::from_order($GLOBALS['paidOrder'],true);
+check($m['method']==='other'&&$m['methodLabel']==='תשלום ידני','manual order prefills the editor as an editable other-payment draft');
+rejects(fn()=>ShemDok::from_order($GLOBALS['paidOrder']),'auto mapping still refuses a manually paid order');
+$GLOBALS['paidOrder']->meta=[];rejects(fn()=>ShemDok::from_order($GLOBALS['paidOrder'],true),'manual mode does not open a non-manual unmapped order');
+$GLOBALS['paidOrder']->method='stripe';

@@ -62,3 +62,6 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - SHEM admin luxury redesign (b3fa448) and two stale-test fixes (de97361) merged locally into staging/shimi-linked-48; branch at 863f434 pushed and equal to origin. Full 360 green on local staging (SHEM unit 32/32, SHIMI unit 21/21, customer e2e 42/42, admin_suite SHEM 324/0, SHIMI 319/0 with 4 blocked by design, sync 48/48, UI sweep 38 views 0 issues). Not verified: HawkScan, real 3DS, every modal state.
 - Handoff package: handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/ (servers decision in SERVERS_DECISION.md). Open questions file: HANDOFF_OPEN_QUESTIONS.md.
 - Open: owner approval of hourly test servers plus access method, HawkScan key, 3DS sandbox keys, live tax 18 percent, PDF engine packaging, SCC_INVOICE_DELIVERY_MODE in deployment files, legacy invoice rows deletion approval. Local branches not pushed: feat/admin-tabs-redesign, fix/legacy-tests.
+
+## פתוח: בוט תמיכה (29.10.2026)
+- תזכורת: מספר הוואטסאפ של נציג השירות ריק בכוונה (הגדרות הבוט, wa_number). ההודעות ממתינות בתור (wp_ssb_notice, ערוץ whatsapp) עד שיחובר ערוץ. לחזור לזה, וגם למספר הוואטסאפ הקבוע באתר (052-9586766).

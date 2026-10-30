@@ -99,3 +99,6 @@
 - 28.10.2026 (owner): approved the SHEM admin luxury redesign for merge after the 360 run, approved fixing and merging the two stale tests, approved the invoice panel wording, asked to update the local remote to SHEM-SHOP.git (done). Push happened only after the owner wrote "דחוף". Servers: status unchanged, still the agent recommendation (Hetzner CPX22 SHEM, Linode Shared 4GB SHIMI, Cloudflare Tunnel, hourly test day T1-T8) awaiting owner approval; why and goals are written in handoff/SHEM-SHOP/2026-10-28_1248_admin-redesign-360-and-servers/SERVERS_DECISION.md.
 
 - 29.10.2026: old agent mapping report saved in docs/reports/2026-10-29-old-agent-mapping.md. Old agent NOT to be deleted until: staging DB backups, 25.10 code backups, transfer-pkg, export-shem and source image folders (amiri, lp, rl, export-2026-10-18) are copied out or confirmed redundant; test-user passwords/sessions/app-passwords reset after import. Owner approved opening hourly test servers (access method and spend cap still open) and approved item 4 decisions.
+
+## 30.10.2026 - brand pages (owner decision)
+- Decision: option 1. Keep repo behaviour: brands with no in-stock items are hidden on the storefront (SHEM/src/designers.js:56). No code change. Live shows all brands; this difference is accepted.

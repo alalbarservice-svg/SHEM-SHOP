@@ -25,6 +25,9 @@ services:
         define('SCC_PEER_PUBLIC_URL','http://localhost:8082');
         define('SCC_CHANNEL_SECRET','${CHANNEL_SECRET}');
         define('SCC_HOME_PAYMENT_SECRET','${HOME_PAY_SECRET}');
+        define('SHEM_HOME_PAYMENT_SECRET','${HOME_PAY_SECRET}');
+        define('SHEM_PAY_SESSION_URL','http://shimi/wp-json/shimi-pay/v1/session');
+        define('SHEM_PAY_ALLOWED_ORIGIN','http://localhost:8082');
         define('WP_HOME','http://localhost:8081'); define('WP_SITEURL','http://localhost:8081');
     volumes: [shemhtml:/var/www/html]
   shimi:
@@ -40,6 +43,7 @@ services:
         define('SCC_PEER_PUBLIC_URL','http://localhost:8081');
         define('SCC_CHANNEL_SECRET','${CHANNEL_SECRET}');
         define('SCC_HOME_PAYMENT_SECRET','${HOME_PAY_SECRET}');
+        define('SHIMI_HOME_PAYMENT_SECRET','${HOME_PAY_SECRET}');
         define('WP_HOME','http://localhost:8082'); define('WP_SITEURL','http://localhost:8082');
     volumes: [shimihtml:/var/www/html]
 volumes: {dbdata: {}, shemhtml: {}, shimihtml: {}}

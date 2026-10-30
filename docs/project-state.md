@@ -65,3 +65,11 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 
 ## פתוח: בוט תמיכה (29.10.2026)
 - תזכורת: מספר הוואטסאפ של נציג השירות ריק בכוונה (הגדרות הבוט, wa_number). ההודעות ממתינות בתור (wp_ssb_notice, ערוץ whatsapp) עד שיחובר ערוץ. לחזור לזה, וגם למספר הוואטסאפ הקבוע באתר (052-9586766).
+
+## Update 30.10.2026 (360 sweep, unperformed checks)
+- Staging only, no commit, no push. Backups: pre-order-fix-1031-*, pre-admin-rerun-1030-*.
+- Done: SHEM catalogue order now identical to live (57/57, meta _scc_updated_at, rollback in evidence/order-fix). Test products hidden (draft) on both stagings.
+- Verified: SHEM desktop blocks live vs staging identical; mobile search, menu, cart, wishlist, forms identical except brand list (build version) and support chat bubble. SHIMI shop, club, cart, product on desktop and mobile: no overflow, no broken images, 0 console errors; add to cart (size select then button) works, VAT 18 percent and shipping 49 shown. Admin suites: SHEM 324 pass, SHIMI 319 pass (4 blocked by design), browser admin PASS on both.
+- Differences by design: live SHIMI has 5 demo items (staging 48 real); live /admin.html redirects unauthenticated users to the storefront, staging shows an admin login gate (401).
+- Not verified: live admin interior (needs owner login), SHEM mobile language toggle and account entry (times out on live and staging alike), real 3DS, HawkScan.
+- Owner decision pending: keep repo behaviour (hide brands with no in-stock items) or show all brands like live. Recommendation: keep.

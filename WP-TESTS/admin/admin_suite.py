@@ -6,7 +6,7 @@ over HTTP with a real WP admin session (cookie + wp_rest nonce). Usage: admin_su
 Credentials: /home/claude/.stg-admin-pass (chmod 600). Test data ids/names carry the prefix t_admin_ and are removed at the end
 (audit rows are append-only by design and stay). Settings/sequence rows are snapshotted and restored.
 """
-import sys, os, json, re, subprocess, time, base64, collections
+import os, sys, json, re, subprocess, time, base64, collections
 import requests
 
 SITE = sys.argv[1] if len(sys.argv) > 1 else 'shem'
@@ -108,6 +108,15 @@ def cleanup():
         stmts.append(f"DELETE FROM {TBL('mail_jobs')} WHERE id IN ({inlist(ords | {'manager:' + o for o in ords})})")
         stmts.append(f"DELETE FROM {TBL('payment_transactions')} WHERE JSON_VALUE(data,'$.order_id') IN ({inlist(ords)})")
     for s in stmts: sql(s)
+    if ords:  # orders live in WooCommerce (HPOS) since the migration: the legacy-table DELETE above no longer removes them
+        ids_php = ','.join("'" + __import__('re').sub(r'[^A-Za-z0-9_-]', '', i) + "'" for i in sorted(ords))
+        php = "if(function_exists('wc_get_orders')){foreach(wc_get_orders(['limit'=>-1,'return'=>'objects','meta_key'=>'_scc_legacy_id','meta_compare'=>'IN','meta_value'=>[" + ids_php + "]]) as $o){$o->delete(true);}}"
+        subprocess.run(['/home/claude/wps.sh', SITE, 'eval', php], capture_output=True, text=True, timeout=120)
+    if prods:  # products also live in WooCommerce since the migration: remove them (and their variations) by legacy id, same as orders
+        pids_php = ','.join("'" + __import__('re').sub(r'[^A-Za-z0-9_-]', '', i) + "'" for i in sorted(prods))
+        php = ("foreach(get_posts(['post_type'=>'product','post_status'=>'any','numberposts'=>-1,'meta_key'=>'_scc_legacy_id','meta_compare'=>'IN','meta_value'=>[" + pids_php + "]]) as $p){"
+               "foreach(get_children(['post_parent'=>$p->ID,'post_type'=>'product_variation','post_status'=>'any','fields'=>'ids']) as $v){wp_delete_post($v,true);} wp_delete_post($p->ID,true);}")
+        subprocess.run(['/home/claude/wps.sh', SITE, 'eval', php], capture_output=True, text=True, timeout=120)
     restore()
     for f in c['media']:
         subprocess.run(['docker', 'exec', f'shem-staging-{SITE}-1', 'rm', '-f', f'/var/www/html/wp-content/uploads/scc-media/products/{f}'], capture_output=True)
@@ -151,7 +160,16 @@ def run():
     ok('/signin-with-chatgpt redirects to wp-login', rr.status_code == 302 and 'wp-login.php' in rr.headers.get('location', ''), rr.headers.get('location'))
     rr = requests.get(BASE + '/signin-with-chatgpt?return_to=//evil.test', allow_redirects=False)
     ok('return_to open redirect is neutralised', 'evil.test' not in rr.headers.get('location', '').replace('wp-login.php', '').split('redirect_to=')[-1] or '%2F%2Fevil' not in rr.headers.get('location', ''), rr.headers.get('location'))
-    notrun('non-admin WP user -> 403', 'Scc_Router::is_admin always answers 401 (shared class); original answered 403 for a signed-in non-manager')
+    # signed-in WP user without manage_options -> 403 (own temporary subscriber, removed right after)
+    sub_pw = 'Tmp-' + base64.b16encode(os.urandom(6)).decode() + '-x9'
+    subprocess.run(['/home/claude/wps.sh', SITE, 'user', 'create', 't_admin_sub', 't_admin_sub@example.invalid', '--role=subscriber', '--user_pass=' + sub_pw], capture_output=True, text=True, timeout=120)
+    try:
+        ss = requests.Session(); ss.get(BASE + '/wp-login.php')
+        lr = ss.post(BASE + '/wp-login.php', data={'log': 't_admin_sub', 'pwd': sub_pw, 'wp-submit': 'Log In', 'testcookie': '1'}, allow_redirects=False)
+        r403 = Resp(ss.get(BASE + '/api/admin/products'))
+        ok('non-admin WP user -> 403 with message', lr.status_code == 302 and r403.status == 403 and r403.err() == 'אין הרשאת ניהול לחשבון זה.', (lr.status_code, r403.status, r403.t[:120]))
+    finally:
+        subprocess.run(['/home/claude/wps.sh', SITE, 'user', 'delete', 't_admin_sub', '--yes'], capture_output=True, text=True, timeout=120)
 
     # ---------------------------------------------------------------- products
     screen('products')
@@ -249,7 +267,7 @@ def run():
     st('upload anonymous -> 401', call('media', 'POST', raw=PNG, ctype='image/png', anon=True), 401)
     eq('unknown media file -> 404', requests.get(BASE + '/media/products/nope.png').status_code, 404)
     eq('path traversal in media -> not served', requests.get(BASE + '/media/products/..%2F..%2Fwp-config.php').status_code in (404, 400, 403), True)
-    st('product with uploaded imageUrl', call('products', 'POST', product_body(sku='T_ADMIN_IMG', image='', imageUrl=url)), 201); track('products', (call('products').j or [{}])[0].get('id'))
+    r = st('product with uploaded imageUrl', call('products', 'POST', product_body(sku='T_ADMIN_IMG', image='', imageUrl=url)), 201); track('products', (r.j or {}).get('id'))
 
     # ---------------------------------------------------------------- promotions
     screen('promotions')
@@ -512,7 +530,7 @@ def run():
         r = call(path % o['id']) if '%s' in path else call(path)
         if IS_SHEM and what != 'order-pdf':
             ok('SHEM GET ' + path + ' has no legacy renderer (404/410/501)', r.status in (404, 410, 501), (r.status, r.t[:120])); continue
-        if r.status == 501: blocked('GET ' + path.replace('%s', ':id'), 'document renderer missing: filter scc_admin_document_render')
+        if r.status == 501: blocked('GET ' + path.replace('%s', ':id'), 'PDF engine (mPDF) missing on this site (501)')
         else: st('GET ' + path, r, 200)
     st('documents html for unknown id -> 404', call('manage/documents/nope/html'), 404, 'מסמך לא נמצא.')
     st('documents pdf anonymous -> 401', call('manage/documents/' + o['id'] + '/pdf', anon=True), 401)

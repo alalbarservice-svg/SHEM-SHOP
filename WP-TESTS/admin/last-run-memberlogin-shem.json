@@ -1,0 +1,464 @@
+[
+ {
+  "screen": "auth",
+  "check": "dummy WordPress customers exist",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous /api/session",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous /api/customer/me",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous me has no orders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous me leaks no member block",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous preferences write -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous watch add -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 anonymous",
+  "check": "anonymous order open without token -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "enable club (https privacy link)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "dummy joins the club",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "club member + card created",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "loyalty settings PUT (earn 10 percent, 7 days pending)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "admin edit card (add name) so it can be edited",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "manual +20.00 benefit",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "create dummy product",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "order A (dummy email)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "order A paid",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 data: club member + paid order for the dummy",
+  "check": "order B (other email)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "wrong password does not log in",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "correct password logs in (302 + cookie)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "session signedIn",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "session email",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "me signedIn",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "me email",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "me lists exactly the dummy order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "me never leaks the other customer order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "me order view has no viewToken/notes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "me has the member block",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member tier",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member card number format",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member available balance = 20.00 (earn is pending)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member pending credit > 0 after paid order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member benefits text present",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 login (real wp-login.php)",
+  "check": "member block enabled flag",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "own order opens",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "another customer's order -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "404 body does not reveal the order",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "own order without login and without token -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "second customer logs in",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "second customer cannot open the dummy's order -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "second customer's me has no club member block (never joined)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 ownership and permissions",
+  "check": "second customer's orders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "preferences off (own)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "preferences persisted",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "second customer's preferences untouched",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "write from a foreign Origin -> 403",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "write without Origin -> 403",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "write with non-JSON content type -> 415",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "watch saved for the dummy",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "other customer cannot delete the dummy's watch (no-op, 200)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "watch still there",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "owner deletes the watch",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 preferences, watches, CSRF",
+  "check": "watch gone",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "suspend the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "suspended card is reported to the customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "reactivate the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "archive the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "archived card disappears from the customer view",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "restore the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "restored card is visible again",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "turn the benefits program off (loyalty.enabled=false)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "member.enabled is the BENEFITS-PROGRAM switch (loyalty.enabled), not the club switch",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "turn the benefits program on again",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "disable only the club signup switch",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "club switch off does not change what the member sees (enabled stays true)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 club state seen by the customer",
+  "check": "re-enable the club for the UI check",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI anonymous: account page offers sign-in",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI anonymous: sign-in link present",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI sign-in link lands on wp-login.php (staging)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI after login returns to the account page",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI logged in: shows the e-mail",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI logged in: shows a club card block",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 browser flow",
+  "check": "UI: no page errors",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 logout and session end",
+  "check": "after logout me is anonymous",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 logout and session end",
+  "check": "after logout the order is closed again -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 logout and session end",
+  "check": "disable the club (restore)",
+  "status": "PASS",
+  "detail": ""
+ }
+]

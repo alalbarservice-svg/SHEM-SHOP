@@ -73,3 +73,43 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Differences by design: live SHIMI has 5 demo items (staging 48 real); live /admin.html redirects unauthenticated users to the storefront, staging shows an admin login gate (401).
 - Not verified: live admin interior (needs owner login), SHEM mobile language toggle and account entry (times out on live and staging alike), real 3DS, HawkScan.
 - Owner decision pending: keep repo behaviour (hide brands with no in-stock items) or show all brands like live. Recommendation: keep.
+
+## Update 31.10.2026 - club check with a dummy customer (staging)
+- WP-TESTS/admin/club_dummy.py shem|shimi: signup, card, loyalty adjust, birthday, earn on paid order, redeem, release, suspend/archive/restore, unsubscribe + re-consent, permissions, audit, admin UI. Result: SHEM 112/112, SHIMI 112/112. Test data (t_club_) removed, settings restored, audit rows remain (append-only).
+- Not verified: member login (no such flow in code), mail to members (no provider), enabling the club on live (needs approved privacy link + mail).
+
+## Update 31.10.2026 - member login and account check (staging)
+- WP-TESTS/admin/member_login.py shem|shimi: login (wrong/correct password), session, /api/customer/me with club member block, order ownership (own, other's = 404, viewToken), preferences/watches/CSRF, card suspended/archived/restored, logout, browser flow with screenshots. SHEM 77/77, SHIMI 2/2 (customer API not exposed on SHIMI by design).
+- Finding: club.enabled (signup) and loyalty.enabled (member block, benefits) are two separate switches. Both must be on for the club to work end to end.
+- Finding: a card created by signup only has no name; admin cannot edit it until a name is added.
+- Finding: staging login is stock wp-login (English, unstyled, no self-registration); button label says ChatGPT; live uses OAuth. Owner decision pending on the customer login method.
+- Correction: earlier club test left 84 WooCommerce test orders (suite cleanup did not remove WC orders). Backed up, deleted, cleanup fixed; order count back to 179.
+- Mail: plugin has no sender registered (scc_admin_mail_process filter / Resend constants). Free options researched, owner choice pending. Nothing sent.
+- Live club activation: prepared as checklist only, nothing executed on live.
+- Uncommitted, waiting for "דחוף".
+
+## Update 31.10.2026 (separation of stores)
+- Scan (read-only, 40 routes per store, staging and live): SHEM shows no mention of SHIMI. SHIMI shows only the contact email your.shem88@gmail.com on contact, accessibility, cancel, payments and privacy pages (owner decision pending: separate email for SHIMI).
+- SHIMI club hidden on staging (source SHIMI/src/ShimiApp.jsx plus compiled bundle in WP-THEMES/shimi-storefront). Backup: backups-staging/shimi-theme-before-club-hide-1031. Live untouched. SHIMI privacy page still mentions the club (text, decision pending). Production needs a proper vite rebuild (bundle hash changes).
+- Club activation checklist is now SHEM only.
+
+## Update 31.10.2026 (SHIMI real build, privacy text, 404 fix)
+- SHIMI privacy page: the two club sentences removed (owner approval 31.10). Source SHIMI/src/components/PolicyPages.jsx and theme bundle.
+- Real vite build of the patched SHIMI source (scratch copy, not the repo dist): new bundle index-CAk6XJtZ.js, admin chunk ChannelManagement-Vf8OusoL.js. CSS, fonts, images and favicon are byte-identical to the previous theme (no design change). Theme shell html (3 files) and public.sha256 updated consistently; manifest check 0 failures. Deployed to SHIMI staging only. Old files and the previous theme are in backups-staging/shimi-theme-before-real-build-1031.
+- Browser check on staging (desktop 1440 and mobile 390): no club link, /#/club shows home, no console errors, no HTTP 4xx, 49 product images load. Tests: SHIMI npm test 5/5, test:sites 4/4, admin_suite shimi green except 1 NOT-RUN and 4 BLOCKED (unchanged from before).
+- The 2 SHIMI staging image 404s: WooCommerce test products created by admin_suite (t_admin_, sku T_ADMIN_IMG) in the 30.10 runs. Not on live (live has 5 products). Root cause: since the migration products live in WooCommerce and admin_suite cleanup only deleted legacy rows. Fixed in admin_suite.py (tracks the POST id and deletes WC products and variations by _scc_legacy_id). Own t_ test products removed (SHIMI 27 + 4, SHEM 54, backup pre-delete-t-admin-img-1031-*). Full suite rerun: products 48 and orders 30 before and after.
+- Still open: separate SHIMI customer email (owner decision made, address NOT given yet; blocks SUPPORT_EMAIL, OrderComplete mailto, worker fallbacks, plugin and support-bot defaults, per-store SCC_ADMIN_CONTACT_EMAIL), mail sender for SHEM club (owner choice pending, recommended Resend free), live build and deploy (needs approval), SHIMI admin still shows club panels (admin-only).
+- Uncommitted, waiting for "דחוף".
+
+## Update 31.10.2026 (club mailing, router 403, PDF engine, staging only)
+- New SHEM-only module WP-PLUGIN/shem-shimi-commerce/includes/modules/admin-60-club-mail.php: club broadcast ("הודעת תפוצה") through Resend, plus public opt-out page. API: GET/POST /api/admin/manage/club/broadcast (dry run by default, real send only with confirm:true), GET/POST /api/club/unsubscribe. SHIMI answers 404 on all of it.
+- Safeguards: only active members with consent and a valid unique address; subject starts with "פרסומת:"; footer with advertiser name, address, phone, email (send is blocked 409 until all four are filled in invoice settings); one-click List-Unsubscribe headers; per-member HMAC opt-out link (GET shows a button, POST unsubscribes); daily cap 100 (Resend free), 429 beyond it; campaign resume never double-sends; batches of 50.
+- Staging runs in SINK mode (SCC_MAIL_SINK in staging wp-config, sender club@example.invalid): messages are recorded, nothing is sent. WP-TESTS/admin/club_mail.py: 63/63 PASS (gates, dry run, test message, broadcast, opt-out, cap and resume, stubbed Resend request shape, SHIMI 404, audit). Test data (t_cm_) removed, settings restored.
+- Router: logged-in user without manage_options now gets 403 with the original message (was 401). The 3 PDF tests that were BLOCKED were caused by mPDF missing on SHIMI staging (vendor copied from SHEM); admin_suite labels fixed. admin_suite: SHEM 325 PASS + 1 NOT-RUN (SHIMI-only guard, by design), SHIMI 323 PASS + 1 BLOCKED (payment link, owner decision).
+- NOT verified: real Resend API call (needs key and verified domain), Resend rate limit (sources conflict), delivery to a real mailbox, legal wording (not legal advice).
+- Needs owner: Resend API key via vault only, DNS verification of shem-shop.com, advertiser details in invoice settings, final sender address, explicit confirmation before the first real send, approval of the public opt-out page wording and of any admin UI for the broadcast (new design). mPDF vendor must be part of the production deployment.
+- Uncommitted, waiting for "דחוף".
+
+## Update 31.10.2026 (mPDF committed to repo, owner request)
+- PDF engine mPDF v8.3.1 is now in the repo as a trimmed vendor folder: WP-PLUGIN/shem-shimi-commerce/vendor (used by SHEM and SHIMI admin documents) and SHEM-DOK/plugin/vendor (SHEM-DOK plugin). 27 MB each (original 240 MB: nested .git, tests, utils and unused fonts removed; DejaVu and GNUFree fonts kept). Test document rendered with full and trimmed vendor: identical size, text and fonts; repo copy also renders (69953 bytes). Note file inside each vendor folder.
+- Deploy: copy the plugin folders as they are, no composer step needed.

@@ -1,6 +1,6 @@
 # SHEM DOK 1.1 - staging status (18.10.2026)
 
-Source: SHEM-DOK/plugin (no vendor, no secrets). Tests: unit (php), e2e (python, 193 checks, local staging only), ui (playwright, 12 checks).
+Source: SHEM-DOK/plugin (vendor = trimmed mPDF engine committed, no secrets). Tests: unit (php), e2e (python, 193 checks, local staging only), ui (playwright, 12 checks).
 
 Verified on local Docker staging only (WooCommerce 11.2.1, HPOS on, PHP 8.3):
 - unit: domain 12, archive 26, paid 35, woocommerce 23 - all pass

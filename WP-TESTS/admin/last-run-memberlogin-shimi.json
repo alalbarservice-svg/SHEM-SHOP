@@ -1,0 +1,14 @@
+[
+ {
+  "screen": "auth",
+  "check": "dummy WordPress customers exist",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "auth",
+  "check": "SHIMI exposes no customer account API",
+  "status": "PASS",
+  "detail": ""
+ }
+]

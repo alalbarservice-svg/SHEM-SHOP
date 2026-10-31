@@ -103,9 +103,9 @@
  },
  {
   "screen": "auth+session",
-  "check": "non-admin WP user -> 403",
-  "status": "NOT-RUN",
-  "detail": "Scc_Router::is_admin always answers 401 (shared class); original answered 403 for a signed-in non-manager"
+  "check": "non-admin WP user -> 403 with message",
+  "status": "PASS",
+  "detail": ""
  },
  {
   "screen": "products",

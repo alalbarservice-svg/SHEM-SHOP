@@ -19,7 +19,10 @@ final class Scc_Router {
             if ($m !== $req->method && $m !== '*') continue;
             if (!preg_match($rx, $p, $mm)) continue;
             $req->params = $mm;
-            if ($auth === 'admin' && !self::is_admin($req)) Scc_Response::error('יש להתחבר לחשבון המורשה כדי לנהל את החנות.', 401)->send();
+            if ($auth === 'admin' && !self::is_admin($req)) {
+                if (is_user_logged_in() && !current_user_can('manage_options')) Scc_Response::error('אין הרשאת ניהול לחשבון זה.', 403)->send();
+                Scc_Response::error('יש להתחבר לחשבון המורשה כדי לנהל את החנות.', 401)->send();
+            }
             try { $res = call_user_func($h, $req); }
             catch (Scc_Http_Exception $e) { $res = Scc_Response::error($e->getMessage(), $e->status); }
             catch (Throwable $e) { error_log('[scc] ' . $e->getMessage() . ' @' . $e->getFile() . ':' . $e->getLine()); $res = Scc_Response::error('אירעה שגיאה. נסו שוב.', 500); }

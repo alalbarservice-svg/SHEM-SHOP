@@ -1,0 +1,674 @@
+[
+ {
+  "screen": "0 baseline",
+  "check": "club signup while the club is not active -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 baseline",
+  "check": "admin: enable club without privacy link -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 baseline",
+  "check": "admin: enable club with http link -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 baseline",
+  "check": "admin: enable club (https privacy link)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "0 baseline",
+  "check": "public GET /api/club reflects enabled",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup invalid e-mail -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup without consent -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup consent as string -> 400 (strict true)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup foreign origin -> 403",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup without origin -> 403",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup non-JSON content type -> 415",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "nothing created by the rejected attempts",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup dummy customer -> 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "exactly one member row",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "member status/consent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup again (same e-mail) is idempotent -> 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "still one member row",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup upper-case e-mail does not create a duplicate",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "still one member row after case variant",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "card (member profile) created by signup",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "card number format BRAND-<12 hex>",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "card defaults",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "1 signup",
+  "check": "signup sent no e-mail (no mail job added)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin members list shows dummy",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin cards list shows dummy with effectiveTier",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin edit card (name, phone, vip)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "member-profiles PUT keeps the card number or creates one for a member id",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "no duplicate card for the dummy e-mail",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin cards: anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin members: anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin member-profiles PUT: anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin loyalty-adjust: anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin loyalty: no nonce -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "2 admin visibility",
+  "check": "admin loyalty: foreign origin -> 403",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "loyalty settings PUT (earn 10 percent, no waiting period)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust without reason -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust zero -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust unknown member -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust negative below zero balance -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust +20 (welcome credit) -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust stored in cents, manual, not system",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "balance = 20.00",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "adjust -5 -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "balance = 15.00",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "admin loyalty ledger lists the dummy entries",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "birthday not today -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "set birthday to today",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "birthday benefit -> 201",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "birthday +20.00",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "birthday benefit twice -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "3 loyalty",
+  "check": "balance = 35.00",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "create dummy product",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "order #1 for the dummy customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "order #1 mark paid (manual-external)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "exactly one earned entry for order #1",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "earned = 10 percent of 399.80",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "balance = 35.00 + 39.98",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "mark paid again is idempotent (no second earned entry)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "still one earned entry",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "order #2 for the dummy customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "loyalty: lower the redeem cap to 20 percent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "redeem above the 20 percent cap (45.00 of 199.90, balance is enough) -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "loyalty: cap back to 50 percent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "redeem 30.00 on order #2",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "redeem totals",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "balance after redeem",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "redeem twice on the same order -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "release-credit on order #2",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "balance restored after release",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "release twice -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "redeem again then pay order #2",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "order #2 mark paid",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "order #2 earned entry exists",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "4 orders and benefits",
+  "check": "release-credit after paid -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "suspend the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "order #3 for a suspended card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "redeem with a suspended card -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "order #3 mark paid",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "suspended card earns nothing",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "reactivate the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "unsubscribe the member (members PATCH)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "member unsubscribed",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "admin cannot silently re-activate mailing -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "invalid member status -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "customer re-joins with new consent -> 200",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "member active again after new consent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "re-join did not create a second card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "archive the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "adjust on an archived card -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "restore the card",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "5 status controls",
+  "check": "adjust works again after restore",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "audit has the loyalty-adjust writes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "audit has the card writes",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "audit has the club setting write",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "audit has redeem and release",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "audit grew",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "audit never stores secrets",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "6 audit and integrity",
+  "check": "no negative balance at any time (ledger sum >= 0)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI screen \"כרטיסי מועדון\" renders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI \"כרטיסי מועדון\" shows the dummy customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI screen \"מועדון חברים\" renders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI \"מועדון חברים\" shows the dummy customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI screen \"לקוחות מהזמנות\" renders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI \"לקוחות מהזמנות\" shows the dummy customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI screen \"הזמנות\" renders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI \"הזמנות\" shows the dummy customer",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI screen \"יומן פעולות\" renders",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI \"יומן פעולות\" shows club actions",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "7 admin UI",
+  "check": "admin UI: no page errors",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "8 disable",
+  "check": "admin: disable club",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "8 disable",
+  "check": "signup after disable -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "8 disable",
+  "check": "late signup created nothing",
+  "status": "PASS",
+  "detail": ""
+ }
+]

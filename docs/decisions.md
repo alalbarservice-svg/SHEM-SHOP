@@ -102,3 +102,16 @@
 
 ## 30.10.2026 - brand pages (owner decision)
 - Decision: option 1. Keep repo behaviour: brands with no in-stock items are hidden on the storefront (SHEM/src/designers.js:56). No code change. Live shows all brands; this difference is accepted.
+
+## 31.10.2026 - separation of the two stores (owner decision)
+- No customer-visible connection between SHEM and SHIMI: the stores are unrelated from the customer's point of view. The only links are internal (product sync, and payment clearing through SHIMI). Nothing of these may be visible to or discoverable by a customer.
+- Club and club card are SHEM only. The SHIMI club is hidden (nav link removed, /#/club redirects to home). Staging only, not pushed.
+
+## 31.10.2026 - SHIMI details (owner decisions)
+- SHIMI needs its own customer-facing email address with no trace of the connection to SHEM. Address pending from the owner.
+- Approved: remove the club sentences from the SHIMI privacy page (done on staging).
+- Approved: investigate the 2 image 404s and apply the required fixes and a proper build (done on staging, live untouched).
+
+## 31.10.2026 - club mailing (owner request, agent implementation)
+- Owner asked to connect Resend (free plan) to the SHEM admin and run a proper club broadcast with a demo member. Implemented and tested on staging in sink mode only; no real e-mail sent. Real sending stays blocked until the owner supplies the key through the vault, approves DNS verification and confirms in chat.
+- Agent design choice: broadcast is API only for now (no new admin screen, to avoid a design change without approval).

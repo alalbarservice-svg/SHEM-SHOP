@@ -1,0 +1,380 @@
+[
+ {
+  "screen": "club mail: access + gates",
+  "check": "GET status anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "POST broadcast anonymous -> 401",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "GET status",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "configured + sink mode",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "sink flag",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "daily cap is 100 (Resend free plan)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "only 3 deliverable recipients (unsubscribed, no consent, duplicate, bad address skipped)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "missing advertiser fields are reported",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "empty subject -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "empty text -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "confirm without advertiser details -> 409",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "nothing recorded by the blocked attempt",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: access + gates",
+  "check": "cross-origin write rejected",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "dry run (no confirm)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "dry run flags dryRun and counts",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "dry run subject carries the word פרסומת",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "dry run sample is masked",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "dry run recorded nothing",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "dry run did not touch the daily counter",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: dry run",
+  "check": "confirm must be boolean true (string \"yes\" stays a dry run)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: test message",
+  "check": "test dry run",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: test message",
+  "check": "test dry run recorded nothing",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: test message",
+  "check": "test to invalid address -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: test message",
+  "check": "test send (sink)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: test message",
+  "check": "test sent exactly 1",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: test message",
+  "check": "test message recorded for the tester",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "broadcast (sink)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "sent 3, failed 0, deferred 0",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "sink holds exactly the 3 deliverable members",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "subject starts with פרסומת",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "List-Unsubscribe + one-click headers on every message",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "each message has its own personal opt-out link",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "advertiser identity in text and html",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "html is RTL Hebrew and escapes user text",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "reply-to is the advertiser e-mail (opt-out by e-mail channel)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "daily counter counts the 3 sent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "resend same campaign",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "same campaign again sends nobody (no double sending)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "unknown campaign id -> 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real broadcast to the demo club",
+  "check": "malformed campaign id -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "opt-out page opens (GET) and shows a button",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "GET alone does not unsubscribe (link scanners are harmless)",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "wrong token -> 400",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "token of one member does not work for another",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "one-click POST (no Origin header, like mail clients) succeeds",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "member is now unsubscribed with a timestamp",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "the other members stay active",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: opt-out link",
+  "check": "recipients drop to 2",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "dry run: 100 now, rest deferred",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "first run sends exactly 100 and defers 2",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "a further send today is refused (cap) -> 429",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "sink has 100 messages",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "next day: the remaining 2 are sent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "102 messages in total, no recipient twice",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: daily cap + resume",
+  "check": "resumed campaign keeps its original content",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real transport (stubbed HTTP, dummy key, no network)",
+  "check": "one batch request to the Resend API",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real transport (stubbed HTTP, dummy key, no network)",
+  "check": "Bearer auth header is sent",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real transport (stubbed HTTP, dummy key, no network)",
+  "check": "payload has from/to(array)/subject/html/text/headers/reply_to",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real transport (stubbed HTTP, dummy key, no network)",
+  "check": "both messages reported ok with provider ids",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: real transport (stubbed HTTP, dummy key, no network)",
+  "check": "provider error (422) -> reported failed, not sent, key not leaked",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: SHIMI has no club mailing",
+  "check": "SHIMI role is not allowed to mail the club",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: SHIMI has no club mailing",
+  "check": "SHIMI public opt-out route answers 404",
+  "status": "PASS",
+  "detail": ""
+ },
+ {
+  "screen": "club mail: audit",
+  "check": "every confirmed/dry POST is audited without the message body",
+  "status": "PASS",
+  "detail": ""
+ }
+]

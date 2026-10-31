@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Admin } from "./components/Admin";
 import { PolicyPages } from "./components/PolicyPages";
-import { Club } from "./components/Club";
 import { HomeCheckout } from "./components/HomeCheckout";
 import { money } from "./commerce";
 import "./shimi.css";
@@ -14,7 +13,7 @@ const readCart = () => {
 };
 export function App() {
   const [route, setRoute] = useState(
-      location.hash.slice(1) ||
+      (location.hash.slice(1) === "/club" ? "" : location.hash.slice(1)) ||
         (location.pathname === "/admin.html" ? "/admin" : "/"),
     ),
     [products, setProducts] = useState([]),
@@ -32,7 +31,7 @@ export function App() {
     [locked, setLocked] = useState(false);
   useEffect(() => {
     const change = () => {
-      setRoute(location.hash.slice(1) || "/");
+      setRoute(location.hash.slice(1) === "/club" ? "/" : location.hash.slice(1) || "/");
       setSize("");
       setVariant("");
       setLocked(false);
@@ -136,7 +135,6 @@ export function App() {
         </a>
         <nav aria-label="ניווט ראשי">
           <a href="#/">החנות</a>
-          <a href="#/club">מועדון חברים</a>
           <a href="#/cart">סל קניות ({totalQty})</a>
         </nav>
       </header>
@@ -419,7 +417,6 @@ export function App() {
             )}
           </section>
         )}
-        {route === "/club" && <Club />}
         {[
           "terms",
           "privacy",

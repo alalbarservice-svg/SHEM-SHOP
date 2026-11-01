@@ -130,3 +130,12 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Live SHIMI admin: no signed-in session in the browser, so only the public page was read (live still shows the old email and WhatsApp, nothing changed on live).
 - Staging infra: the db container had a broken layer after restart; recreated with volumes kept. Volume backups: backups-staging/volumes-1101.
 - Still open: real e-mail send test (needs readiness approval and a send path), then commit and push (owner pre-approved after all checks).
+
+## בדיקת ממשק ניהול חי SHIMI (01.11.2026, קריאה בלבד, נכנס כ-your.shem88@gmail.com)
+- נסרקו כל 18 מדורי הניהול: נטענו ללא שגיאה, בלי שינוי נתונים.
+- הגדרות: שדה וואטסאפ בניהול = 972529586766 (הגדרת אדמין בלבד; בחנות החיה הקישור עדיין מוצג עד go-live).
+- פרטי העסק: רק מספר עסק מלא. שם משפטי, כתובת, טלפון, אימייל, שעות ואיש קשר לנגישות ריקים - לטפל לפני go-live.
+- בקרה והשקה: חסרים פרטי תבנית חשבונית, שירות מייל, סודות חיבור לאתר הבית ואישור חיבור. 6 מוצרים ללא מיפוי, 4 אזלו, 0 מיילים שנכשלו.
+- "הפעלת רכישה" מסומן on בעוד חיבור הסליקה חסר: לבדוק לפני go-live (לא שונה).
+- מייל בדיקה אחד נשלח ונקלט ב-alalbar.service@gmail.com.
+- ביקורת אבטחה סטטית של הפלאגין: ראו דוח. HawkScan דינמי לא הורץ (אין מפתח).

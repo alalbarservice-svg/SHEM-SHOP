@@ -11,6 +11,7 @@ import requests
 
 SITE = sys.argv[1] if len(sys.argv) > 1 else 'shem'
 PORT = {'shem': 8081, 'shimi': 8082}[SITE]
+CONTACT = 'your.shem88@gmail.com' if SITE == 'shem' else 'barlieon341@gmail.com'  # owner decision 01.11.2026: SHIMI shows only the contact-request address
 BASE = f'http://localhost:{PORT}'
 BRAND = 'SHEM' if SITE == 'shem' else 'SHIMI'
 IS_SHEM = SITE == 'shem'
@@ -146,7 +147,7 @@ def run():
     st('anonymous GET audit -> 401', call('audit', anon=True), 401)
     s = st('session 200', call('session'), 200)
     eq('session shape', sorted((s.j or {}).keys()), sorted(['authorized', 'contactEmail', 'signedInEmail', 'ownershipTransferred', 'localPreview', 'nonce']))
-    eq('session authorized/contact', ((s.j or {}).get('authorized'), (s.j or {}).get('contactEmail')), (True, 'your.shem88@gmail.com'))
+    eq('session authorized/contact', ((s.j or {}).get('authorized'), (s.j or {}).get('contactEmail')), (True, CONTACT))
     st('write without nonce -> 401', call('products', 'POST', product_body(), nonce=False), 401)
     st('write with wrong nonce -> 401', call('products', 'POST', product_body(), nonce=False, headers={'X-WP-Nonce': 'bad'}), 401)
     st('POST from foreign origin -> 403 Origin rejected', call('products', 'POST', {}, origin='https://evil.test'), 403, 'Origin rejected')
@@ -389,7 +390,7 @@ def run():
     st('settings adminPrincipal -> 400', call('settings', 'PUT', {'key': 'adminPrincipal', 'value': 'other'}), 400, 'Invalid setting')
     st('settings store ok', call('settings', 'PUT', {'key': 'store', 'value': {'heroSubtitle': 'שמירה מסונכרנת', 'brands': [P + 'B1', ' ', P + 'B2']}}), 200)
     sg = call('settings').j or {}
-    eq('settings GET store', (sg['store']['heroSubtitle'], sg['store']['brands'], sg['store']['contactEmail']), ('שמירה מסונכרנת', [P + 'B1', P + 'B2'], 'your.shem88@gmail.com'))
+    eq('settings GET store', (sg['store']['heroSubtitle'], sg['store']['brands'], sg['store']['contactEmail']), ('שמירה מסונכרנת', [P + 'B1', P + 'B2'], CONTACT))
     st('settings business ok', call('settings', 'PUT', {'key': 'business', 'value': {'legalName': 'Test company', 'registrationNumber': 'TEST', 'address': 'Test address', 'phone': '0500000000'}}), 200)
     eq('health.businessComplete', (call('health').j or {}).get('businessComplete'), True)
     st('settings integrations ok', call('settings', 'PUT', {'key': 'integrations', 'value': {'paymentProvider': 'Not yet selected', 'merchantId': 'test', 'secret': 'must-not-be-saved'}}), 200)

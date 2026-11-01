@@ -226,8 +226,7 @@ export function AdminOperations({
             >
               <p className="admin-note">
                 שם העוסק, מספרו, כתובתו וטלפון השירות נדרשים לפני פתיחת מכירה.
-                פרטים אלו מוצגים בעמודי המדיניות. טלפון התמיכה בוואטסאפ:
-                052-9586766.
+                פרטים אלו מוצגים בעמודי המדיניות.
               </p>
               <div className="admin-form-grid">
                 {businessKeys.map(([key, label]) => (

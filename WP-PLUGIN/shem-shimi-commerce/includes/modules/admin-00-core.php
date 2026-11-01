@@ -70,7 +70,7 @@ final class Scc_Admin {
     public static function nv(float $n): int|float|null { if (!is_finite($n)) return null; return (floor($n) == $n && abs($n) < 9.0e15) ? (int) $n : $n; }
     public static function truthy(mixed $v): bool { return !($v === null || $v === false || $v === 0 || $v === 0.0 || $v === '' || $v === [] || (is_float($v) && is_nan($v))); }
     public static function uniq(array $a): array { return array_values(array_unique($a, SORT_REGULAR)); }
-    public static function cfg_email(): string { return defined('SCC_ADMIN_CONTACT_EMAIL') ? (string) SCC_ADMIN_CONTACT_EMAIL : 'your.shem88@gmail.com'; }
+    public static function cfg_email(): string { return defined('SCC_ADMIN_CONTACT_EMAIL') ? (string) SCC_ADMIN_CONTACT_EMAIL : (SCC_ROLE === 'shimi' ? 'barlieon341@gmail.com' : 'your.shem88@gmail.com'); }
     public static function is_home(): bool { return SCC_ROLE === 'shimi'; } // original SHOP_ROLE=home is SHIMI (peer origin of home is SHEM)
     public static function brand(): string { return SCC_ROLE === 'shimi' ? 'SHIMI' : 'SHEM'; }
 

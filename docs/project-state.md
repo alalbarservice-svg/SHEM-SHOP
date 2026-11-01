@@ -113,3 +113,20 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 ## Update 31.10.2026 (mPDF committed to repo, owner request)
 - PDF engine mPDF v8.3.1 is now in the repo as a trimmed vendor folder: WP-PLUGIN/shem-shimi-commerce/vendor (used by SHEM and SHIMI admin documents) and SHEM-DOK/plugin/vendor (SHEM-DOK plugin). 27 MB each (original 240 MB: nested .git, tests, utils and unused fonts removed; DejaVu and GNUFree fonts kept). Test document rendered with full and trimmed vendor: identical size, text and fonts; repo copy also renders (69953 bytes). Note file inside each vendor folder.
 - Deploy: copy the plugin folders as they are, no composer step needed.
+
+## Update 01.11.2026 (SHIMI customer contact email, staging)
+- Owner decision 01.11: SHIMI shows no SHEM address to customers and sends no mail to customers. barlieon341@gmail.com is added to SHIMI only as the contact address for contact requests. Admin login (your.shem88) unchanged and not visible to customers.
+- Changed: SHIMI/src/components/PolicyPages.jsx (SUPPORT_EMAIL) and OrderComplete.jsx (mailto). Real vite build in a scratch copy; compared with the previous bundle: only 3 email strings and the admin chunk name differ. Theme updated (bundle index-D8TN8B-B.js, admin chunk ChannelManagement-BhNOVKlv.js, 3 shell files, public.sha256), deployed to SHIMI staging only. Backup: backups-staging/shimi-theme-before-contact-email-1101.
+- Browser check desktop 1440 and mobile 390, 8 customer routes: new address shown (contact page 3 times, other pages 2), old address 0, no console errors, no HTTP 4xx.
+- Not touched (admin-only or out of scope): Admin.jsx and worker defaults (admin identity), support-bot and plugin defaults (SHEM), WhatsApp link in the SHIMI bundle (WhatsApp number is out of scope).
+- Open: mail sending from SHIMI stays off (no provider on SHIMI); whether Israeli law requires a visible email for an online store was not verified.
+- Uncommitted, waiting for "דחוף".
+
+## Update 01.11.2026 (WhatsApp removal, SHIMI mail guard)
+- Owner decision 01.11: remove the WhatsApp link from SHIMI; SHEM-only mail defaults (your.shem88) stay for SHEM; SHIMI sends no mail to customers.
+- SHIMI (staging only): WhatsApp link, button and phone removed from policy/contact pages (bundle index-BSXSmqoA.js). The admin operations setting "whatsapp" (admin-only, validated field) is unchanged.
+- Plugin: new module core-mail-guard.php. On SCC_ROLE=shimi every wp_mail to a non-administrator is suppressed (counter option scc_mail_blocked). cfg_email default is barlieon341@gmail.com on SHIMI and your.shem88@gmail.com on SHEM. SHEM unaffected (tested).
+- Tests: admin_suite shem 325 PASS + 1 NOT-RUN, shimi 323 PASS + 1 BLOCKED (by design, no provider); club_mail 63/63 earlier run, re-run subset PASS.
+- Live SHIMI admin: no signed-in session in the browser, so only the public page was read (live still shows the old email and WhatsApp, nothing changed on live).
+- Staging infra: the db container had a broken layer after restart; recreated with volumes kept. Volume backups: backups-staging/volumes-1101.
+- Still open: real e-mail send test (needs readiness approval and a send path), then commit and push (owner pre-approved after all checks).

@@ -115,3 +115,9 @@
 ## 31.10.2026 - club mailing (owner request, agent implementation)
 - Owner asked to connect Resend (free plan) to the SHEM admin and run a proper club broadcast with a demo member. Implemented and tested on staging in sink mode only; no real e-mail sent. Real sending stays blocked until the owner supplies the key through the vault, approves DNS verification and confirms in chat.
 - Agent design choice: broadcast is API only for now (no new admin screen, to avoid a design change without approval).
+
+## 01.11.2026 - SHIMI contact email (owner decision)
+- SHIMI must not display or send from your.shem88@gmail.com to customers and sends no mail to customers. barlieon341@gmail.com is added to SHIMI only as the contact-request address. The your.shem88 account stays the admin login for both stores.
+
+## 01.11.2026 - WhatsApp and mail defaults (owner decision)
+- Remove the WhatsApp link from SHIMI. Mail defaults (orders, support bot) with your.shem88@gmail.com are for SHEM only; SHIMI sends no mail to customers (implemented as a mail guard). After the three follow-up tasks pass full checks, commit and push are pre-approved.

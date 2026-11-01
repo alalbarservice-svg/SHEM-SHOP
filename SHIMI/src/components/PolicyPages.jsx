@@ -1,6 +1,5 @@
 import { useState } from "react";
-export const SUPPORT_EMAIL = "your.shem88@gmail.com";
-export const WHATSAPP = "https://wa.me/972529586766";
+export const SUPPORT_EMAIL = "barlieon341@gmail.com";
 const titles = {
   terms: "תנאי שימוש ורכישה",
   privacy: "מדיניות פרטיות",
@@ -45,11 +44,7 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
       <a href={"mailto:" + SUPPORT_EMAIL} dir="ltr">
         {SUPPORT_EMAIL}
       </a>
-      . תמיכה טכנית בוואטסאפ:{" "}
-      <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" dir="ltr">
-        052-9586766
-      </a>{" "}
-      (נפתח בחלון חדש).
+      .
     </p>
   );
   return (
@@ -168,8 +163,8 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
           <p>
             האתר נמצא לפני חיבור סליקה. אין כרגע גבייה, תשלומים בכרטיס או אישור
             הזמנה ששולמה. כשהסליקה תחובר, אמצעי התשלום, מספר התשלומים וכל עלות
-            נוספת יוצגו בקופה לפני התחייבות. אין לשלוח פרטי אשראי במייל,
-            בוואטסאפ או בהערות שירות.
+            נוספת יוצגו בקופה לפני התחייבות. אין לשלוח פרטי אשראי במייל
+            או בהערות שירות.
           </p>
           <h2>משלוח עד הבית</h2>
           <ul>
@@ -275,7 +270,7 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
           </p>
           <h2>פנייה לקבלת עזרה</h2>
           <p>
-            אפשר לפנות במייל או בוואטסאפ, לציין את כתובת העמוד, הפעולה והקושי.
+            אפשר לפנות במייל, לציין את כתובת העמוד, הפעולה והקושי.
             ננסה לספק מידע או שירות בדרך חלופית המתאימה לצורך.{" "}
             {business.accessibilityContact &&
               "אחראי לפניות: " + business.accessibilityContact + "."}
@@ -296,14 +291,6 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
           <div className="care-links">
             <a className="button dark" href={"mailto:" + SUPPORT_EMAIL}>
               פנייה במייל
-            </a>
-            <a
-              className="button outline"
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              תמיכה בוואטסאפ
             </a>
             <a href="#/cancel">ביטול, החזרה או החלפה</a>
           </div>

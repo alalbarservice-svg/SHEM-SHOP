@@ -44,7 +44,7 @@ export function OrderComplete({ brand = "SHEM" }) {
           {state.invoiceReady ? <div className="order-complete-actions">
             <a className="invoice-open" href={url} target="_blank" rel="noopener noreferrer">צפייה בחשבונית העסקה <span aria-hidden="true">↗</span></a>
             <a className="invoice-download" href={url + "&download=1"}>הורדת PDF למכשיר</a>
-          </div> : <p role="status" className="order-complete-message">התשלום אושר. חשבונית העסקה עדיין אינה זמינה. לקבלת המסמך ניתן לפנות ל-<a href="mailto:your.shem88@gmail.com">your.shem88@gmail.com</a>.</p>}
+          </div> : <p role="status" className="order-complete-message">התשלום אושר. חשבונית העסקה עדיין אינה זמינה. לקבלת המסמך ניתן לפנות ל-<a href="mailto:barlieon341@gmail.com">barlieon341@gmail.com</a>.</p>}
           <p className="order-complete-reference">מספר הזמנה: <b dir="ltr">{orderId}</b></p>
           <a className="order-complete-back" href="/">חזרה לחנות</a>
         </> : <p role="status" className="order-complete-message">{error || "המסמך יוצג כאן לאחר אישור התשלום במערכת."}</p>}

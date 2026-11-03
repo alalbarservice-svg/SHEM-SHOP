@@ -167,7 +167,7 @@ final class Scc_Admin_Settings {
             }
             $v['checkoutEnabled'] = ($d['checkoutEnabled'] ?? null) === true;
             $v['instagram'] = Scc_Admin::str(Scc_Admin::truthy($d['instagram'] ?? null) ? $d['instagram'] : 'new.shem', 100);
-            $v['whatsapp'] = Scc_Admin::str(Scc_Admin::truthy($d['whatsapp'] ?? null) ? $d['whatsapp'] : '972529586766', 40);
+            $v['whatsapp'] = Scc_Admin::str(Scc_Admin::truthy($d['whatsapp'] ?? null) ? $d['whatsapp'] : '972507974021', 40);
             if (!preg_match('/^[a-zA-Z0-9_.]{1,100}\z/', $v['instagram']) || !preg_match('/^[0-9]{8,15}\z/', $v['whatsapp'])) Scc_Admin::fail('פרטי אינסטגרם או וואטסאפ אינם תקינים.');
             $v['serviceAreas'] = $s('serviceAreas', 1000);
         }

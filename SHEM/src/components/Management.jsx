@@ -245,7 +245,7 @@ const settingsDefinitions = {
       expressDays: 1,
       lowStockThreshold: 3,
       instagram: "new.shem",
-      whatsapp: "972529586766",
+      whatsapp: "972507974021",
       checkoutEnabled: false,
     },
     fields: [

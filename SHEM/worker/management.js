@@ -795,7 +795,7 @@ export async function management(request, env) {
       }
       v.checkoutEnabled = d.checkoutEnabled === true;
       v.instagram = str(d.instagram || "new.shem", 100);
-      v.whatsapp = str(d.whatsapp || "972529586766", 40);
+      v.whatsapp = str(d.whatsapp || "972507974021", 40);
       if (
         !/^[a-zA-Z0-9_.]{1,100}$/.test(v.instagram) ||
         !/^[0-9]{8,15}$/.test(v.whatsapp)

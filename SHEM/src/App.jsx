@@ -66,7 +66,7 @@ import { Club } from "./components/Club";
 import { ProductRail } from "./components/ProductRail";
 import { ProductCard } from "./components/ProductCard";
 import { HeroCarousel } from "./components/HeroCarousel";
-import { PolicyPages, SUPPORT_EMAIL, WHATSAPP } from "./components/PolicyPages";
+import { PolicyPages, SUPPORT_EMAIL } from "./components/PolicyPages";
 import { CouponQuote } from "./components/CouponQuote";
 const stored = (k, d) => {
   try {
@@ -1483,21 +1483,6 @@ export function App() {
           </a>
           <a href="#/accessibility">{t("הצהרת נגישות", "Accessibility")}</a>
           <a href="#/cancel">{t("ביטול עסקה", "Cancel a purchase")}</a>
-          <a
-            href={
-              storeContent.operations?.whatsapp
-                ? "https://wa.me/" + storeContent.operations.whatsapp
-                : WHATSAPP
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t(
-              "תמיכה טכנית בוואטסאפ, נפתח בחלון חדש",
-              "WhatsApp technical support, opens a new window",
-            )}
-          >
-            {t("תמיכה בוואטסאפ", "WhatsApp support")}
-          </a>
           <a href={"mailto:" + SUPPORT_EMAIL} dir="ltr">
             {SUPPORT_EMAIL}
           </a>

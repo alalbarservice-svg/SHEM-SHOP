@@ -1,6 +1,6 @@
 import { useState } from "react";
 export const SUPPORT_EMAIL = "your.shem88@gmail.com";
-export const WHATSAPP = "https://wa.me/972529586766";
+export const WHATSAPP = "https://wa.me/972507974021";
 const titles = {
   terms: "תנאי שימוש ורכישה",
   privacy: "מדיניות פרטיות",
@@ -47,7 +47,7 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
       </a>
       . תמיכה טכנית בוואטסאפ:{" "}
       <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" dir="ltr">
-        052-9586766
+        050-7974021
       </a>{" "}
       (נפתח בחלון חדש).
     </p>

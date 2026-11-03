@@ -95,7 +95,7 @@ function InvoiceAccess({ order, token }) {
     </div>
   );
 }
-export function OrderDetails({ order, token = "", whatsapp = "972529586766" }) {
+export function OrderDetails({ order, token = "", whatsapp = "972507974021" }) {
   const status = order.status || "new",
     paid = order.paymentStatus === "paid",
     support = `https://wa.me/${whatsapp}?text=${encodeURIComponent("שלום, מבקש עזרה לגבי הזמנת SHEM מספר " + order.id)}`;

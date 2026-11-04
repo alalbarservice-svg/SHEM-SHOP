@@ -142,3 +142,9 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 
 ## מספר וואטסאפ תמיכה (03.11.2026)
 - הוחלף ל-0507974021 בקוד SHEM (עמודי מדיניות, צור קשר, פרטי הזמנה, ברירת מחדל בניהול), בתוסף ובהגדרת הבוט. נבנה ונפרס ל-staging בלבד, אומת בדפדפן. לא בוצע commit. SHIMI (ברירת מחדל אדמין ישנה 972529586766, לא מוצגת ללקוח) לא שונה.
+
+## 04.11.2026 - PayPal Sandbox (wallet) on SHIMI staging
+- Sandbox keys (from the owner's local file, verified against the Sandbox token endpoint) set as wp-config constants on SHIMI staging only. Not in repo. Card (ACDC) is not available for Israel per PayPal eligibility page; wallet only.
+- Staging-only PayPal forwarder + proxy constants set (SHIMI_HTTP_PROXY, SHIMI_CA_BUNDLE); SHIMI_SHEM_ORIGIN / CALLBACK_URL / CALLBACK_HOST restored. Remove forwarder and proxy constants before go-live.
+- e2e_pay.py (04.11.2026, re-run after fixes): 58/58 PASS. Root cause of the earlier invoice failures: staging had woocommerce_calc_taxes=no and the test orders had no billing country, so WooCommerce VAT was 0 and SHEM DOK refused by design. Fix is in the test only (VAT on during the run and restored to the original value at exit; test orders billed to IL with prices including VAT). Other test fixes: reconcile helper handled an empty PHP result (JSON list); E4/F4 mock amount 777 cents because product 13 costs exactly 1.00 ILS. PayPal buyer approval and capture response are mocked (no password entry); order creation against the PayPal Sandbox is real.
+- Not tested: real buyer approval in Sandbox, 3DS, card, webhook (none exists; polling), Live.

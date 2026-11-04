@@ -87,7 +87,7 @@ poll = http('GET', SHEM + f'/?rest_route=/shem-pay/v1/status&order={oid}&key=bad
 #        card processing are available in this sandbox account); order creation, HMAC, the callback to SHEM and the invoice are real.
 import random
 def new_flow(tag):
-    o = php('shem', r"""$o=wc_create_order();$o->add_product(wc_get_product(13),1);$o->set_billing_first_name("Test");$o->set_billing_last_name("Buyer");$o->set_billing_email("buyer1@example.test");$o->set_payment_method("shem_pay");$o->set_currency("ILS");$o->calculate_totals();$o->save();$g=new WC_Gateway_Shem_Via_Shimi();$g->process_payment($o->get_id());echo wp_json_encode(["id"=>$o->get_id(),"cents"=>(int)round($o->get_total()*100),"e"=>wc_get_order($o->get_id())->get_meta("_shem_pay_embed")]);""")[0]
+    o = php('shem', r"""$o=wc_create_order();$o->add_product(wc_get_product(13),1);$o->set_billing_first_name("Test");$o->set_billing_last_name("Buyer");$o->set_billing_email("buyer1@example.test");$o->set_billing_country("IL");$o->set_prices_include_tax(true);$o->set_payment_method("shem_pay");$o->set_currency("ILS");$o->calculate_totals();$o->save();$g=new WC_Gateway_Shem_Via_Shimi();$g->process_payment($o->get_id());echo wp_json_encode(["id"=>$o->get_id(),"cents"=>(int)round($o->get_total()*100),"e"=>wc_get_order($o->get_id())->get_meta("_shem_pay_embed")]);""")[0]
     j = json.loads(o); m = re.search(r'shimi_pay=([a-f0-9]{24})&token=([a-f0-9]{32})', j['e'].replace('&#038;', '&').replace('&amp;', '&'))
     s, k = m.group(1), m.group(2)
     st, d = jpost('/paypal/create', {'sid': s, 'token': k})
@@ -104,6 +104,11 @@ def capture(f, mock, cbcode=None, ppid=None):
 def state(f): return json.loads(php('shimi', 'echo wp_json_encode(Shimi_Pay::load("%s"));' % f['sid'])[0])
 def paid(f): return php('shem', 'echo wc_get_order(%s)->is_paid()?"paid":"unpaid";' % f['oid'])[0]
 def invoices(f): return wp('shem', 'db', 'query', "SELECT COUNT(*) FROM wp_shem_dok WHERE order_id=%s AND doc_type='invoice'" % f['oid']).split()[-1]
+# the invoice engine refuses a VAT mismatch by design, so WooCommerce VAT must be on while testing (same as SHEM-DOK fixtures); restored at exit
+import atexit
+orig_taxes = wp('shem', 'option', 'get', 'woocommerce_calc_taxes').strip()
+wp('shem', 'option', 'update', 'woocommerce_calc_taxes', 'yes')
+atexit.register(lambda: wp('shem', 'option', 'update', 'woocommerce_calc_taxes', orig_taxes))
 orig_auto = php('shem', r'$s=get_option("shem_dok_settings",[]);echo !empty($s["auto"])?"1":"0";')[0]
 php('shem', r'$s=get_option("shem_dok_settings",[]);$s["auto"]=true;update_option("shem_dok_settings",$s);echo "ok";')
 try:
@@ -120,7 +125,7 @@ try:
     ok('E1e invoice issued by SHEM DOK after the signed callback (exactly 1)', n == '1', n)
     r2 = capture(f, mock_resp(f)); ok('E2 replay of capture -> duplicate, no second callback', r2['st'] == 200 and r2['d'].get('duplicate') is True and state(f)['cbAttempts'] == 1, r2)
     ok('E2b still exactly 1 invoice', invoices(f) == '1')
-    for name, kw in [('E3 PENDING capture', dict(cap='PENDING')), ('E4 wrong amount', dict(cents=100)), ('E5 wrong currency', dict(cur='USD')), ('E6 custom_id of another session', dict(custom='f' * 24)), ('E7 order status not COMPLETED', dict(status='APPROVED'))]:
+    for name, kw in [('E3 PENDING capture', dict(cap='PENDING')), ('E4 wrong amount', dict(cents=777)), ('E5 wrong currency', dict(cur='USD')), ('E6 custom_id of another session', dict(custom='f' * 24)), ('E7 order status not COMPLETED', dict(status='APPROVED'))]:
         g = new_flow('x'); r = capture(g, mock_resp(g, **kw))
         ok(name + ' -> refused, SHEM unpaid, no invoice', r['st'] == 409 and paid(g) == 'unpaid' and state(g)['state'] == 'pp_created' and invoices(g) == '0', (r, state(g)['state']))
     g = new_flow('cb503'); r = capture(g, mock_resp(g), cbcode=503); sg = state(g)
@@ -143,7 +148,8 @@ def reconcile(f, get_mock, cap_mock=None):
     code = '$g=%s;$c=%s;' % (json.dumps(json.dumps(get_mock)), json.dumps(json.dumps(cap_mock)) if cap_mock else 'null')
     code += 'add_filter("pre_http_request",function($pre,$a,$u) use($g,$c){ if(strpos($u,"/orders/")!==false){ if(strpos($u,"/capture")!==false&&$c)return ["response"=>["code"=>201,"message"=>"x"],"body"=>$c,"headers"=>[],"cookies"=>[]]; if(strpos($u,"/capture")===false)return ["response"=>["code"=>200,"message"=>"OK"],"body"=>$g,"headers"=>[],"cookies"=>[]]; } return $pre;},10,3);'
     code += 'echo wp_json_encode(Shimi_Pay::reconcile());'
-    return json.loads(php('shimi', code)[0]).get(f['sid'], 'not-scanned')
+    d = json.loads(php('shimi', code)[0])  # PHP encodes an empty result as a JSON list
+    return d.get(f['sid'], 'not-scanned') if isinstance(d, dict) else 'not-scanned'
 php('shem', r'$s=get_option("shem_dok_settings",[]);$s["auto"]=true;update_option("shem_dok_settings",$s);echo "ok";')
 try:
     f = new_flow('r1'); r = reconcile(f, mock_resp(f)); sf = state(f)
@@ -161,7 +167,7 @@ try:
     h = new_flow('r3'); backdate(h); op = mock_resp(h); op['status'] = 'CREATED'; op['purchase_units'][0]['payments'] = {}
     r = reconcile(h, op); sh = state(h)
     ok('F3 still CREATED at PayPal (buyer never approved) -> left alone, unpaid', r == 'open_CREATED' and sh['state'] == 'pp_created' and paid(h) == 'unpaid', (r, sh['state']))
-    k = new_flow('r4'); backdate(k); r = reconcile(k, mock_resp(k, cents=100)); sk = state(k)
+    k = new_flow('r4'); backdate(k); r = reconcile(k, mock_resp(k, cents=777)); sk = state(k)
     ok('F4 wrong amount at PayPal -> not verified, unpaid, no invoice', r == 'not_verified' and paid(k) == 'unpaid' and invoices(k) == '0', (r, sk['state']))
     r = reconcile(f, mock_resp(f)); ok('F5 already settled session is not scanned again', r == 'not-scanned', r)
 finally:

@@ -275,9 +275,9 @@ $exp = json_decode(file_get_contents('/home/claude/export-2026-10-18/shem-menswe
 $hadHelp = $setup['prev']['help'] !== null;
 check('GET /api/help (no stored help) = 8 defaults, identical to the live export', is_array($help) && count($help) >= 8 && ($hadHelp || $help === $exp), count($help));
 check('admin PUT without login -> 401 Hebrew', ($r = api('PUT', '/api/admin/experience', ['help' => $help, 'config' => ['analyticsEnabled' => true]])) && $r[0] === 401 && $r[3]['error'] === 'יש להתחבר לחשבון המורשה כדי לנהל את החנות.', $r[3]);
-check('admin PUT as customer (not admin) -> 401', api('PUT', '/api/admin/experience', ['help' => $help], $B + ['nonce' => $nonce])[0] === 401);
+check('admin PUT as customer (not admin) -> 403 (logged in, no manage_options; router 403 per e35a22c)', api('PUT', '/api/admin/experience', ['help' => $help], $B + ['nonce' => $nonce])[0] === 403);
 check('admin PUT without nonce -> 401', api('PUT', '/api/admin/experience', ['help' => $help], ['cookie' => $admin['cookie']])[0] === 401);
-check('admin GET as customer -> 401', api('GET', '/api/admin/experience', null, $B)[0] === 401);
+check('admin GET as customer -> 403', api('GET', '/api/admin/experience', null, $B)[0] === 403);
 check('admin PUT: >100 answers -> 400 "ניתן להוסיף עד מאה תשובות."', ($r = api('PUT', '/api/admin/experience', ['help' => array_fill(0, 101, ['title' => 'a', 'answer' => 'b'])], $A)) && $r[0] === 400 && $r[3]['error'] === 'ניתן להוסיף עד מאה תשובות.', $r[3]);
 check('admin PUT: missing title/answer -> 400 Hebrew', ($r = api('PUT', '/api/admin/experience', ['help' => [['id' => 'x', 'title' => '', 'answer' => 'b']]], $A)) && $r[0] === 400 && $r[3]['error'] === 'יש להזין שאלה ותשובה ולהימנע ממזהים כפולים.', $r[3]);
 check('admin PUT: duplicate ids -> 400', api('PUT', '/api/admin/experience', ['help' => [['id' => 'x', 'title' => 'a', 'answer' => 'b'], ['id' => 'x', 'title' => 'c', 'answer' => 'd']]], $A)[0] === 400);

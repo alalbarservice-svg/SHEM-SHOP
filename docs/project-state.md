@@ -148,3 +148,13 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - Staging-only PayPal forwarder + proxy constants set (SHIMI_HTTP_PROXY, SHIMI_CA_BUNDLE); SHIMI_SHEM_ORIGIN / CALLBACK_URL / CALLBACK_HOST restored. Remove forwarder and proxy constants before go-live.
 - e2e_pay.py (04.11.2026, re-run after fixes): 58/58 PASS. Root cause of the earlier invoice failures: staging had woocommerce_calc_taxes=no and the test orders had no billing country, so WooCommerce VAT was 0 and SHEM DOK refused by design. Fix is in the test only (VAT on during the run and restored to the original value at exit; test orders billed to IL with prices including VAT). Other test fixes: reconcile helper handled an empty PHP result (JSON list); E4/F4 mock amount 777 cents because product 13 costs exactly 1.00 ILS. PayPal buyer approval and capture response are mocked (no password entry); order creation against the PayPal Sandbox is real.
 - Not tested: real buyer approval in Sandbox, 3DS, card, webhook (none exists; polling), Live.
+
+## 04.11.2026 - אבטחה: CSP nonce, הגבלת קצב, בדיקות חדירה (staging בלבד, לא נעשה commit)
+- shimi-pay.php: הוסר unsafe-inline מ-script-src (nonce חדש לכל בקשה, SDK של PayPal נטען דינמית עם nonce). הגבלת קצב ל-create ו-capture: 20 קריאות ל-10 דקות לכל סשן, ו-40 אימותים כושלים ל-10 דקות לכל IP, תשובה 429 עם Retry-After.
+- core-hardening.php: נוספו X-Frame-Options SAMEORIGIN, Referrer-Policy, Permissions-Policy. דף התשלום מסיר X-Frame-Options בעצמו ומגדיר frame-ancestors ב-CSP (אומת: ה-iframe נטען, 0 הפרות CSP).
+- נבדק חי על SHEM ו-SHIMI: כל נתיבי הניהול של התוסף המסחרי ושל SHEM-DOK נחסמים לאנונימי, ללקוח ולמנהל-חנות. מנהל בלי nonce נחסם (CSRF). נתיבי HMAC דוחים בקשה לא חתומה, חתימה שגויה וחותמת זמן ישנה. קלט פגום או ענק לא יוצר 5xx. אין חשיפת wp-config או קבצי קוד.
+- תוצאות: e2e תשלום 66/66, בדיקת דפדפן PayPal ללא הפרות CSP, סוויטת אזור לקוח 129/129, probe הרשאות SHEM-DOK 20/20.
+- תיקון בדיקה: שתי ציפיות ישנות ב-cx-test.php עודכנו מ-401 ל-403 (השינוי נעשה בכוונה בקומיט e35a22c: משתמש מחובר בלי הרשאת ניהול מקבל 403).
+- ברמת שרת (go-live, ראו docs/hosting): HSTS, הסתרת Server header, חסימת readme.html/license.txt. wp-config.php וקבצי התוסף מחזירים 200 עם גוף ריק (הגנת ABSPATH) - מומלץ לחסום בשרת.
+- לפני go-live: להסיר את ה-forwarder ואת הקבועים SHIMI_HTTP_PROXY ו-SHIMI_CA_BUNDLE.
+- ממתין: commit ו-push רק בפקודה שלך. קבצים ששונו: SHIMI-PAY/shimi-pay/shimi-pay.php, SHIMI-PAY/tests/e2e_pay.py, WP-PLUGIN/shem-shimi-commerce/includes/modules/core-hardening.php, WP-PLUGIN/shem-shimi-commerce/tests/cx-test.php, docs/project-state.md.

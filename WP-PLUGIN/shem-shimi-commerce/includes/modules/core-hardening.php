@@ -9,6 +9,14 @@ if (!defined('ABSPATH')) exit;
 
 // Stack disclosure.
 add_action('send_headers', function () { header_remove('X-Powered-By'); }, 0);
+// Browser-side defaults on every page: no clickjacking of the storefront or admin, no full-URL referrer leaks, no device APIs.
+// The embedded payment page (/payment/..., and SHIMI-PAY's page) must be framed by the peer shop, so it sets its own frame-ancestors
+// in its CSP and removes X-Frame-Options itself. HSTS and the Server header stay web-server/edge level (docs/hosting).
+add_action('send_headers', function () {
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(self "https://www.paypal.com")');
+}, 1);
 add_filter('the_generator', '__return_empty_string');
 remove_action('wp_head', 'wp_generator');
 remove_action('wp_head', 'rsd_link');

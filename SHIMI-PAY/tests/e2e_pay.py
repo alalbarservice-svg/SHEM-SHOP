@@ -8,6 +8,8 @@ SHEM = 'http://localhost:8081'; SHIMI = 'http://localhost:8082'
 res = []
 def ok(name, cond, extra=''):
     res.append((name, bool(cond))); print(('PASS ' if cond else 'FAIL ') + name + (' | ' + str(extra) if extra and not cond else ''))
+def clear_throttle(): php('shimi', r"""global $wpdb;$wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '%shimipay_t_%'");echo "ok";""")
+
 def wp(site, *a):
     p = subprocess.run([WPS, site, *a], capture_output=True, text=True, timeout=180)
     return p.stdout.strip()
@@ -106,6 +108,7 @@ def paid(f): return php('shem', 'echo wc_get_order(%s)->is_paid()?"paid":"unpaid
 def invoices(f): return wp('shem', 'db', 'query', "SELECT COUNT(*) FROM wp_shem_dok WHERE order_id=%s AND doc_type='invoice'" % f['oid']).split()[-1]
 # the invoice engine refuses a VAT mismatch by design, so WooCommerce VAT must be on while testing (same as SHEM-DOK fixtures); restored at exit
 import atexit
+clear_throttle()  # a previous aborted run may have left the per-IP failed-auth counter at its limit
 orig_taxes = wp('shem', 'option', 'get', 'woocommerce_calc_taxes').strip()
 wp('shem', 'option', 'update', 'woocommerce_calc_taxes', 'yes')
 atexit.register(lambda: wp('shem', 'option', 'update', 'woocommerce_calc_taxes', orig_taxes))
@@ -217,6 +220,33 @@ finally:
     php('shem', r'delete_option("woocommerce_shem_pay_settings");echo "ok";')
 back = php('shem', r'$a=array_keys(WC()->payment_gateways()->get_available_payment_gateways());echo in_array("shem_pay",$a)?"offered":"hidden";')[0]
 ok('G9 gateway disabled -> not offered; restored afterwards', avail == 'hidden' and back == 'offered', (avail, back))
+
+# --- H. hardening: nonce-based CSP (no unsafe-inline for scripts) and rate limiting
+clear_throttle()
+try:
+    hf = new_flow('h1'); purl = SHIMI + '/?shimi_pay=%s&token=%s' % (hf['sid'], hf['tok'])
+    st1, body1, h1 = http('GET', purl); st2, body2, h2 = http('GET', purl)
+    csp = {k.lower(): v for k, v in h1.items()}.get('content-security-policy', '')
+    ss = re.search(r"script-src ([^;]*)", csp); ss = ss.group(1) if ss else ''
+    n1 = re.search(r"'nonce-([A-Za-z0-9_-]+)'", ss); n2 = re.search(r"'nonce-([A-Za-z0-9_-]+)'", {k.lower(): v for k, v in h2.items()}.get('content-security-policy', ''))
+    html = body1.decode('utf-8', 'replace')
+    tags = re.findall(r'<script\b[^>]*>', html)
+    ok('H1 CSP script-src uses a nonce and no unsafe-inline / unsafe-eval', st1 == 200 and bool(n1) and 'unsafe-inline' not in ss and 'unsafe-eval' not in ss, ss)
+    ok('H2 nonce is fresh on every request', bool(n1 and n2) and n1.group(1) != n2.group(1))
+    ok('H3 every <script> tag carries the nonce; no inline event handlers; no external script tag in markup', bool(n1) and tags and all(('nonce="%s"' % n1.group(1)) in t for t in tags) and not re.search(r'\son[a-z]+\s*=', html) and not any('src=' in t for t in tags), tags)
+    ok('H4 no payload can break out of the config script (JSON_HEX_TAG)', '</script><' not in html.split('window.PF=')[1].split(';</script>')[0])
+    bad = []; codes = []
+    for i in range(24):
+        codes.append(http('POST', SHIMI + '/?rest_route=/shimi-pay/v1/paypal/capture', json.dumps({'sid': hf['sid'], 'token': hf['tok'], 'paypalOrderId': 'X'}).encode(), {'content-type': 'application/json'})[0])
+    ok('H5 per-session limit: first 20 calls answered, then 429 with Retry-After', codes[:20].count(429) == 0 and codes[20:].count(429) == 4, codes)
+    st, _, hh = http('POST', SHIMI + '/?rest_route=/shimi-pay/v1/paypal/capture', json.dumps({'sid': hf['sid'], 'token': hf['tok'], 'paypalOrderId': 'X'}).encode(), {'content-type': 'application/json'})
+    ok('H5b 429 carries Retry-After', st == 429 and any(k.lower() == 'retry-after' for k in hh))
+    ok('H6 another session is not affected by the first session limit', http('POST', SHIMI + '/?rest_route=/shimi-pay/v1/paypal/capture', json.dumps({'sid': new_flow('h2')['sid'], 'token': 'x' * 32, 'paypalOrderId': 'X'}).encode(), {'content-type': 'application/json'})[0] == 404)
+    clear_throttle()
+    codes = [http('POST', SHIMI + '/?rest_route=/shimi-pay/v1/paypal/create', json.dumps({'sid': 'a' * 24, 'token': 'b' * 32}).encode(), {'content-type': 'application/json'})[0] for _ in range(45)]
+    ok('H7 failed-auth limit per client: 40 x 404 then 429', codes[:40].count(404) == 40 and codes[40:].count(429) == 5, codes)
+finally:
+    clear_throttle()
 
 print(json.dumps({'oid': oid, 'sid': sid, 'ppid': ppid}))
 f = [n for n, c in res if not c]; print(f'\n{len(res)-len(f)}/{len(res)} passed'); sys.exit(1 if f else 0)

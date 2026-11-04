@@ -77,6 +77,18 @@ final class Shimi_Pay {
  /* Optional same-origin mode: SHIMI_PAY_PUBLIC_BASE = URL under the SHEM domain that a reverse proxy maps to this site (/p/{sid}/{token} and /api/*). Unset = old behaviour. */
  static function public_base(){ $b=defined('SHIMI_PAY_PUBLIC_BASE')?SHIMI_PAY_PUBLIC_BASE:''; return (is_string($b)&&strpos($b,'http')===0)?rtrim($b,'/'):''; }
  /* Optional: SHIMI_PAY_PROXY_KEY. When set, the payment page and the two browser endpoints answer only requests that carry header X-Pay-Gw = key (added by the SHEM-side proxy); direct hits on this domain get a bare 404 with no CSP/frame-ancestors. */
+ /* Rate limiting (transient counters): per payment session on the two browser endpoints, and per client address on failed session auth. */
+ static function throttle($key,$limit,$window){ $k='shimipay_t_'.md5($key); $n=(int)get_transient($k); if($n>=$limit)return false; set_transient($k,$n+1,$window); return true; }
+ static function ip(){ return (string)($_SERVER['REMOTE_ADDR']??''); }
+ static function too_many(){ $r=self::fail(429,'rate_limited','Too many requests'); if($r instanceof WP_REST_Response)$r->header('Retry-After','60'); return $r; }
+ static function auth_or_fail($p,$ep){
+  $sid=(string)($p['sid']??'');
+  $fk='authfail:'.self::ip(); if((int)get_transient('shimipay_t_'.md5($fk))>=40)return [null,self::too_many()];
+  $rec=self::auth_session($sid,(string)($p['token']??''));
+  if(!$rec){ $k='shimipay_t_'.md5($fk); set_transient($k,(int)get_transient($k)+1,600); return [null,self::fail(404,'session','Invalid session')]; }
+  if(!self::throttle($ep.':'.$rec['id'],20,600))return [null,self::too_many()];
+  return [$rec,null];
+ }
  static function gate_ok(){ if(!defined('SHIMI_PAY_PROXY_KEY')||!is_string(SHIMI_PAY_PROXY_KEY)||SHIMI_PAY_PROXY_KEY==='')return true; $h=(string)($_SERVER['HTTP_X_PAY_GW']??''); return $h!==''&&hash_equals(SHIMI_PAY_PROXY_KEY,$h); }
  static function embed_url($sid,$tok){ $b=self::public_base(); if($b!=='')return $b.'/p/'.$sid.'/'.$tok; return add_query_arg(['shimi_pay'=>$sid,'token'=>$tok],home_url('/')); }
 
@@ -91,20 +103,19 @@ final class Shimi_Pay {
   if(!self::gate_ok()){ status_header(404); exit; }
   $sid=(string)$_GET['shimi_pay']; $tok=(string)($_GET['token']??'');
   $rec=self::auth_session($sid,$tok);
-  nocache_headers(); header('Referrer-Policy: no-referrer'); header('X-Content-Type-Options: nosniff');
-  $fa=self::shem_origin(); $pp="https://*.paypal.com https://www.paypalobjects.com";
-  header("Content-Security-Policy: default-src 'none'; base-uri 'none'; form-action 'none'; script-src 'self' 'unsafe-inline' $pp; frame-src $pp; connect-src 'self' $pp; img-src data: $pp; style-src 'unsafe-inline'; frame-ancestors ".($fa!==''?$fa:"'none'"));
+  nocache_headers(); header_remove('X-Frame-Options'); header('Referrer-Policy: no-referrer'); header('X-Content-Type-Options: nosniff');
+  $fa=self::shem_origin(); $pp="https://*.paypal.com https://www.paypalobjects.com"; $nonce=rtrim(strtr(base64_encode(random_bytes(18)),'+/','-_'),'=');
+  header("Content-Security-Policy: default-src 'none'; base-uri 'none'; form-action 'none'; script-src 'nonce-$nonce' $pp; frame-src $pp; connect-src 'self' $pp; img-src data: $pp; style-src 'unsafe-inline'; frame-ancestors ".($fa!==''?$fa:"'none'"));
   header('Content-Type: text/html; charset=utf-8');
   if(!$rec){ status_header(404); echo '<!doctype html><meta charset="utf-8"><body dir="rtl" style="font-family:Arial">קישור התשלום אינו תקף.'; exit; }
   $paid=in_array($rec['state'],['paid','callback_ok','callback_pending'],true);
-  $pb=self::public_base(); $cfg=['api'=>$pb!==''?$pb.'/api':esc_url_raw(rest_url(self::NS)),'src'=>$pb!==''?'pay-frame':'shimi-pay','sid'=>$sid,'token'=>$tok,'parent'=>$fa,'cid'=>(self::pp_ready()?SHIMI_PAYPAL_CLIENT_ID:''),'paid'=>$paid];
+  $pb=self::public_base(); $cfg=['api'=>$pb!==''?$pb.'/api':esc_url_raw(rest_url(self::NS)),'src'=>$pb!==''?'pay-frame':'shimi-pay','sid'=>$sid,'token'=>$tok,'parent'=>$fa,'cid'=>(self::pp_ready()?SHIMI_PAYPAL_CLIENT_ID:''),'paid'=>$paid,'nonce'=>$nonce,'sdk'=>(!$paid&&self::pp_ready())?'https://www.paypal.com/sdk/js?client-id='.rawurlencode(SHIMI_PAYPAL_CLIENT_ID).'&currency=ILS&intent=capture&components=buttons&locale=he_IL':''];
   echo '<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>תשלום מאובטח</title>';
   echo '<style>body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:16px;color:#111}h2{margin:.2em 0}.amt{font-size:1.3rem;font-weight:700;margin:.6em 0}.msg{margin:1em 0;padding:.8em;border-radius:6px}.ok{background:#e8f5e9}.err{background:#fdecea}</style></head><body>';
   echo '<h2>תשלום מאובטח</h2><p>פרטי האשראי אינם נשמרים במערכת.</p><div class="amt">סכום לתשלום: '.esc_html(number_format($rec['amountCents']/100,2)).' ₪</div><div id="btns"></div><div id="msg"></div>';
-  echo '<script>window.PF='.wp_json_encode($cfg).';</script>';
-  echo '<script>'.self::page_js().'</script>';
-  if(!$paid&&self::pp_ready()) echo '<script src="https://www.paypal.com/sdk/js?client-id='.esc_attr(SHIMI_PAYPAL_CLIENT_ID).'&amp;currency=ILS&amp;intent=capture&amp;components=buttons&amp;locale=he_IL" onload="pfInit()"></script>';
-  elseif(!$paid) echo '<script>pfMsg("err","אפשרות התשלום אינה זמינה כרגע.")</script>';
+  echo '<script nonce="'.esc_attr($nonce).'">window.PF='.wp_json_encode($cfg,JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT).';</script>';
+  echo '<script nonce="'.esc_attr($nonce).'">'.self::page_js().'</script>';
+  if(!$paid&&!self::pp_ready()) echo '<script nonce="'.esc_attr($nonce).'">pfMsg("err","אפשרות התשלום אינה זמינה כרגע.")</script>';
   echo '</body></html>'; exit;
  }
  static function page_js(){ return <<<'JS'
@@ -121,6 +132,7 @@ paypal.Buttons({
  onError:function(){m('err','אירעה שגיאה בתשלום. אם בוצע חיוב, ההזמנה תתעדכן אוטומטית.')}
 }).render('#btns')};
 if(C.paid){m('ok','התשלום בוצע.')}
+else if(C.sdk){var s=document.createElement('script');s.src=C.sdk;s.nonce=C.nonce;s.setAttribute('data-csp-nonce',C.nonce);s.onload=window.pfInit;s.onerror=function(){m('err','טעינת PayPal נכשלה.')};document.head.appendChild(s)}
 })();
 JS; }
 
@@ -143,8 +155,8 @@ JS; }
  /* ---------- 3. create PayPal order (amount comes from the server-side session, never from the browser) ---------- */
  static function pp_create(WP_REST_Request $r){ if(!self::gate_ok())return self::fail(404,'not_found','Not found');
   if(!self::pp_ready())return self::fail(503,'not_configured','PayPal not configured');
-  $p=$r->get_json_params()?:[]; $rec=self::auth_session((string)($p['sid']??''),(string)($p['token']??''));
-  if(!$rec)return self::fail(404,'session','Invalid session');
+  $p=$r->get_json_params()?:[]; [$rec,$err]=self::auth_or_fail($p,'create');
+  if(!$rec)return $err;
   return self::locked($rec['id'],function() use($rec){
    $rec=self::load($rec['id']);
    if($rec['state']!=='created'&&$rec['state']!=='pp_created')return self::fail(409,'state','Session is not payable');
@@ -160,8 +172,8 @@ JS; }
  /* ---------- 4. capture + verification + signed callback ---------- */
  static function pp_capture(WP_REST_Request $r){ if(!self::gate_ok())return self::fail(404,'not_found','Not found');
   if(!self::pp_ready())return self::fail(503,'not_configured','PayPal not configured');
-  $p=$r->get_json_params()?:[]; $rec=self::auth_session((string)($p['sid']??''),(string)($p['token']??''));
-  if(!$rec)return self::fail(404,'session','Invalid session');
+  $p=$r->get_json_params()?:[]; [$rec,$err]=self::auth_or_fail($p,'capture');
+  if(!$rec)return $err;
   $ppId=(string)($p['paypalOrderId']??'');
   return self::locked($rec['id'],function() use($rec,$ppId){
    $rec=self::load($rec['id']);

@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) exit;
 /** Schema + shared helpers. All timestamps are stored in UTC ("Y-m-d H:i:s"). */
 final class Ssb_Db {
-    const VERSION = 3;
+    const VERSION = 4;
 
     public static function t(string $n): string { global $wpdb; return $wpdb->prefix . 'ssb_' . $n; }
     public static function now(): string { return gmdate('Y-m-d H:i:s'); }
@@ -133,6 +133,8 @@ final class Ssb_Db {
             text TEXT NOT NULL,
             sent TINYINT(1) NOT NULL DEFAULT 0,
             seen TINYINT(1) NOT NULL DEFAULT 0,
+            attempts TINYINT UNSIGNED NOT NULL DEFAULT 0,
+            last_error VARCHAR(190) NOT NULL DEFAULT '',
             created_at DATETIME NOT NULL,
             PRIMARY KEY  (id),
             KEY channel (channel, seen)

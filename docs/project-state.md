@@ -158,3 +158,11 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - ברמת שרת (go-live, ראו docs/hosting): HSTS, הסתרת Server header, חסימת readme.html/license.txt. wp-config.php וקבצי התוסף מחזירים 200 עם גוף ריק (הגנת ABSPATH) - מומלץ לחסום בשרת.
 - לפני go-live: להסיר את ה-forwarder ואת הקבועים SHIMI_HTTP_PROXY ו-SHIMI_CA_BUNDLE.
 - ממתין: commit ו-push רק בפקודה שלך. קבצים ששונו: SHIMI-PAY/shimi-pay/shimi-pay.php, SHIMI-PAY/tests/e2e_pay.py, WP-PLUGIN/shem-shimi-commerce/includes/modules/core-hardening.php, WP-PLUGIN/shem-shimi-commerce/tests/cx-test.php, docs/project-state.md.
+
+## בוט תמיכה - שליחת וואטסאפ (04.11.2026)
+- נבנה: Ssb_Wa (class-ssb-wa.php), DB גרסה 4 (attempts, last_error), פנייה חדשה שולחת וואטסאפ מלא לנציג (972507974021), ניסיון חוזר עד 5 עם השהיה.
+- מופעל רק עם SSB_WA_LIVE=true + SSB_WA_URL + SSB_WA_KEY ב-wp-config. בסטייג'ינג לא שולח (רק לוג).
+- n8n: workflow PTdkGrXbViw0NsTw בתיקייה SHEM-SUPPORT-BOT (isolated) בפרויקט האישי. לא מפורסם, בלי credentials.
+- נבדק מקומית מול מקלט מדומה: הצלחה, כשל ומקסימום ניסיונות, בטיחות סטייג'ינג. לא נבדק: שליחה אמיתית.
+- חסר: חשבון ספק וואטסאפ (Green API) + מספר ייעודי, Header Auth credential ב-n8n, URL שליחה בצומת השליחה.
+- הוסר: קבועי פרוקסי PayPal מ-SHIMI סטייג'ינג (להחזיר לפני בדיקת Sandbox).

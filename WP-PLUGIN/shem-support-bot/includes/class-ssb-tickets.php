@@ -184,13 +184,9 @@ final class Ssb_Tickets {
         $text = "פנייה חדשה {$r['number']} (עדיפות: " . self::PRIORITIES[$r['priority']] . ")\nשם: {$r['name']}\nקשר: {$r['contact']}\nהזמנה: " . ($r['order_number'] ?: '-') . "\nסיבה: {$r['reason']}\nנושא: {$r['summary']}\nיעד מענה: $due";
         $wpdb->insert(Ssb_Db::t('notice'), ['channel' => 'admin', 'kind' => 'ticket', 'ref' => $r['number'], 'subject' => 'פנייה חדשה ' . $r['number'], 'text' => $text, 'sent' => 1, 'seen' => 0, 'created_at' => $now]);
         self::send_mail((string) $s['manager_email'], '[' . get_bloginfo('name') . '] פנייה חדשה ' . $r['number'], $text, 'ticket', $r['number']);
-        // Questions the bot could not answer are also handed to the service rep on WhatsApp. No sender is connected yet:
-        // the message is always queued in the log (sent=0) with the rep number from settings (empty until the owner sets it).
-        if (in_array($r['reason'], ['unanswered', 'repeated_miss'], true)) {
-            $wa = (string) $s['wa_number'];
-            $msg = "פנייה חדשה מהבוט {$r['number']}\nשם: {$r['name']}\nטלפון: {$r['contact']}\nסיבת הפנייה: {$r['summary']}";
-            $wpdb->insert(Ssb_Db::t('notice'), ['channel' => 'whatsapp', 'kind' => 'ticket', 'ref' => $r['number'], 'to_addr' => $wa, 'subject' => $wa === '' ? 'ממתין להגדרת מספר וואטסאפ של הנציג' : 'ממתין לחיבור שליחת וואטסאפ', 'text' => $msg, 'sent' => 0, 'seen' => 1, 'created_at' => $now]);
-        }
+        // Every new ticket is handed to the service rep on WhatsApp with all the inquiry details (sent through the isolated n8n flow).
+        $msg = "*פנייה חדשה מלקוח {$r['number']}*\nעדיפות: " . self::PRIORITIES[$r['priority']] . "\nשם: {$r['name']}\nטלפון/קשר: {$r['contact']}\nהזמנה: " . ($r['order_number'] ?: '-') . "\nסיבה: {$r['reason']}\nנושא: {$r['summary']}\nיעד מענה: $due";
+        Ssb_Wa::queue((string) $s['wa_number'], $msg, $r['number']);
     }
     /** Logs every mail; really sends only when SSB_MAIL_LIVE===true (staging never emails). */
     public static function send_mail(string $to, string $subject, string $text, string $kind, string $ref): bool {

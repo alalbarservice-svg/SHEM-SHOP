@@ -36,3 +36,10 @@ Test status of the script (run 2026-10-28): default verify-only and `--dry-run` 
 
 ## Not documented / not verified
 Full from-zero rebuild (WooCommerce install, import of 57 SHEM items, creation of the 48 linked SHIMI items via WP-TESTS/shimi-linked) was not re-run in this session. The seed script covers only the QA product. The `SCC_INVOICE_DELIVERY_MODE=download` constant is not injected by compose and must be added to wp-config.
+
+## Update 05.11.2026 (rebuild in a new environment)
+- wp.phar and woocommerce.zip downloaded from the official origins (github.com/wp-cli/wp-cli/releases v2.12.0, downloads.wordpress.org woocommerce.11.2.1.zip): sha256 identical to the table above. Origin now verified.
+- The wordpress:php8.3-apache image now ships WordPress 7.1.4. Staging is pinned to 7.1.3: wordpress-7.1.3.zip (sha1 13eb1d042b1ca39224e44906cd84fe203112210c, matches wordpress.org .sha1) copied over core; 3338 core files match the official 7.1.3 checksums. The containers do not trust the agent proxy CA, so download on the host and docker cp.
+- Rebuild order used: compose up, import post-wa-dispatch-*-1104-1058.sql.gz into wp_shem / wp_shimi, unzip WooCommerce, copy SHEM-DOK/plugin (shem-dok), SHEM-PAY/shem-pay-gateway (SHEM), SHIMI-PAY/shimi-pay (SHIMI), deploy-scc.sh, deploy-ssb.sh, extract uploads, set the constants below, reset scc_test_admin and localadmin passwords into the .stg-* files.
+- dstart.sh now starts containerd first (fix from the outgoing environment). deploy-ssb.sh added (SHEM only).
+- Constants NOT injected by compose (set with wp config set): both: SCC_INVOICE_DELIVERY_MODE=download. SHEM: SCC_MAIL_SINK=true, SCC_MAIL_FROM=club@example.invalid, SSB_WA_KEY (secret, from /home/claude/staging/.ssb-wa-key, chmod 600). SHIMI: SHIMI_SHEM_CALLBACK_URL=http://shem/wp-json/shem-dok/v1/pay/notify, SHIMI_SHEM_ORIGIN=http://localhost:8081, SHIMI_SHEM_CALLBACK_HOST=localhost:8081 (values derived from code, not compared with the old environment). SHIMI_PAYPAL_CLIENT_ID/SECRET/ENV are owner-supplied and NOT set in the new environment.

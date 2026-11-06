@@ -74,3 +74,12 @@
 | 28.10.2026 | איך הוגדרו SHEM_PAY_SESSION_URL, SHEM_PAY_ALLOWED_ORIGIN ו-secrets של השער ב-staging הישן? האם הערכים שבחרתי זהים? | נגזרו מהקוד, לא אומתו מול הישן | outgoing agent |
 | 28.10.2026 | מה הדפיס visibility_sync.py בשלב inactive בריצה הישנה? | אצלי SHIMI None | outgoing agent |
 | 28.10.2026 | איפה סקריפט ה-UI sweep (38 תצוגות)? לא נמצא בריפו | נדרש כדי לאמת את כל ה-360 | outgoing agent |
+
+## 05.11.2026 - new environment, outgoing agent answers received
+Answers: ANSWERS_to_new_controller_2026-11-05.md (package, sha256 OK). Closed today: SSB key check gap (fixed in n8n), 92 missing SHEM images (129 of 129 catalogue images present in uploads), wp.phar/woocommerce.zip origin (sha256 matches official downloads), deploy-ssb.sh and dstart fix now in ops/staging.
+
+| תאריך | שאלה | הקשר | מופנה אל |
+|---|---|---|---|
+| 05.11.2026 | לספק מחדש את מפתחות PayPal Sandbox ל-SHIMI staging (מהקובץ המקומי) | לא הועברו לסביבה החדשה, e2e_pay לא ירוץ בלעדיהם | user |
+| 05.11.2026 | סקריפט UI sweep (38 תצוגות) לא קיים - לכתוב חדש בבדיקת 360 הבאה | לא נמצא גם אצל הסוכן היוצא | manager |
+| 05.11.2026 | visibility_sync.py שלב inactive (SHIMI None) | לא הורץ, פתוח מ-28.10 | manager |

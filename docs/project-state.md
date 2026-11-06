@@ -166,3 +166,10 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - נבדק מקומית מול מקלט מדומה: הצלחה, כשל ומקסימום ניסיונות, בטיחות סטייג'ינג. לא נבדק: שליחה אמיתית.
 - חסר: חשבון ספק וואטסאפ (Green API) + מספר ייעודי, Header Auth credential ב-n8n, URL שליחה בצומת השליחה.
 - הוסר: קבועי פרוקסי PayPal מ-SHIMI סטייג'ינג (להחזיר לפני בדיקת Sandbox).
+
+## 05.11.2026 - staging rebuilt in a new environment, webhook key check (staging only, no commit)
+- Rebuilt from feat/support-bot (f915d3e) + the outgoing agent's package (214 files, all sha256 OK, no secrets found). DB restored from post-wa-dispatch-*-1104-1058, uploads 166 / 63 files (same counts as the old environment), WordPress 7.1.3, WooCommerce 11.2.1, fresh staging secrets. Procedure: ops/staging/README.md (05.11 section). Backup after restore: restored-1105-* (BACKUP_OK).
+- Regression on the rebuilt staging: channel unit 61/0, links 123/0, flow 98/0, payment 39/0 (1 not-run: real provider), woo 36/0 on both sites; linked pairs 48/48; customer e2e 42/0; admin_suite SHEM 325 PASS + 1 NOT-RUN, SHIMI 323 PASS + 1 BLOCKED (both by design, identical to 31.10).
+- n8n PTdkGrXbViw0NsTw: X-SSB-Key is now checked (SHA-256 compare, timing-safe; only the hash is stored in n8n; 401 on missing/wrong key). Verified: n8n test runs 7189 (no key) and 7190 (wrong key) -> 401 path, send node not reached; plugin -> mock running the same node code with the real key -> 200, sent=1; stale ts -> 400. No credentials attached. Still unpublished, Green API URL still placeholder. SSB_WA_KEY set on SHEM staging only; SSB_WA_LIVE and SSB_WA_URL unset.
+- Not run: e2e_pay (PayPal Sandbox keys not set in the new environment), club_mail, member_login, SHEM-DOK suites, browser UI checks.
+- Next: owner scans the Green API QR.

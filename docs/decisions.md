@@ -122,3 +122,5 @@
 ## 01.11.2026 - WhatsApp and mail defaults (owner decision)
 - Remove the WhatsApp link from SHIMI. Mail defaults (orders, support bot) with your.shem88@gmail.com are for SHEM only; SHIMI sends no mail to customers (implemented as a mail guard). After the three follow-up tasks pass full checks, commit and push are pre-approved.
 - 03.11.2026 (owner): מספר וואטסאפ התמיכה הוא 0507974021 (972507974021). מוצג ב-SHEM רק בעמודי המדיניות (פסקת "אנחנו כאן לעזור"), בעמוד צור קשר ובקישור "תמיכה והחלפות" בעמוד ההזמנה. הוסר מהפוטר הגלובלי. הבוט מעביר אליו פניות שלא נענו (wa_number), ואינו מציג אותו ללקוח. SHIMI לא שונה.
+- 05.11.2026 (owner): webhook protection for the support bot = shared key checked inside the n8n Code node (option 1, not an n8n Header Auth credential). Implemented with only the SHA-256 of the key stored in n8n.
+- 05.11.2026 (owner): work order approved: rebuild staging in the new environment, fix the webhook, then the Green API QR scan.

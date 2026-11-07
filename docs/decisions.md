@@ -125,3 +125,4 @@
 - 05.11.2026 (owner): webhook protection for the support bot = shared key checked inside the n8n Code node (option 1, not an n8n Header Auth credential). Implemented with only the SHA-256 of the key stored in n8n.
 - 05.11.2026 (owner): work order approved: rebuild staging in the new environment, fix the webhook, then the Green API QR scan.
 - 07.11.2026 (owner): WhatsApp dispatch: sender = dedicated number 972507974021 (Green API), recipient of bot inquiries = 972529586766. Reason: same sender and recipient gave no notification (tested 07.11). Customer-facing numbers on the site are unchanged.
+- 07.11.2026 (owner): keep WhatsApp dispatch ON in staging (SSB_WA_LIVE=true on SHEM staging). Every new staging ticket sends a real WhatsApp to 972529586766.

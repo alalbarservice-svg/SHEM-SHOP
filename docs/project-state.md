@@ -173,3 +173,15 @@ Built on staging: SHIMI-PAY/shimi-pay (session, PayPal create/capture, signed ca
 - n8n PTdkGrXbViw0NsTw: X-SSB-Key is now checked (SHA-256 compare, timing-safe; only the hash is stored in n8n; 401 on missing/wrong key). Verified: n8n test runs 7189 (no key) and 7190 (wrong key) -> 401 path, send node not reached; plugin -> mock running the same node code with the real key -> 200, sent=1; stale ts -> 400. No credentials attached. Still unpublished, Green API URL still placeholder. SSB_WA_KEY set on SHEM staging only; SSB_WA_LIVE and SSB_WA_URL unset.
 - Not run: e2e_pay (PayPal Sandbox keys not set in the new environment), club_mail, member_login, SHEM-DOK suites, browser UI checks.
 - Next: owner scans the Green API QR.
+
+## 07.11.2026 - WhatsApp dispatch: first real test (owner approved option 1)
+- Green API: owner connected 972507974021 (dedicated number per owner 07.11). getStateInstance = authorized (read only). Note: sender and recipient are the same number, so the message lands in the self chat.
+- n8n PTdkGrXbViw0NsTw: send node URL set (Green API key lives in the n8n node, per earlier owner decision), no credentials attached, published (activeVersionId 4038d884). Live webhook: no key 401, wrong key 401.
+- SHEM staging: SSB_WA_URL set (production webhook). SSB_WA_LIVE stays unset; the single test defined it only inside one eval run.
+- One real message sent through the plugin (notice 93, sent=1, attempts=1), n8n execution 7199 success, Green API idMessage 3EB0EE6A46A24D6B07D086, status "sent".
+- STAGING ONLY, remove before go-live: mu-plugin wp-content/mu-plugins/ssb-staging-ca.php + /var/www/ssb-staging-ca.crt on SHEM (trusts the agent proxy CA for alealabar.app.n8n.cloud only).
+- Owner confirmed 07.11: the test message arrived on 972507974021 but WITHOUT a notification (self chat). Open: sender and recipient must be two different numbers before SSB_WA_LIVE is turned on.
+- 07.11.2026: bot recipient changed to 972529586766 (plugin default in class-ssb-db.php + SHEM staging setting wa_number), backup pre-wa-recipient-1107. Verified without sending: a new ticket queues WhatsApp to 972529586766, nothing sent while SSB_WA_LIVE is unset, test rows removed. Real send to the new recipient: not done, waits for owner approval.
+- 07.11.2026 15:03: second approved real test (owner "מאשר") to 972529586766: notice 97 sent=1, n8n execution 7200 success, Green API idMessage 3EB07222933C54DC256CD4. SSB_WA_LIVE still unset.
+- 07.11.2026: owner confirmed the second test arrived on 972529586766 WITH a notification. WhatsApp dispatch proven end to end (plugin -> n8n (key check) -> Green API -> recipient). SSB_WA_LIVE still unset on staging (owner decision pending: keep off until go-live, recommended).
+- Pre go-live (WhatsApp): remove SHEM staging mu-plugin ssb-staging-ca.php and /var/www/ssb-staging-ca.crt; set SSB_WA_URL, SSB_WA_KEY (new production value, hash updated in n8n) and SSB_WA_LIVE=true on production only; consider Green API token rotation (the token is stored in the n8n node).

@@ -155,7 +155,7 @@ final class Ssb_Db {
             'hours' => ['sun-thu' => ['09:00', '18:00'], 'fri' => ['09:00', '13:00'], 'sat' => null],
             'sla_hours' => ['urgent' => 1, 'high' => 4, 'normal' => 8, 'low' => 24],
             'verify_max_attempts' => 3,
-            'wa_number' => '972507974021', // WhatsApp number of the service rep (owner decision 03.11.2026; the bot hands inquiries to this number, it is not shown as a first contact)
+            'wa_number' => '972529586766', // bot hands inquiries to this WhatsApp (owner decision 07.11.2026; sender is the dedicated number 972507974021 on Green API; not shown to customers as a first contact)
             'ticket_prefix' => 'T',
         ];
     }

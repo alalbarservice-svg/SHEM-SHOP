@@ -20,10 +20,21 @@ export function DesignerLogo({
 }) {
   if (!designer) return null;
   const ratio = logoRatios[designer.slug] || 3;
+  const src = brandLogoAssets[`${designer.slug}-${tone}`];
+  const classes = `designer-logo designer-logo--${tone} ${className} logo-${designer.slug}`;
+  if (tone === "white")
+    return (
+      <span
+        role="img"
+        aria-label={designer.name}
+        className={classes}
+        style={{ "--r": ratio, "--m": `url("${src}")` }}
+      />
+    );
   return (
     <img
-      className={`designer-logo designer-logo--${tone} ${className} logo-${designer.slug}`}
-      src={brandLogoAssets[`${designer.slug}-${tone}`]}
+      className={classes}
+      src={src}
       alt={designer.name}
       style={{ "--r": ratio }}
       width={Math.round(ratio * 100)}

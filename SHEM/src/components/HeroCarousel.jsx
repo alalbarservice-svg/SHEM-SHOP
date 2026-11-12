@@ -3,22 +3,25 @@ import { Pause, Play } from "@phosphor-icons/react";
 
 const defaultSlides = [
   {
-    src: "/assets/hero-look1.webp",
-    mobile: "/assets/hero-look1-mobile.webp",
-    he: "סריג בז' עם תקריב שרוול ומכנסיים שחורים בקולונדה",
-    en: "Beige knit with a sleeve detail and black trousers in a colonnade",
+    src: "/assets/hero-v2/hero-v2-1.webp",
+    tablet: "/assets/hero-v2/hero-v2-1-tablet.webp",
+    mobile: "/assets/hero-v2/hero-v2-1-mobile.webp",
+    he: "סריג כבלים שנהב עם רוכסן וסמל, תקריב לצד הלוק המלא בקולונדה",
+    en: "Ivory cable-knit half-zip sweater, close-up beside the full look in a colonnade",
   },
   {
-    src: "/assets/hero-look2.webp",
-    mobile: "/assets/hero-look2-mobile.webp",
-    he: "חולצת טאופ ומכנסי פשתן לבנים לצד תקריב כיס",
-    en: "Taupe top and white linen trousers beside a pocket detail",
+    src: "/assets/hero-v2/hero-v2-2.webp",
+    tablet: "/assets/hero-v2/hero-v2-2-tablet.webp",
+    mobile: "/assets/hero-v2/hero-v2-2-mobile.webp",
+    he: "חולצת טאופ ומכנסי פשתן לבנים, תקריב כיס לצד הלוק המלא",
+    en: "Taupe top and white linen trousers, pocket detail beside the full look",
   },
   {
-    src: "/assets/hero-look3.webp",
-    mobile: "/assets/hero-look3-mobile.webp",
-    he: "סריג כבלים שנהב ומכנסיים אפורים לצד תקריב סריג",
-    en: "Ivory cable knit and grey trousers beside a knit detail",
+    src: "/assets/hero-v2/hero-v2-3.webp",
+    tablet: "/assets/hero-v2/hero-v2-3-tablet.webp",
+    mobile: "/assets/hero-v2/hero-v2-3-mobile.webp",
+    he: "סריג חאקי עם סמל מצפן על השרוול ומכנסיים כהים, תקריב לצד הלוק המלא",
+    en: "Khaki knit with a compass patch on the sleeve and dark trousers, close-up beside the full look",
   },
 ];
 
@@ -74,6 +77,12 @@ export function HeroCarousel({ t, images }) {
           >
             {slide.mobile && (
               <source media="(max-width: 760px)" srcSet={slide.mobile} />
+            )}
+            {slide.tablet && (
+              <source
+                media="(min-width: 761px) and (max-width: 899px)"
+                srcSet={slide.tablet}
+              />
             )}
             <img
               className={`hero-image${slide.mobile ? "" : " hero-portrait-crop"}`}

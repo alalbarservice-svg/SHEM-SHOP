@@ -58,6 +58,12 @@ import "@fontsource/montserrat/latin-400.css";
 import "@fontsource/arimo/hebrew-400.css";
 import "@fontsource/arimo/latin-400.css";
 import "@fontsource/arimo/hebrew-700.css";
+import "@fontsource/heebo/hebrew-300.css";
+import "@fontsource/heebo/latin-300.css";
+import "@fontsource/heebo/hebrew-500.css";
+import "@fontsource/heebo/latin-500.css";
+import "@fontsource/frank-ruhl-libre/hebrew-400.css";
+import "@fontsource/frank-ruhl-libre/latin-400.css";
 import "./styles.css";
 import { brands as defaultBrands, products as demoProducts } from "./catalogue";
 import { Admin } from "./components/Admin";
@@ -250,8 +256,8 @@ export function App() {
     standardPrice = storeContent.operations?.standardPrice ?? 49,
     expressPrice = storeContent.operations?.expressPrice ?? 199;
   const shippingCopy = t(
-    `שליח עד הבית: עד ${standardDays} ימי עסקים, ${standardPrice}₪. משלוח מהיר: עד ${expressDays} ימי עסקים, ${expressPrice}₪.`,
-    `Home delivery: up to ${standardDays} business days, ₪${standardPrice}. Express: up to ${expressDays} business days, ₪${expressPrice}.`,
+    `שליח עד הבית: עד ${standardDays} ימי עסקים, ${standardPrice}₪. משלוח מהיר: עד ${expressDays} ימי עסקים, ${expressPrice}₪ (תלוי אזור).`,
+    `Home delivery: up to ${standardDays} business days, ₪${standardPrice}. Express: up to ${expressDays} business days, ₪${expressPrice} (depends on area).`,
   );
   const quoteSignature = JSON.stringify({
     items: cart,
@@ -375,6 +381,23 @@ export function App() {
     storeContent.itemTypes,
   ]);
   const current = products.find((p) => route === `/product/${p.id}`);
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "shem-luxe",
+      !route.startsWith("/admin"),
+    );
+    if (route.startsWith("/admin")) return;
+    const id = setTimeout(() => {
+      const heading =
+        route === "/"
+          ? ""
+          : currentDesigner && !current
+            ? currentDesigner.name
+            : document.querySelector("#main h1")?.textContent?.trim();
+      document.title = heading ? `${heading} | SHEM` : "SHEM | אופנה לגברים";
+    }, 200);
+    return () => clearTimeout(id);
+  }, [route, current?.id, currentDesigner?.slug, he]);
   const selectedColor =
     colorChoice || current?.variants?.[0]?.color || current?.color || "";
   const availableSelected = current

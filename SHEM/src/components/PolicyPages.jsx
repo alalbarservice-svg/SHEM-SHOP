@@ -179,7 +179,7 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
             </li>
             <li>
               משלוח מהיר: עד {operations.expressDays ?? 1} ימי עסקים,{" "}
-              {operations.expressPrice ?? 199}₪.
+              {operations.expressPrice ?? 199}₪ (תלוי אזור).
             </li>
           </ul>
           <p>

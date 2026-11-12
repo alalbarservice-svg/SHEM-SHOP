@@ -3118,15 +3118,6 @@ footer,
   }
 }
 
-/* Adaptive hero text tone: dark ink where a light garment sits under the copy (looks 2-3, desktop/tablet only; mobile keeps its dark panel) */
-@media(min-width:761px){
-.hero h1,.hero-copy p,.hero-copy .button.outline,.hero-eyebrow{transition:color 1.8s ease,border-color 1.8s ease,background-color 1.8s ease}
-.hero:has(.hero-carousel[data-active-slide="2"]) h1,.hero:has(.hero-carousel[data-active-slide="3"]) h1{color:#0b0b0b}
-.hero:has(.hero-carousel[data-active-slide="2"]) .hero-copy p,.hero:has(.hero-carousel[data-active-slide="3"]) .hero-copy p{color:#1f1f1f}
-.hero:has(.hero-carousel[data-active-slide="2"]) .hero-copy .button.outline,.hero:has(.hero-carousel[data-active-slide="3"]) .hero-copy .button.outline{color:#0b0b0b;border-color:#0b0b0b99;background:#0b0b0b0a}
-.hero:has(.hero-carousel[data-active-slide="3"]) .hero-eyebrow{color:#0b0b0b}
-}
-
 /* SHEM luxe pill button: black, gold hairline border that thickens on hover (rounded, never square) */
 .button.luxe {
   background: #0b0b0b;
@@ -3434,3 +3425,341 @@ footer,
     inset: -6px;
   }
 }
+
+/* ===== SHEM hero v3: dark P3 text panel beside the photo (keep this block LAST in the file) ===== */
+section.hero {
+  --hp: 298px;
+  --hfs: 40px;
+  --hfp: 17px;
+  --hpad: max(36px, calc(var(--hp) * 0.12));
+  display: grid;
+  grid-template-columns: var(--hp) minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto 1fr;
+  background: #0b0b0b;
+}
+@media (min-width: 900px) { section.hero { --hp: 320px; --hfs: 42px; } }
+@media (min-width: 1000px) { section.hero { --hp: 340px; --hfs: 44px; --hfp: 18px; } }
+@media (min-width: 1200px) { section.hero { --hp: 380px; --hfs: 50px; } }
+@media (min-width: 1440px) { section.hero { --hp: 440px; --hfs: 56px; --hfp: 20px; } }
+@media (min-width: 1800px) { section.hero { --hp: 520px; --hfs: 64px; --hfp: 22px; } }
+section.hero::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 1 / -1;
+  z-index: 0;
+  background:
+    linear-gradient(transparent, #c9a96a, transparent) right center / 1px 76% no-repeat,
+    radial-gradient(120% 70% at 0% 100%, rgba(201, 169, 106, 0.16), transparent 60%),
+    linear-gradient(180deg, #151210, #0b0b0b);
+}
+section.hero::after {
+  content: "";
+  grid-column: 1;
+  grid-row: 1 / -1;
+  z-index: 1;
+  margin: 14px;
+  border: 1px solid rgba(201, 169, 106, 0.28);
+  pointer-events: none;
+}
+section.hero .hero-carousel {
+  position: relative;
+  inset: auto;
+  grid-column: 2;
+  grid-row: 1 / -1;
+  min-width: 0;
+  height: 100%;
+}
+section.hero .hero-image {
+  object-position: 100% 50%;
+  filter: none;
+}
+@media (min-width: 761px) and (max-width: 899px) {
+  section.hero .hero-image { object-position: 50% 0; }
+}
+section.hero .hero-eyebrow {
+  position: static;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 var(--hpad);
+  margin: 0 0 4px;
+  font: 500 11px/1 Montserrat, Arial, sans-serif;
+  letter-spacing: 0.34em;
+  color: #c9a96a;
+}
+section.hero .hero-eyebrow::after { display: none; }
+section.hero .hero-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: #c9a96a;
+}
+section.hero .hero-copy {
+  position: static;
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+  z-index: 2;
+  width: auto;
+  padding: 0 var(--hpad);
+  background: none;
+  text-align: left;
+}
+section.hero h1 {
+  margin: 14px 0 12px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: var(--hfs);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  white-space: normal;
+  background: linear-gradient(100deg, #f6efe0, #e3cfa0 45%, #c9a96a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+section.hero h1 span { width: min-content; }
+section.hero .hero-copy p {
+  margin: 0 0 24px;
+  font-size: var(--hfp);
+  line-height: 1.3;
+  color: #d9cfb8;
+  direction: rtl;
+  text-align: left;
+  padding: 0;
+}
+section.hero .hero-copy .button.luxe { margin-top: 0; }
+section.hero .hero-carousel-controls { right: 20px; bottom: 18px; }
+@media (max-width: 760px) {
+  section.hero {
+    --hfs: 40px;
+    --hfp: 17px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+  section.hero::before {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    background:
+      radial-gradient(120% 70% at 0% 100%, rgba(201, 169, 106, 0.16), transparent 60%),
+      linear-gradient(180deg, #151210, #0b0b0b);
+    border-top: 1px solid rgba(201, 169, 106, 0.55);
+  }
+  section.hero::after { grid-column: 1; grid-row: 2 / 4; margin: 10px; }
+  section.hero .hero-carousel {
+    grid-column: 1;
+    grid-row: 1;
+    height: auto;
+    aspect-ratio: 1086 / 912;
+  }
+  section.hero .hero-image { object-position: 50% 0; }
+  section.hero .hero-eyebrow { grid-row: 2; align-self: start; padding: 30px 28px 0; margin: 0; }
+  section.hero .hero-copy { grid-row: 3; padding: 0 28px 34px; }
+  section.hero .hero-copy .button.luxe { width: 100%; justify-content: center; min-height: 50px; }
+  section.hero .hero-carousel-controls {
+    top: auto; bottom: 12px; right: 14px; left: auto; transform: none;
+  }
+}
+
+/* ===== Product card V3 "signature line" (keep this block LAST in the file) ===== */
+article.product-card { background: transparent; border: 0; box-shadow: none; }
+article.product-card:focus-within { border-color: transparent; box-shadow: none; }
+article.product-card .product-picture { position: relative; overflow: hidden; background: #f4f1ea; }
+article.product-card .product-picture img {
+  mix-blend-mode: multiply;
+  transform: scale(0.96);
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+article.product-card .product-new {
+  position: absolute; top: 16px; left: 14px; z-index: 2;
+  font: 500 10px/1 Montserrat, Arial, sans-serif; letter-spacing: 0.24em; color: #8a6328;
+}
+article.product-card .favorite,
+article.product-card .favorite[aria-pressed="true"] {
+  background: transparent !important; border: 0; color: #6b6458;
+}
+article.product-card .favorite[aria-pressed="true"] { color: #8a6328; }
+article.product-card .product-details { display: flex; flex-direction: column; padding: 16px 2px 6px; }
+article.product-card .product-details::after { display: none; }
+article.product-card .product-details::before {
+  content: ""; display: block; width: 28px; height: 1px; margin-bottom: 14px;
+  background: #b89b63;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+article.product-card .product-brand {
+  font: 500 10.5px/1 Montserrat, Arial, sans-serif; letter-spacing: 0.28em;
+  text-transform: uppercase; color: #8a6328; margin-bottom: 6px;
+}
+article.product-card .product-name {
+  font-family: "Frank Ruhl Libre", Arimo, serif; font-size: 18px; line-height: 1.4; font-weight: 400;
+}
+article.product-card .price {
+  margin-top: 4px; font-family: Heebo, Arimo, sans-serif; font-size: 15px;
+  font-weight: 300; letter-spacing: 0.03em; color: #333;
+}
+article.product-card .product-discover {
+  inset-inline: 12px; bottom: 12px; min-height: 0; padding: 10px 12px;
+  justify-content: center; flex-wrap: wrap; gap: 8px;
+  background: rgba(250, 247, 241, 0.86); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: #111; border: 1px solid rgba(201, 169, 106, 0.5);
+  font: 400 12px/1 Montserrat, Arial, sans-serif; letter-spacing: 0.1em;
+}
+article.product-card .product-discover > span {
+  border: 1px solid rgba(0, 0, 0, 0.25); border-radius: 999px; padding: 5px 10px;
+}
+@media (hover: hover) and (pointer: fine) {
+  article.product-card:hover { transform: none; border-color: transparent; box-shadow: none; }
+  article.product-card:hover .product-picture img { transform: scale(1.035); }
+  article.product-card:hover .product-details::before { width: 100%; }
+  article.product-card .favorite:hover { color: #8a6328; transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  article.product-card .product-picture img,
+  article.product-card .product-details::before { transition: none; }
+}
+
+/* ===== Bug fix: contact page buttons on a light background (keep near the end) ===== */
+.care-links { align-items: center; }
+.care-links .button { min-height: 52px; }
+.care-links .button.outline {
+  color: #0b0b0b;
+  border-color: #0b0b0b;
+  background: transparent;
+}
+@media (hover: hover) and (pointer: fine) {
+  .care-links .button.outline:hover { background: #0b0b0b; color: #e3cfa0; }
+}
+
+/* ===== Accessibility: focus ring and text contrast (append LAST) ===== */
+.button:focus-visible,
+.view-all:focus-visible,
+.rail-controls button:focus-visible,
+.designer-choices button:focus-visible,
+.designer-band a:focus-visible,
+.designer-types button:focus-visible,
+.designer-page-other-brands > a:focus-visible,
+.customer-area button:focus-visible,
+.help-center button:focus-visible,
+.product-gallery button:focus-visible,
+.product-colors button:focus-visible,
+.pdp-nav a:focus-visible,
+.pdp-step button:focus-visible {
+  outline-color: #94713b;
+}
+.club-benefits span { color: #8a6328; }
+.sale-price del,
+.previous-price,
+.demo-note { color: #6b6b6b; }
+
+/* ===== Typography (customer area only: html.shem-luxe is NOT set on /admin) and unified pill buttons (append LAST) ===== */
+:root.shem-luxe { font-family: Heebo, Arimo, Arial, sans-serif; }
+:root.shem-luxe body { font-weight: 300; }
+:root.shem-luxe:lang(he) :is(h2, h3, h4),
+:root.shem-luxe:lang(he) .product-name,
+:root.shem-luxe:lang(he) article.product-card .product-name {
+  font-family: "Frank Ruhl Libre", Arimo, serif;
+  font-weight: 400;
+}
+:root.shem-luxe button,
+:root.shem-luxe .button,
+:root.shem-luxe b,
+:root.shem-luxe strong { font-weight: 500; }
+.button,
+.button.dark,
+.button.outline { border-radius: 999px; }
+.button.dark { background: #000; border-color: #c9a96a; color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .button.dark:hover,
+  .button.luxe:hover {
+    background: #000 !important;
+    color: #e3cfa0 !important;
+    border-color: #c9a96a;
+    transform: translateY(-1px) scale(1.012);
+    box-shadow: 0 0 0 3px rgba(201, 169, 106, 0.18);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button, .button:hover, .button.dark:hover, .button.luxe:hover { transform: none !important; transition: none; }
+}
+
+/* ===== Inner page headings in the hero language (append LAST) ===== */
+:root.shem-luxe:lang(he) section.page > h1 {
+  font-family: "Frank Ruhl Libre", Arimo, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+section.page > .eyebrow::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 1px;
+  margin-top: 12px;
+  background: #b89b63;
+}
+
+/* ===== Logos: flat SVG, no drop-shadow, champagne fill with a slow hover shift on the white tone (append LAST) ===== */
+.designer-logo--black { filter: none; }
+.designer-logo--white {
+  filter: none;
+  background: linear-gradient(100deg, #f6efe0 0%, #e3cfa0 50%, #c9a96a 100%) 0 0 / 200% 100%;
+  -webkit-mask: var(--m) center / contain no-repeat;
+  mask: var(--m) center / contain no-repeat;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), background-position 1.4s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  *:hover > .designer-logo--white,
+  .designer-logo--white:hover { background-position: 100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .designer-logo--white { transition: none; }
+}
+
+/* ===== Touch targets (44px hit area, no layout shift) (append LAST) ===== */
+.product-name { display: block; padding-block: 12px; margin-block: -12px; }
+.measurement-choice a { display: inline-block; padding: 15px 10px; margin: -15px -10px; }
+input[type="range"] { height: 44px; margin-block: -14px; }
+.stock-filter { min-height: 44px; display: flex; align-items: center; }
+.breadcrumb a { display: inline-block; padding-block: 16px; margin-block: -16px; }
+
+/* ===== Plan section 9: details chevron and opening animation, narrow policy text column (customer area only, append LAST) ===== */
+:root.shem-luxe summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+:root.shem-luxe summary::-webkit-details-marker { display: none; }
+:root.shem-luxe summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), margin 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:root.shem-luxe details[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+:root.shem-luxe details[open] > :not(summary) { animation: shem-details-in 0.35s ease both; }
+@keyframes shem-details-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  :root.shem-luxe summary::after { transition: none; }
+  :root.shem-luxe details[open] > :not(summary) { animation: none; }
+}
+:root.shem-luxe .policy-page p,
+:root.shem-luxe .policy-page li { max-width: 70ch; }
+:root.shem-luxe .policy-page h2 {
+  padding-top: 28px;
+  border-top: 1px solid #e4dfd3;
+}
+:root.shem-luxe .policy-page h2:first-of-type { border-top: 0; padding-top: 0; }

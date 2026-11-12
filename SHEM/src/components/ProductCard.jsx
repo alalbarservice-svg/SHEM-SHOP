@@ -3,9 +3,13 @@ import { money } from "../commerce";
 import { productImage } from "../experience";
 export function ProductCard({ product: p, he, saved, onSave }) {
   const name = he ? p.he : p.en;
+  const showNew =
+    p.isNew &&
+    (!p.newUntil || new Date(p.newUntil) >= new Date(new Date().toDateString()));
   return (
     <article className="product-card">
       <div className="product-picture">
+        {showNew && <span className="product-new">NEW</span>}
         <a href={`#/product/${p.id}`} aria-label={name}>
           <img
             src={productImage(p)}
@@ -14,8 +18,14 @@ export function ProductCard({ product: p, he, saved, onSave }) {
             decoding="async"
           />
           <span className="product-discover" aria-hidden="true">
-            <span>{he ? "לפרטי הפריט" : "Explore piece"}</span>
-            {he ? <ArrowUpLeft size={18} /> : <ArrowUpRight size={18} />}
+            {p.sizes?.length ? (
+              p.sizes.map((size) => <span key={size}>{size}</span>)
+            ) : (
+              <>
+                <span>{he ? "לפרטי הפריט" : "Explore piece"}</span>
+                {he ? <ArrowUpLeft size={18} /> : <ArrowUpRight size={18} />}
+              </>
+            )}
           </span>
         </a>
         <button
@@ -28,6 +38,7 @@ export function ProductCard({ product: p, he, saved, onSave }) {
         </button>
       </div>
       <div className="product-details">
+        {p.brand && <span className="product-brand">{p.brand}</span>}
         <a className="product-name" href={`#/product/${p.id}`}>
           {name}
         </a>

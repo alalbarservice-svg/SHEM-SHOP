@@ -21,7 +21,7 @@ export function deliveryChoices(operations = {}) {
     ],
     [
       "express",
-      `שליח עד הבית - ${fast === 1 ? "יום עסקים אחד" : fast + " ימי עסקים"}`,
+      `שליח עד הבית - ${fast === 1 ? "יום עסקים אחד" : fast + " ימי עסקים"} (תלוי אזור)`,
       operations.expressPrice ?? 199,
     ],
   ];

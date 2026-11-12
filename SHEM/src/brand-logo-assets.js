@@ -1,26 +1,26 @@
 // First six brands and the monogram are embedded in the bundle (instant first paint).
 // Later brands are separate hashed files in ./assets/brand-logos, fetched only when shown.
-import logo0 from "./assets/embedded-logos/amiri-black.webp?inline";
-import logo1 from "./assets/embedded-logos/amiri-white.webp?inline";
-import logo2 from "./assets/embedded-logos/dior-black.webp?inline";
-import logo3 from "./assets/embedded-logos/dior-white.webp?inline";
-import logo4 from "./assets/embedded-logos/essentials-black.webp?inline";
-import logo5 from "./assets/embedded-logos/essentials-white.webp?inline";
-import logo6 from "./assets/embedded-logos/givenchy-black.webp?inline";
-import logo7 from "./assets/embedded-logos/givenchy-white.webp?inline";
-import logo8 from "./assets/embedded-logos/loro-piana-black.webp?inline";
-import logo9 from "./assets/embedded-logos/loro-piana-white.webp?inline";
-import logo10 from "./assets/embedded-logos/ralph-lauren-black.webp?inline";
-import logo11 from "./assets/embedded-logos/ralph-lauren-white.webp?inline";
+import logo0 from "./assets/embedded-logos/amiri-black.svg?url";
+import logo1 from "./assets/embedded-logos/amiri-white.svg?url";
+import logo2 from "./assets/embedded-logos/dior-black.svg?url";
+import logo3 from "./assets/embedded-logos/dior-white.svg?url";
+import logo4 from "./assets/embedded-logos/essentials-black.svg?url";
+import logo5 from "./assets/embedded-logos/essentials-white.svg?url";
+import logo6 from "./assets/embedded-logos/givenchy-black.svg?url";
+import logo7 from "./assets/embedded-logos/givenchy-white.svg?url";
+import logo8 from "./assets/embedded-logos/loro-piana-black.svg?url";
+import logo9 from "./assets/embedded-logos/loro-piana-white.svg?url";
+import logo10 from "./assets/embedded-logos/ralph-lauren-black.svg?url";
+import logo11 from "./assets/embedded-logos/ralph-lauren-white.svg?url";
 import monogram from "./assets/embedded-logos/logo-monogram.webp?inline";
-const separate = import.meta.glob("./assets/brand-logos/*.webp", {
+const separate = import.meta.glob("./assets/brand-logos/*.svg", {
   eager: true,
   query: "?url",
   import: "default",
 });
 const separateLogos = Object.fromEntries(
   Object.entries(separate).map(([path, url]) => [
-    path.split("/").pop().replace(".webp", ""),
+    path.split("/").pop().replace(".svg", ""),
     url,
   ]),
 );

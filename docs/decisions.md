@@ -126,3 +126,10 @@
 - 05.11.2026 (owner): work order approved: rebuild staging in the new environment, fix the webhook, then the Green API QR scan.
 - 07.11.2026 (owner): WhatsApp dispatch: sender = dedicated number 972507974021 (Green API), recipient of bot inquiries = 972529586766. Reason: same sender and recipient gave no notification (tested 07.11). Customer-facing numbers on the site are unchanged.
 - 07.11.2026 (owner): keep WhatsApp dispatch ON in staging (SSB_WA_LIVE=true on SHEM staging). Every new staging ticket sends a real WhatsApp to 972529586766.
+
+## 12.11.2026 - unified branch, design v3, express shipping text, merge conditions (owner decisions)
+- Unify master and the support-bot line first (ORDER 007), then apply design v3 (ORDER 006).
+- Express shipping shows "(תלוי אזור)" next to the price (product page, shipping policy, checkout option). Reason (owner): the price varies by region, and the store must say so to be fair and to avoid legal exposure. The admin preview text was not changed.
+- The SHIMI club stays hidden after the merge (decision 31.10.2026): the club link in the nav and the club band on the SHIMI home were removed.
+- Approved: regenerate WP-THEMES/shem-storefront and update docs/project-state.md and docs/decisions.md, in the branch only. No merge to master.
+- Conditions before a merge request: owner visual approval of hero image 3 (tablet crop) and of the logos, plus testing on Safari and a real device.

@@ -21,6 +21,23 @@ export const designers = [
   { slug: "dior", name: "Dior", width: 2056, height: 765, aliases: ["dior"] },
   { slug: "givenchy", name: "Givenchy", aliases: ["givenchy"] },
   { slug: "amiri", name: "Amiri", aliases: ["amiri"] },
+  { slug: "stone-island", name: "Stone Island", aliases: ["stone island"] },
+  { slug: "loewe", name: "Loewe", aliases: ["loewe"] },
+  { slug: "hermes", name: "Hermès", aliases: ["hermès", "hermes", "hermes paris", "hermès paris"] },
+  { slug: "rhun", name: "Rhun", aliases: ["rhun"] },
+  { slug: "dolce-gabbana", name: "Dolce & Gabbana", aliases: ["dolce & gabbana", "dolce gabbana", "dolce&gabbana", "d&g", "dolce and gabbana"] },
+  { slug: "allsaints", name: "AllSaints", aliases: ["allsaints", "all saints", "all saint", "allsaint"] },
+  { slug: "prada", name: "Prada", aliases: ["prada"] },
+  { slug: "balenciaga", name: "Balenciaga", aliases: ["balenciaga"] },
+  { slug: "jacquemus", name: "Jacquemus", aliases: ["jacquemus"] },
+  { slug: "casablanca", name: "Casablanca", aliases: ["casablanca", "casa blanca", "casablanca paris"] },
+  { slug: "ami-paris", name: "AMI Paris", aliases: ["ami paris", "ami", "ami alexandre mattiussi"] },
+  { slug: "celine", name: "Celine", aliases: ["celine", "céline"] },
+  { slug: "louis-vuitton", name: "Louis Vuitton", aliases: ["louis vuitton", "lv"] },
+  { slug: "valentino", name: "Valentino", aliases: ["valentino", "valentino garavani"] },
+  { slug: "alexander-mcqueen", name: "Alexander McQueen", aliases: ["alexander mcqueen", "mcqueen"] },
+  { slug: "miu-miu", name: "Miu Miu", aliases: ["miu miu", "miumiu"] },
+  { slug: "moncler", name: "Moncler", aliases: ["moncler"] },
 ];
 export const defaultProductTypes = [
   ["shirts", "חולצות", "Shirts"],
@@ -58,9 +75,6 @@ export const designerProducts = (products, designer) =>
   products.filter(
     (p) => isShownItem(p) && designerFor(p.brand)?.slug === designer.slug,
   );
-// Brands with no shown item disappear by themselves and return when one is added.
-export const visibleDesigners = (products) =>
-  designers.filter((d) => designerProducts(products, d).length > 0);
 export function productType(p, types = defaultProductTypes) {
   if (types.some(([key]) => key === p.productType)) return p.productType;
   // Existing catalogue asset keys explicitly represent product types. Unknown items stay generic.
@@ -73,3 +87,38 @@ export function productType(p, types = defaultProductTypes) {
   // If the inferred built-in type was removed from the admin list, the item has no category.
   return types.some(([k]) => k === key) ? key : "";
 }
+
+/** A piece counts as displayed only when it is active, not archived and in stock. */
+export const hasStock = (p) => {
+  if (p.variants?.length) return p.variants.some((v) => v.stock > 0);
+  if (p.sizeStock && Object.keys(p.sizeStock).length)
+    return Object.values(p.sizeStock).some((n) => n > 0);
+  return p.stock > 0;
+};
+export const isListed = (p) => p.active !== false && !p.archived && hasStock(p);
+/** Designers with at least one displayed piece. Others disappear automatically. */
+export const visibleDesigners = (products) =>
+  designers.filter((d) =>
+    products.some((p) => isListed(p) && designerFor(p.brand)?.slug === d.slug),
+  );
+/** Product types of one designer with at least one displayed piece (gate=false: no stock rule). */
+export const visibleProductTypes = (
+  products,
+  designer,
+  gate = true,
+  types = defaultProductTypes,
+) => {
+  // gate=false applies no stock rule: only active, not archived and of this designer.
+  const keys = new Set(
+    products
+      .filter(
+        (p) =>
+          p.active !== false &&
+          !p.archived &&
+          designerFor(p.brand)?.slug === designer.slug,
+      )
+      .filter((p) => !gate || isListed(p))
+      .map((p) => productType(p, types)),
+  );
+  return types.filter(([key]) => keys.has(key));
+};

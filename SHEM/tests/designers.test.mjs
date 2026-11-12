@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import {
   designers,
   designerFor,
@@ -44,9 +44,18 @@ test("manager product type takes precedence and unknown items stay in a neutral 
     "clothing",
   );
 });
-test("all six brand pages have original high-resolution black and white PNG assets", () => {
-  assert.equal(designers.length, 6);
-  for (const d of designers)
+const originalSlugs = [
+  "amiri",
+  "dior",
+  "essentials",
+  "givenchy",
+  "loro-piana",
+  "ralph-lauren",
+];
+test("the six original brand pages keep original high-resolution black and white PNG assets", () => {
+  for (const slug of originalSlugs) {
+    const d = designers.find((x) => x.slug === slug);
+    assert.ok(d, slug);
     for (const tone of ["black", "white"]) {
       const bytes = readFileSync(
         new URL(
@@ -58,4 +67,16 @@ test("all six brand pages have original high-resolution black and white PNG asse
       assert.equal(bytes.readUInt32BE(16), d.width || 2172);
       assert.equal(bytes.readUInt32BE(20), d.height || 724);
     }
+  }
+});
+test("every brand has a unique slug and an embedded black and white logo", () => {
+  const files = new Set([
+    ...readdirSync(new URL("../src/assets/embedded-logos/", import.meta.url)),
+    ...readdirSync(new URL("../src/assets/brand-logos/", import.meta.url)),
+  ]);
+  assert.equal(designers.length, 23);
+  assert.equal(new Set(designers.map((d) => d.slug)).size, designers.length);
+  for (const d of designers)
+    for (const tone of ["black", "white"])
+      assert.ok(files.has(`${d.slug}-${tone}.webp`), `${d.slug}-${tone}`);
 });

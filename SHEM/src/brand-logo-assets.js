@@ -1,4 +1,5 @@
-// Lossless copies of the original supplied artwork, embedded by Vite.
+// First six brands and the monogram are embedded in the bundle (instant first paint).
+// Later brands are separate hashed files in ./assets/brand-logos, fetched only when shown.
 import logo0 from "./assets/embedded-logos/amiri-black.webp?inline";
 import logo1 from "./assets/embedded-logos/amiri-white.webp?inline";
 import logo2 from "./assets/embedded-logos/dior-black.webp?inline";
@@ -11,9 +12,21 @@ import logo8 from "./assets/embedded-logos/loro-piana-black.webp?inline";
 import logo9 from "./assets/embedded-logos/loro-piana-white.webp?inline";
 import logo10 from "./assets/embedded-logos/ralph-lauren-black.webp?inline";
 import logo11 from "./assets/embedded-logos/ralph-lauren-white.webp?inline";
-import logo12 from "./assets/embedded-logos/logo-monogram.webp?inline";
+import monogram from "./assets/embedded-logos/logo-monogram.webp?inline";
+const separate = import.meta.glob("./assets/brand-logos/*.webp", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+const separateLogos = Object.fromEntries(
+  Object.entries(separate).map(([path, url]) => [
+    path.split("/").pop().replace(".webp", ""),
+    url,
+  ]),
+);
 
 export const brandLogoAssets = Object.freeze({
+  ...separateLogos,
   "amiri-black": logo0,
   "amiri-white": logo1,
   "dior-black": logo2,
@@ -27,4 +40,4 @@ export const brandLogoAssets = Object.freeze({
   "ralph-lauren-black": logo10,
   "ralph-lauren-white": logo11,
 });
-export const shemMonogram = logo12;
+export const shemMonogram = monogram;

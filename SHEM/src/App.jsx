@@ -68,6 +68,8 @@ import { ProductCard } from "./components/ProductCard";
 import { HeroCarousel } from "./components/HeroCarousel";
 import { PolicyPages, SUPPORT_EMAIL } from "./components/PolicyPages";
 import { CouponQuote } from "./components/CouponQuote";
+import { PdpNav, installListMemory } from "./pdp-nav";
+installListMemory();
 const stored = (k, d) => {
   try {
     return JSON.parse(localStorage.getItem(k)) ?? d;
@@ -337,8 +339,21 @@ export function App() {
     : undefined;
   const brandRouteType = brandRoute?.[2] || "";
   const itemTypes = normalizeItemTypes(storeContent.itemTypes);
-  const shownDesigners = visibleDesigners(products);
-  // A direct link to an empty brand or category goes to the shop.
+  const designerGate = catalogueStatus === "ready" && catalogueConnected;
+  const shownDesigners =
+    catalogueStatus === "loading"
+      ? []
+      : designerGate
+        ? visibleDesigners(products)
+        : designers;
+  const currentDesignerHidden =
+    !!currentDesigner &&
+    designerGate &&
+    !shownDesigners.some((d) => d.slug === currentDesigner.slug);
+  useEffect(() => {
+    if (currentDesignerHidden) shop();
+  }, [currentDesignerHidden]);
+  // A direct link to an unknown brand or an empty category goes to the shop.
   useEffect(() => {
     if (!brandRoute || catalogueStatus !== "ready" || !catalogueConnected) return;
     if (!currentDesigner) {
@@ -681,13 +696,18 @@ export function App() {
                     "Your style. Without compromise.",
                   )}
                 </p>
-                <button className="button outline" onClick={() => shop()}>
+                <button className="button luxe" onClick={() => shop()}>
                   {t("לקולקציה", "Shop the collection")}
                   <ArrowRight size={19} />
                 </button>
               </div>
             </section>
-            <DesignerRails products={products} card={card} he={he} />
+            <DesignerRails
+              products={products}
+              card={card}
+              he={he}
+              designers={shownDesigners}
+            />
             <section className="selection clearance">
               <div className="section-heading">
                 <div>
@@ -726,7 +746,7 @@ export function App() {
                 <h2>{t("מותגי SHEM", "SHEM designers")}</h2>
                 <div>
                   <DesignerChoices
-                    list={shownDesigners}
+                    designers={shownDesigners}
                     onChoose={(d) => go(`/brand/${d.slug}`)}
                   />
                 </div>
@@ -875,6 +895,19 @@ export function App() {
           </section>
         ) : current ? (
           <section className="pdp page">
+            <PdpNav
+              id={current.id}
+              products={products}
+              fallbackIds={products.filter((p) => p.cat === current.cat).map((p) => p.id)}
+              fallbackHref="#/shop"
+              fallbackLabel=""
+              label={{
+                nav: t("ניווט בין פריטים", "Browse pieces"),
+                back: t("חזרה", "Back"),
+                prev: t("הפריט הקודם", "Previous piece"),
+                next: t("הפריט הבא", "Next piece"),
+              }}
+            />
             <div className="breadcrumb">
               <a href="#/">SHEM</a> /{" "}
               <a href="#/shop">{t("קולקציה", "Collection")}</a> /{" "}
@@ -1094,15 +1127,21 @@ export function App() {
             </section>
           </section>
         ) : currentDesigner ? (
-          <DesignerPage
-            key={currentDesigner.slug}
-            designer={currentDesigner}
-            products={products}
-            card={card}
-            he={he}
-            itemTypes={itemTypes}
-            initialType={brandRouteType}
-          />
+          catalogueStatus === "loading" || currentDesignerHidden ? (
+            <section className="page catalogue" aria-busy="true" />
+          ) : (
+            <DesignerPage
+              key={currentDesigner.slug}
+              designer={currentDesigner}
+              products={products}
+              card={card}
+              he={he}
+              designers={shownDesigners}
+              gate={designerGate}
+              itemTypes={itemTypes}
+              initialType={brandRouteType}
+            />
+          )
         ) : route === "/shop" || route === "/wishlist" || !!collection ? (
           <section className="page catalogue">
             <p className="eyebrow">
@@ -1125,7 +1164,7 @@ export function App() {
                     {t("הכול", "All")}
                   </button>
                   <DesignerChoices
-                    list={shownDesigners}
+                    designers={shownDesigners}
                     selected={designerFor(brand)?.slug}
                     onChoose={(d) => setBrand(d.name)}
                   />
@@ -1356,7 +1395,7 @@ export function App() {
             <p className="eyebrow">THE LABELS</p>
             <h1>{t("מותגי SHEM", "SHEM designers")}</h1>
             <DesignerChoices
-              list={shownDesigners}
+              designers={shownDesigners}
               onChoose={(d) => go(`/brand/${d.slug}`)}
             />
           </section>
@@ -1615,7 +1654,7 @@ export function App() {
               </>
             ) : panel === "brands" ? (
               <DesignerChoices
-                list={shownDesigners}
+                designers={shownDesigners}
                 onChoose={(d) => go(`/brand/${d.slug}`)}
               />
             ) : panel === "menu" ? (

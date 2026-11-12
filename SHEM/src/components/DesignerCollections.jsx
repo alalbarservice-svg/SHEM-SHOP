@@ -2,12 +2,13 @@ import { useState } from "react";
 import { InventoryFilters } from "./InventoryFilters";
 import { matchesAvailability, matchesSearch } from "../experience";
 import { brandLogoAssets } from "../brand-logo-assets";
+import { logoRatios } from "../logo-ratios";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
 import {
-  designers,
+  designers as allDesigners,
   designerProducts,
-  visibleDesigners,
   defaultProductTypes,
+  visibleProductTypes,
   productType,
 } from "../designers";
 import { ProductRail } from "./ProductRail";
@@ -18,13 +19,15 @@ export function DesignerLogo({
   priority = false,
 }) {
   if (!designer) return null;
+  const ratio = logoRatios[designer.slug] || 3;
   return (
     <img
       className={`designer-logo designer-logo--${tone} ${className} logo-${designer.slug}`}
       src={brandLogoAssets[`${designer.slug}-${tone}`]}
       alt={designer.name}
-      width={designer.width || 2172}
-      height={designer.height || 724}
+      style={{ "--r": ratio }}
+      width={Math.round(ratio * 100)}
+      height={100}
       loading="eager"
       fetchPriority={priority ? "high" : undefined}
       decoding="async"
@@ -35,11 +38,12 @@ export function DesignerChoices({
   onChoose,
   selected,
   className = "",
-  list = designers,
+  list,
+  designers = allDesigners,
 }) {
   return (
     <div className={`designer-choices ${className}`}>
-      {list.map((d) => (
+      {(list ?? designers).map((d) => (
         <button
           key={d.slug}
           type="button"
@@ -53,10 +57,15 @@ export function DesignerChoices({
     </div>
   );
 }
-export function DesignerRails({ products, card, he }) {
+export function DesignerRails({
+  products,
+  card,
+  he,
+  designers = allDesigners,
+}) {
   return (
     <div className="designer-collections">
-      {visibleDesigners(products).map((d) => {
+      {designers.map((d) => {
         const items = designerProducts(products, d);
         return (
           <section
@@ -65,6 +74,7 @@ export function DesignerRails({ products, card, he }) {
             aria-label={d.name}
           >
             <div className="designer-band">
+              <span className="designer-index">קולקציית</span>
               <h2>
                 <a
                   href={`#/brand/${d.slug}`}
@@ -73,11 +83,23 @@ export function DesignerRails({ products, card, he }) {
                   <DesignerLogo designer={d} tone="white" />
                 </a>
               </h2>
+              <span className="designer-meta" dir="ltr">
+                THE COLLECTION
+                {items.length ? ` · ${items.length} ${items.length === 1 ? "PIECE" : "PIECES"}` : ""}
+              </span>
             </div>
             {items.length ? (
-              <ProductRail he={he} label={d.name}>
-                {items.map(card)}
-              </ProductRail>
+              <>
+                <ProductRail he={he} label={d.name}>
+                  {items.map(card)}
+                </ProductRail>
+                <div className="designer-cta-row">
+                  <a className="button luxe" href={`#/brand/${d.slug}`}>
+                    {he ? `לקולקציית ${d.name}` : `Explore ${d.name}`}
+                    <ArrowRight size={19} />
+                  </a>
+                </div>
+              </>
             ) : (
               <div className="designer-empty">
                 <p>
@@ -98,15 +120,19 @@ export function DesignerPage({
   products,
   card,
   he,
+  designers = allDesigners,
+  gate = true,
   itemTypes = defaultProductTypes,
   initialType = "",
 }) {
   const [type, setType] = useState(initialType),
     [sort, setSort] = useState("featured");
-  const all = designerProducts(products, designer);
-  const groups = itemTypes.filter(([key]) =>
-    all.some((p) => productType(p, itemTypes) === key),
-  );
+  const groups = visibleProductTypes(products, designer, gate, itemTypes);
+  const groupKeys = new Set(groups.map(([key]) => key));
+  const all = designerProducts(products, designer).filter((p) => {
+    const k = productType(p, itemTypes);
+    return !k || groupKeys.has(k);
+  });
   const hasOther = all.some((p) => !productType(p, itemTypes));
   const allGroups = hasOther
     ? [...groups, ["", "אחר", "Other"]]
@@ -257,7 +283,7 @@ export function DesignerPage({
             <a href="#/designers">{he ? "כל המותגים" : "All designers"}</a>
           </div>
           <div className="designer-page-other-brands">
-            {visibleDesigners(products)
+            {designers
               .filter((d) => d.slug !== designer.slug)
               .map((d) => (
                 <a key={d.slug} href={`#/brand/${d.slug}`} aria-label={d.name}>

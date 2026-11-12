@@ -83,3 +83,5 @@ Answers: ANSWERS_to_new_controller_2026-11-05.md (package, sha256 OK). Closed to
 | 05.11.2026 | לספק מחדש את מפתחות PayPal Sandbox ל-SHIMI staging (מהקובץ המקומי) | לא הועברו לסביבה החדשה, e2e_pay לא ירוץ בלעדיהם | user |
 | 05.11.2026 | סקריפט UI sweep (38 תצוגות) לא קיים - לכתוב חדש בבדיקת 360 הבאה | לא נמצא גם אצל הסוכן היוצא | manager |
 | 05.11.2026 | visibility_sync.py שלב inactive (SHIMI None) | לא הורץ, פתוח מ-28.10 | manager |
+| 08.11.2026 | לחסום readme.html ו-license.txt בשרת הייצור (נמצאו פתוחים ביום הבדיקה) | גילוי גרסת וורדפרס | manager |
+| 08.11.2026 | בדיקת תשלום מלאה עם כפתור PayPal (sandbox) ובמסלול SPA /api/checkout-home בשרתים אמיתיים | לא נבדק ביום הבדיקה - אין מפתחות sandbox | user |

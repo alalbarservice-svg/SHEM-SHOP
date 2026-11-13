@@ -1,7 +1,10 @@
 import { Heart, ArrowUpLeft, ArrowUpRight } from "@phosphor-icons/react";
 import { money } from "../commerce";
 import { productImage } from "../experience";
-export function ProductCard({ product: p, he, saved, onSave }) {
+// ORDER_SHEM_DEV_013: default photos (knit, shirt, trousers) have a portrait 3:4 version for the regular card only.
+const portraitDefault = (src) =>
+  src.replace(/^\/assets\/(knit|shirt|trousers)\.png$/, "/assets/$1-3x4.png");
+export function ProductCard({ product: p, he, saved, onSave, compact = false }) {
   const name = he ? p.he : p.en;
   const showNew =
     p.isNew &&
@@ -12,7 +15,7 @@ export function ProductCard({ product: p, he, saved, onSave }) {
         {showNew && <span className="product-new">NEW</span>}
         <a href={`#/product/${p.id}`} aria-label={name}>
           <img
-            src={productImage(p)}
+            src={compact ? productImage(p) : portraitDefault(productImage(p))}
             alt={name}
             loading="lazy"
             decoding="async"

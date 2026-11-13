@@ -456,15 +456,18 @@ export function App() {
       {child}
     </button>
   );
-  const card = (p) => (
+  const cardFor = (p, compact) => (
     <ProductCard
       key={p.id}
       product={p}
       he={he}
       saved={wish.includes(p.id)}
       onSave={toggle}
+      compact={compact}
     />
   );
+  const card = (p) => cardFor(p, false);
+  const compactCard = (p) => cardFor(p, true);
   const cartContent = () =>
     cart.length ? (
       <>
@@ -755,7 +758,7 @@ export function App() {
                   "End of season",
                 )}
               >
-                {products.filter((p) => p.previousPrice).map(card)}
+                {products.filter((p) => p.previousPrice).map(compactCard)}
               </ProductRail>
               <p className="demo-note">
                 {t(

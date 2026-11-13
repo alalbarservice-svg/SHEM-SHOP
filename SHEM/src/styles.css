@@ -3708,7 +3708,7 @@ article.product-card .price {
 article.product-card .product-discover {
   inset-inline: 12px; bottom: 12px; min-height: 0; padding: 10px 12px;
   justify-content: center; flex-wrap: wrap; gap: 8px;
-  background: rgba(250, 247, 241, 0.86); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  background: rgba(250, 247, 241, 0.16); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
   color: #111; border: 1px solid rgba(201, 169, 106, 0.5);
   font: 400 12px/1 Montserrat, Arial, sans-serif; letter-spacing: 0.1em;
 }

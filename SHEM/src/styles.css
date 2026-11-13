@@ -2898,7 +2898,7 @@ footer,
   justify-content: space-between;
   gap: 20px;
   padding: 28px 0;
-  border-bottom: 1px solid #eeeae4;
+  border-bottom: 1px solid #C9A96A;
 }
 .designer-page .designer-back {
   display: inline-flex;
@@ -2938,7 +2938,7 @@ footer,
 .designer-page .designer-types {
   gap: 30px;
   padding: 0;
-  border-bottom: 1px solid #e8e4dc;
+  border-bottom: 1px solid #C9A96A;
   scrollbar-width: thin;
 }
 .designer-page .designer-types button {
@@ -2995,7 +2995,7 @@ footer,
   gap: 16px;
   padding-bottom: 18px;
   margin-bottom: 28px;
-  border-bottom: 1px solid #e8e4dc;
+  border-bottom: 1px solid #C9A96A;
 }
 .designer-type-heading h2 {
   margin: 0;
@@ -3049,7 +3049,7 @@ footer,
 }
 .designer-page-more {
   margin-top: 60px;
-  border-top: 1px solid #dcd5ca;
+  border-top: 1px solid #C9A96A;
   padding-top: 36px;
 }
 .designer-more-heading {
@@ -3868,3 +3868,10 @@ input[type="range"] { height: 44px; margin-block: -14px; }
   border-top: 1px solid #e4dfd3;
 }
 :root.shem-luxe .policy-page h2:first-of-type { border-top: 0; padding-top: 0; }
+
+/* ORDER_SHEM_DEV_014: size chips sit below the photo, never over it. Regular cards only (compact keeps the overlay). The row keeps its space at rest, so showing it on hover or focus moves nothing. */
+article.product-card .product-discover.below {
+  position: static; inset-inline: auto; bottom: auto; margin: 12px 12px 0; transform: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none; text-decoration: none;
+  transition: opacity 0.4s;
+}

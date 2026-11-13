@@ -9,6 +9,14 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
   const showNew =
     p.isNew &&
     (!p.newUntil || new Date(p.newUntil) >= new Date(new Date().toDateString()));
+  const chips = p.sizes?.length ? (
+    p.sizes.map((size) => <span key={size}>{size}</span>)
+  ) : (
+    <>
+      <span>{he ? "לפרטי הפריט" : "Explore piece"}</span>
+      {he ? <ArrowUpLeft size={18} /> : <ArrowUpRight size={18} />}
+    </>
+  );
   return (
     <article className="product-card">
       <div className="product-picture">
@@ -20,16 +28,11 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
             loading="lazy"
             decoding="async"
           />
-          <span className="product-discover" aria-hidden="true">
-            {p.sizes?.length ? (
-              p.sizes.map((size) => <span key={size}>{size}</span>)
-            ) : (
-              <>
-                <span>{he ? "לפרטי הפריט" : "Explore piece"}</span>
-                {he ? <ArrowUpLeft size={18} /> : <ArrowUpRight size={18} />}
-              </>
-            )}
-          </span>
+          {compact && (
+            <span className="product-discover" aria-hidden="true">
+              {chips}
+            </span>
+          )}
         </a>
         <button
           className="favorite"
@@ -40,6 +43,16 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
           <Heart size={22} weight={saved ? "fill" : "regular"} />
         </button>
       </div>
+      {!compact && (
+        <a
+          className="product-discover below"
+          href={`#/product/${p.id}`}
+          aria-hidden="true"
+          tabIndex={-1}
+        >
+          {chips}
+        </a>
+      )}
       <div className="product-details">
         {p.brand && <span className="product-brand">{p.brand}</span>}
         <a className="product-name" href={`#/product/${p.id}`}>

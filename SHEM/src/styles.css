@@ -3726,6 +3726,11 @@ article.product-card .product-discover > span {
   article.product-card .product-details::before { transition: none; }
 }
 
+/* ORDER_SHEM_DEV_012: show the whole item. Regular cards only (not inside .compact): 3:4 frame, photo uncropped, no scale at rest or on hover. */
+article.product-card:not(.compact *) .product-picture { aspect-ratio: 3 / 4; }
+article.product-card:not(.compact *) .product-picture img { object-fit: contain; transform: none; }
+article.product-card:not(.compact *):hover .product-picture img { transform: none; }
+
 /* ===== Bug fix: contact page buttons on a light background (keep near the end) ===== */
 .care-links { align-items: center; }
 .care-links .button { min-height: 52px; }

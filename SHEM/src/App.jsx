@@ -1177,20 +1177,50 @@ export function App() {
             </h1>
             <div className="filter-bar">
               {shownDesigners.length > 0 && (
-                <fieldset className="catalogue-brand-filter">
+                <fieldset
+                  className={`catalogue-brand-filter${route === "/shop" ? " brand-pill-filter" : ""}`}
+                >
                   <legend>{t("מותגי SHEM", "SHEM designers")}</legend>
-                  <button
-                    className="text-button"
-                    aria-pressed={!brand}
-                    onClick={() => setBrand("")}
-                  >
-                    {t("הכול", "All")}
-                  </button>
-                  <DesignerChoices
-                    designers={shownDesigners}
-                    selected={designerFor(brand)?.slug}
-                    onChoose={(d) => setBrand(d.name)}
-                  />
+                  {route === "/shop" ? (
+                    <div className="brand-pills">
+                      <button
+                        type="button"
+                        className="brand-pill"
+                        data-label={t("הכול", "All")}
+                        aria-pressed={!brand}
+                        onClick={() => setBrand("")}
+                      >
+                        {t("הכול", "All")}
+                      </button>
+                      {shownDesigners.map((d) => (
+                        <button
+                          type="button"
+                          key={d.slug}
+                          className="brand-pill"
+                          data-label={d.name}
+                          aria-pressed={designerFor(brand)?.slug === d.slug}
+                          onClick={() => setBrand(d.name)}
+                        >
+                          {d.name}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <button
+                        className="text-button"
+                        aria-pressed={!brand}
+                        onClick={() => setBrand("")}
+                      >
+                        {t("הכול", "All")}
+                      </button>
+                      <DesignerChoices
+                        designers={shownDesigners}
+                        selected={designerFor(brand)?.slug}
+                        onChoose={(d) => setBrand(d.name)}
+                      />
+                    </>
+                  )}
                 </fieldset>
               )}
               <label>

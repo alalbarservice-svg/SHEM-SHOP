@@ -2447,6 +2447,70 @@ footer nav {
   --lw: 220;
   --lh: 74;
 }
+/* /shop only: the brand filter is one scrollable row of round pills (ORDER_SHEM_DEV_009) */
+.brand-pill-filter {
+  min-inline-size: 0;
+  max-width: 100%;
+}
+.brand-pill-filter legend {
+  margin-bottom: 8px;
+}
+.brand-pills {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding: 4px 2px 8px;
+}
+.brand-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid #c9a96a;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.brand-pill::after {
+  content: attr(data-label);
+  font-weight: 600;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+.brand-pill[aria-pressed="true"] {
+  background: #000;
+  color: #f6efe0;
+  font-weight: 600;
+}
+@media (hover: hover) {
+  .brand-pill:hover {
+    background: rgba(201, 169, 106, 0.14);
+  }
+  .brand-pill[aria-pressed="true"]:hover {
+    background: #000;
+    color: #e3cfa0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .brand-pill {
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+}
 .filter-bar {
   flex-wrap: wrap;
 }

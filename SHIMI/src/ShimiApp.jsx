@@ -27,9 +27,9 @@ const catOf = (p) => {
 };
 const COLLECTIONS = [
   {
-    key: "essentials",
-    he: "האסנשיאלס",
-    en: "THE ESSENTIALS",
+    key: "basics",
+    he: "הבסיס",
+    en: "THE BASICS",
     blurb: "החלקים שמשתלבים עם כל השאר: טי כותנה, ג'ינס ישר וסניקרס נקיות.",
     test: /טי כותנה|ג'ינס ישר|סניקרס|כובע גרב|אוקספורד/,
     pick: "טי כותנה לבנה",
@@ -284,7 +284,7 @@ export function App() {
               {c.he}
             </a>
           ))}
-          <a href="#/collection/essentials">קולקציות</a>
+          <a href="#/collection/basics">קולקציות</a>
         </nav>
         {!PREVIEW && (
           <a className="cart-link" href="#/cart">
@@ -309,8 +309,8 @@ export function App() {
                     "חולצות, מכנסיים, נעליים וכובעים בגזרות נקיות וצבעים שמשתלבים זה בזה."}
                 </p>
                 <div className="hero-cta">
-                  <a className="button dark" href="#/collection/essentials">
-                    לקולקציית האסנשיאלס
+                  <a className="button dark" href="#/collection/basics">
+                    לקולקציית הבסיס
                   </a>
                   <a className="button" href="#/all">
                     לכל הפריטים

@@ -132,7 +132,7 @@ export function HomeCheckout({
         <p>
           {customer.street}, {customer.city} |{" "}
           {shipping === "express"
-            ? "שליח עד הבית - יום עסקים אחד"
+            ? "שליח עד הבית - יום עסקים אחד (תלוי אזור)"
             : "שליח עד הבית - 5-7 ימי עסקים"}
         </p>
         <iframe
@@ -196,7 +196,7 @@ export function HomeCheckout({
         </p>
         <p>
           {shipping === "express"
-            ? "שליח עד הבית - יום עסקים אחד"
+            ? "שליח עד הבית - יום עסקים אחד (תלוי אזור)"
             : "שליח עד הבית - 5-7 ימי עסקים"}{" "}
           |{" "}
           {money(
@@ -266,7 +266,7 @@ export function HomeCheckout({
         ],
         [
           "express",
-          "שליח עד הבית - יום עסקים אחד",
+          "שליח עד הבית - יום עסקים אחד (תלוי אזור)",
           operations.expressPrice ?? 199,
         ],
       ].map(([v, l, p]) => (

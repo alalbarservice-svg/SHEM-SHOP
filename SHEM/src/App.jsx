@@ -21,10 +21,8 @@ import {
   SizeGuide,
   StockWatch,
 } from "./components/ProductExperience";
-import {
-  InventoryFilters,
-  MeasurementChoice,
-} from "./components/InventoryFilters";
+import { MeasurementChoice } from "./components/InventoryFilters";
+import { MoreFilters } from "./components/MoreFilters";
 import {
   matchesSearch,
   complementaryProducts,
@@ -1259,7 +1257,7 @@ export function App() {
                 </select>
               </label>
             </div>
-            <InventoryFilters
+            <MoreFilters
               products={products}
               he={he}
               query={query}

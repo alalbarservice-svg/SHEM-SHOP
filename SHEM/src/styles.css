@@ -657,7 +657,7 @@ details p {
   display: flex;
   gap: 24px;
   align-items: center;
-  border-block: 1px solid #ddd;
+  border-block: 1px solid #C9A96A;
   padding: 15px 0;
   flex-wrap: wrap;
 }
@@ -2506,6 +2506,42 @@ footer nav {
 }
 @media (prefers-reduced-motion: no-preference) {
   .brand-pill {
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+}
+/* Up to 760px: secondary filters behind a round "More filters" button (ORDER_SHEM_DEV_010) */
+.more-filters-toggle {
+  display: none;
+}
+@media (max-width: 760px) {
+  .more-filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    margin-block: 16px 20px;
+    border: 1px solid #c9a96a;
+    border-radius: 999px;
+    background: #fff;
+    color: #111;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .more-filters-toggle[aria-expanded="true"] {
+    background: #000;
+    color: #f6efe0;
+    font-weight: 600;
+  }
+  .more-filters:not(.is-open) .more-filters-panel {
+    display: none;
+  }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  .more-filters-toggle {
     transition:
       background-color 0.2s,
       color 0.2s;

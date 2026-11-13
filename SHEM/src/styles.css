@@ -3705,15 +3705,24 @@ article.product-card .price {
   margin-top: 4px; font-family: Heebo, Arimo, sans-serif; font-size: 15px;
   font-weight: 300; letter-spacing: 0.03em; color: #333;
 }
+/* ORDER_SHEM_DEV_016 (Moshe 13.11): refined size row. Text only, letter-spaced, gold hairlines above and below, no pills and no box, one row so every grid has the same height. */
 article.product-card .product-discover {
-  inset-inline: 12px; bottom: 12px; min-height: 0; padding: 10px 12px;
-  justify-content: center; flex-wrap: wrap; gap: 8px;
-  background: rgba(250, 247, 241, 0.16); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  color: #111; border: 1px solid rgba(201, 169, 106, 0.5);
-  font: 400 12px/1 Montserrat, Arial, sans-serif; letter-spacing: 0.1em;
+  inset-inline: 12px; bottom: 12px; min-height: 0; padding: 9px 6px;
+  justify-content: center; align-content: center; align-items: center; flex-wrap: nowrap; gap: 6px clamp(7px, 1.1vw, 14px);
+  background: rgba(250, 247, 241, 0.12); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  color: #1a1a1a; border: 0; border-block: 1px solid rgba(184, 155, 99, 0.75);
+  font: 400 10.5px/1 Montserrat, Arial, sans-serif; letter-spacing: 0.22em; text-transform: uppercase;
 }
 article.product-card .product-discover > span {
-  border: 1px solid rgba(0, 0, 0, 0.25); border-radius: 999px; padding: 5px 10px;
+  border: 0; border-radius: 0; padding: 0; white-space: nowrap;
+}
+article.product-card .product-discover > span + span::before {
+  content: ""; display: inline-block; width: 1px; height: 8px; margin-inline-end: 14px;
+  background: rgba(184, 155, 99, 0.8); vertical-align: middle;
+}
+@media (max-width: 1100px) {
+  article.product-card .product-discover { inset-inline: 8px; bottom: 8px; padding: 8px 2px; gap: 6px 6px; font-size: 9.5px; letter-spacing: 0.06em; }
+  article.product-card .product-discover > span + span::before { margin-inline-end: 6px; }
 }
 @media (hover: hover) and (pointer: fine) {
   article.product-card:hover { transform: none; border-color: transparent; box-shadow: none; }

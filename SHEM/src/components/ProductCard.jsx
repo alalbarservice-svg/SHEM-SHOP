@@ -28,11 +28,9 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
             loading="lazy"
             decoding="async"
           />
-          {compact && (
-            <span className="product-discover" aria-hidden="true">
-              {chips}
-            </span>
-          )}
+          <span className="product-discover" aria-hidden="true">
+            {chips}
+          </span>
         </a>
         <button
           className="favorite"
@@ -43,16 +41,6 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
           <Heart size={22} weight={saved ? "fill" : "regular"} />
         </button>
       </div>
-      {!compact && (
-        <a
-          className="product-discover below"
-          href={`#/product/${p.id}`}
-          aria-hidden="true"
-          tabIndex={-1}
-        >
-          {chips}
-        </a>
-      )}
       <div className="product-details">
         {p.brand && <span className="product-brand">{p.brand}</span>}
         <a className="product-name" href={`#/product/${p.id}`}>

@@ -267,6 +267,9 @@ export function App() {
   const discount = currentQuote?.discount ?? 0;
   const delivery = currentQuote?.shipping ?? catalogueDelivery;
   const collection = collections.find((c) => route === `/collection/${c.id}`);
+  // brand filter as round pills on every page of the /shop | /wishlist | collection branch (ORDER_SHEM_DEV_011)
+  const brandPills =
+    route === "/shop" || route === "/wishlist" || !!collection;
   useEffect(() => {
     document.title = route.startsWith("/admin")
       ? "SHEM | ניהול החנות"
@@ -1176,10 +1179,10 @@ export function App() {
             <div className="filter-bar">
               {shownDesigners.length > 0 && (
                 <fieldset
-                  className={`catalogue-brand-filter${route === "/shop" ? " brand-pill-filter" : ""}`}
+                  className={`catalogue-brand-filter${brandPills ? " brand-pill-filter" : ""}`}
                 >
                   <legend>{t("מותגי SHEM", "SHEM designers")}</legend>
-                  {route === "/shop" ? (
+                  {brandPills ? (
                     <div className="brand-pills">
                       <button
                         type="button"

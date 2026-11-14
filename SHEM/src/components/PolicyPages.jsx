@@ -46,7 +46,13 @@ export function PolicyPages({ page, business = {}, operations = {} }) {
         {SUPPORT_EMAIL}
       </a>
       . תמיכה טכנית בוואטסאפ:{" "}
-      <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" dir="ltr">
+      <a
+        href={WHATSAPP}
+        target="_blank"
+        rel="noopener noreferrer"
+        dir="ltr"
+        style={{ whiteSpace: "nowrap" }}
+      >
         050-7974021
       </a>{" "}
       (נפתח בחלון חדש).

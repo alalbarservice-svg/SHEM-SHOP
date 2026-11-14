@@ -1052,3 +1052,6 @@
 .size-picker-add { align-items: stretch; }
 .size-picker-add input { flex: 1 1 200px; min-height: 40px; }
 .size-add { min-height: 40px; padding: 0 18px; border: 1px solid #a58042; background: #fff; color: #a58042; font: inherit; cursor: pointer; }
+.size-btn.one-size { padding: 0 20px; border-color: #a58042; letter-spacing: 0.1em; }
+.size-btn.one-size[aria-pressed="true"] { background: #a58042; border-color: #a58042; }
+.size-btn:disabled:not([aria-pressed="true"]) { background: #f3f1ec; color: #a8a295; }

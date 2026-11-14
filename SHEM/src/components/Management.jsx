@@ -1,4 +1,4 @@
-import { SizePicker } from "./SizePicker";
+import { SizePicker, normalizeSizes, parseSizes } from "./SizePicker";
 import { lazy, Suspense, useEffect, useState } from "react";
 // The channel-link UI is loaded on demand from /admin-private/ so it is never part of the public bundle.
 const ChannelProduct = lazy(() => import("./ChannelManagement").then((m) => ({ default: m.ChannelProduct })));
@@ -693,10 +693,7 @@ export function Management({ section, onChange }) {
     await run(async () => {
       let v = { ...editor };
       if (section === "products") {
-        v.sizes = (v.sizesText || "")
-          .split(",")
-          .map((x) => x.trim())
-          .filter(Boolean);
+        v.sizes = normalizeSizes(parseSizes(v.sizesText));
         delete v.sizesText;
         if (v.variants?.length) {
           v.stock = v.variants.reduce((n, x) => n + Number(x.stock || 0), 0);

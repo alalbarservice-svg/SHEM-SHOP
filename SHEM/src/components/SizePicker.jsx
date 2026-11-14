@@ -1,4 +1,5 @@
 import { useState } from "react";
+export const ONE_SIZE = "One Size";
 const SIZE_PRESETS = [
   ["מידות אותיות", ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]],
   [
@@ -11,23 +12,30 @@ export const parseSizes = (v) =>
     .split(",")
     .map((x) => x.trim())
     .filter(Boolean);
+export const normalizeSizes = (list) => (list.includes(ONE_SIZE) ? [ONE_SIZE] : list);
 export function SizePicker({ label, value, onChange, disabled }) {
   const [extra, setExtra] = useState("");
-  const chosen = parseSizes(value);
+  const chosen = normalizeSizes(parseSizes(value));
+  const oneSize = chosen.includes(ONE_SIZE);
   const presetAll = SIZE_PRESETS.flatMap(([, list]) => list);
   const order = (list) => [
     ...presetAll.filter((x) => list.includes(x)),
     ...list.filter((x) => !presetAll.includes(x)),
   ];
-  const set = (list) => onChange(order([...new Set(list)]).join(","));
-  const toggle = (size) =>
+  const set = (list) =>
+    onChange(normalizeSizes(order([...new Set(list)])).join(","));
+  const toggle = (size) => {
+    if (oneSize && size !== ONE_SIZE) return;
     set(
       chosen.includes(size)
         ? chosen.filter((x) => x !== size)
         : [...chosen, size],
     );
+  };
   const addExtra = () => {
-    const add = parseSizes(extra);
+    const add = parseSizes(extra).map((x) =>
+      /^one\s*size$/i.test(x) ? ONE_SIZE : x,
+    );
     if (add.length) set([...chosen, ...add]);
     setExtra("");
   };
@@ -35,6 +43,20 @@ export function SizePicker({ label, value, onChange, disabled }) {
   return (
     <div className="size-picker" role="group" aria-label={label}>
       <span className="size-picker-title">{label}</span>
+      <div className="size-picker-row">
+        <small>מידה אחת לכל הגדלים (לא משתלבת עם מידות אחרות)</small>
+        <div>
+          <button
+            type="button"
+            className="size-btn one-size"
+            aria-pressed={oneSize}
+            disabled={disabled}
+            onClick={() => toggle(ONE_SIZE)}
+          >
+            {ONE_SIZE}
+          </button>
+        </div>
+      </div>
       {SIZE_PRESETS.map(([title, list]) => (
         <div className="size-picker-row" key={title}>
           <small>{title}</small>
@@ -45,7 +67,7 @@ export function SizePicker({ label, value, onChange, disabled }) {
                 key={size}
                 className="size-btn"
                 aria-pressed={chosen.includes(size)}
-                disabled={disabled}
+                disabled={disabled || oneSize}
                 onClick={() => toggle(size)}
               >
                 {size}
@@ -59,7 +81,7 @@ export function SizePicker({ label, value, onChange, disabled }) {
         <div className="size-picker-add">
           <input
             value={extra}
-            disabled={disabled}
+            disabled={disabled || oneSize}
             placeholder="למשל 3XL, 27 או מידה אחת"
             onChange={(e) => setExtra(e.target.value)}
             onKeyDown={(e) => {
@@ -72,7 +94,7 @@ export function SizePicker({ label, value, onChange, disabled }) {
           <button
             type="button"
             className="size-add"
-            disabled={disabled || !extra.trim()}
+            disabled={disabled || oneSize || !extra.trim()}
             onClick={addExtra}
           >
             הוספה
@@ -100,6 +122,7 @@ export function SizePicker({ label, value, onChange, disabled }) {
         {chosen.length
           ? "מוצגות בכרטיס: " + chosen.join(" · ")
           : "לא נבחרו מידות"}
+        {oneSize && " (נבחרה One Size, כדי לבחור מידות אחרות יש לבטל אותה)"}
       </small>
     </div>
   );

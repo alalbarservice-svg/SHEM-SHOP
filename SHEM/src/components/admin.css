@@ -1038,3 +1038,17 @@
     min-width: 0;
   }
 }
+
+/* ORDER: size picker in the product form (Moshe 14.11). */
+.size-picker { grid-column: 1 / -1; display: grid; gap: 12px; padding: 16px 18px; border: 1px solid #c9a96a; background: #faf9f6; }
+.size-picker-title { font-size: 14px; color: #161616; }
+.size-picker-row { display: grid; gap: 8px; }
+.size-picker-row small, .size-picker-summary { color: #6f685c; font-size: 12px; }
+.size-picker-row > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.size-btn { min-width: 44px; min-height: 40px; padding: 0 12px; border: 1px solid #d8d2c4; background: #fff; color: #161616; font: inherit; font-size: 13px; letter-spacing: 0.06em; cursor: pointer; }
+.size-btn[aria-pressed="true"] { background: #161616; color: #fff; border-color: #161616; }
+.size-btn:focus-visible, .size-add:focus-visible { outline: 2px solid #a58042; outline-offset: 2px; }
+.size-btn:disabled, .size-add:disabled { opacity: 0.5; cursor: not-allowed; }
+.size-picker-add { align-items: stretch; }
+.size-picker-add input { flex: 1 1 200px; min-height: 40px; }
+.size-add { min-height: 40px; padding: 0 18px; border: 1px solid #a58042; background: #fff; color: #a58042; font: inherit; cursor: pointer; }

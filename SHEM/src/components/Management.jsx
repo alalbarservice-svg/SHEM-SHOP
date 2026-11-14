@@ -1,3 +1,4 @@
+import { SizePicker } from "./SizePicker";
 import { lazy, Suspense, useEffect, useState } from "react";
 // The channel-link UI is loaded on demand from /admin-private/ so it is never part of the public bundle.
 const ChannelProduct = lazy(() => import("./ChannelManagement").then((m) => ({ default: m.ChannelProduct })));
@@ -62,7 +63,7 @@ const definitions = {
       text("price", "מחיר", "number", true),
       text("previousPrice", "מחיר לפני מבצע", "number"),
       text("stock", "מלאי כולל", "number", true),
-      text("sizesText", "מידות בהפרדה בפסיק"),
+      text("sizesText", "מידות המוצר", "sizes"),
       text("color", "צבע"),
       text("description", "תיאור", "textarea"),
       text("material", "הרכב בד"),
@@ -354,7 +355,16 @@ const options = {
 function Fields({ fields, value, onChange, disabled = false }) {
   return (
     <div className="admin-form-grid">
-      {fields.map((f) => (
+      {fields.map((f) =>
+        f.type === "sizes" ? (
+          <SizePicker
+            key={f.key}
+            label={f.label}
+            value={value[f.key]}
+            disabled={disabled || f.disabled}
+            onChange={(next) => onChange({ ...value, [f.key]: next })}
+          />
+        ) : (
         <label key={f.key}>
           {f.label}
           {options[f.type] ? (
@@ -410,7 +420,8 @@ function Fields({ fields, value, onChange, disabled = false }) {
             />
           )}
         </label>
-      ))}
+        ),
+      )}
     </div>
   );
 }

@@ -449,6 +449,8 @@ async function handleApi(request, env) {
         : [];
       if (new Set(sizes).size !== sizes.length) fail("יש להסיר מידות כפולות.");
       if (!sizes.length) fail("יש להזין לפחות מידה אחת.");
+      if (sizes.includes("One Size") && sizes.length > 1)
+        fail("מידת One Size אינה משתלבת עם מידות אחרות.");
       const imageUrl = str(data.imageUrl, 500);
       const image = str(data.image, 100);
       if (image && !/^[a-zA-Z0-9_-]+$/.test(image))

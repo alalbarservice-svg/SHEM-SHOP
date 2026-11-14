@@ -1,4 +1,4 @@
-import { SizePicker, normalizeSizes, parseSizes } from "./SizePicker";
+import { SizePicker, ONE_SIZE, normalizeSizes, parseSizes } from "./SizePicker";
 import { lazy, Suspense, useEffect, useState } from "react";
 // The channel-link UI is loaded on demand from /admin-private/ so it is never part of the public bundle.
 const ChannelProduct = lazy(() => import("./ChannelManagement").then((m) => ({ default: m.ChannelProduct })));
@@ -693,8 +693,26 @@ export function Management({ section, onChange }) {
     await run(async () => {
       let v = { ...editor };
       if (section === "products") {
+        const previousSizes = Array.isArray(editor.sizes) ? editor.sizes : [];
         v.sizes = normalizeSizes(parseSizes(v.sizesText));
         delete v.sizesText;
+        const onlyOneSize = (list) => list.length === 1 && list[0] === ONE_SIZE;
+        if (onlyOneSize(previousSizes) !== onlyOneSize(v.sizes)) {
+          // Moving to or from One Size: the stock moves with it so the total still matches.
+          if (v.variants?.length)
+            throw new Error(
+              "במוצר עם גרסאות יש לעדכן קודם את המידות בגרסאות, ואז לעבור ל-One Size או ממנו.",
+            );
+          if (v.sizeStock) {
+            const total = Object.values(v.sizeStock).reduce(
+              (n, x) => n + Number(x || 0),
+              0,
+            );
+            v.sizeStock = Object.fromEntries(
+              v.sizes.map((s, i) => [s, i === 0 ? total : 0]),
+            );
+          }
+        }
         if (v.variants?.length) {
           v.stock = v.variants.reduce((n, x) => n + Number(x.stock || 0), 0);
           v.sizeStock = Object.fromEntries(

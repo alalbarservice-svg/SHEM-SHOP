@@ -39,7 +39,7 @@ export function SizePicker({ label, value, onChange, disabled }) {
     if (add.length) set([...chosen, ...add]);
     setExtra("");
   };
-  const custom = chosen.filter((x) => !presetAll.includes(x));
+  const custom = chosen.filter((x) => !presetAll.includes(x) && x !== ONE_SIZE);
   return (
     <div className="size-picker" role="group" aria-label={label}>
       <span className="size-picker-title">{label}</span>

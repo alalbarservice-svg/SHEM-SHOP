@@ -950,7 +950,7 @@ td {
 }
 .order-line small {
   display: block;
-  color: #777;
+  color: #717171;
   margin-top: 7px;
 }
 .order-line b {
@@ -1487,7 +1487,7 @@ td {
 .section-heading .eyebrow {
   font-size: 9px;
   margin: 0 0 10px;
-  color: #8b7044;
+  color: #866c41;
 }
 .product-rail {
   display: flex;
@@ -3009,7 +3009,7 @@ footer,
     11px/1 Montserrat,
     Arial,
     sans-serif;
-  color: #9c8256;
+  color: #8a734c;
   letter-spacing: 0.1em;
 }
 .designer-section-count {
@@ -4018,4 +4018,56 @@ article.product-card .product-new.product-soldout {
   .desktop-nav {
     display: none;
   }
+}
+
+/* Loading placeholder of /shop and the wishlist: reserves the brand row and the filter rows so nothing jumps on arrival. */
+.catalogue-loading {
+  min-height: 100vh;
+}
+.catalogue-placeholder {
+  display: grid;
+  gap: 16px;
+  margin-top: 26px;
+}
+.catalogue-placeholder .ph-round {
+  display: block;
+  height: 44px;
+  background: #f4f1ea;
+  border-radius: 999px;
+}
+.ph-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 2px 8px;
+}
+.ph-pills .ph-round {
+  width: 88px;
+}
+.ph-controls,
+.ph-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.ph-filters .ph-round {
+  height: 46px;
+}
+@media (max-width: 760px) {
+  .ph-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ph-controls .ph-round:nth-child(3),
+  .ph-filters .ph-round:nth-child(n + 2) {
+    display: none;
+  }
+  .ph-filters {
+    grid-template-columns: 91px;
+  }
+}
+
+/* Contrast: unselected category tabs keep their grey but without the 0.65 fade (counts were 2.57:1). */
+.designer-page .designer-types button:not([aria-pressed="true"]) span {
+  opacity: 1;
+  color: #7b766f;
 }

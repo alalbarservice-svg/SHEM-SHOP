@@ -265,6 +265,17 @@ export function App() {
   const currentQuote = quote?.signature === quoteSignature ? quote : null;
   const total = currentQuote?.subtotal ?? catalogueTotal;
   const discount = currentQuote?.discount ?? 0;
+  // "All" pill plus the brand count of the previous visit (default 3 brands).
+  const placeholderPills = () => {
+    let n = 3;
+    try {
+      const v = parseInt(localStorage.getItem("shem-brand-count") ?? "", 10);
+      if (Number.isFinite(v) && v >= 0) n = v;
+    } catch {
+      /* storage unavailable */
+    }
+    return n + 1;
+  };
   const delivery = currentQuote?.shipping ?? catalogueDelivery;
   const collection = collections.find((c) => route === `/collection/${c.id}`);
   // brand filter as round pills on every page of the /shop | /wishlist | collection branch (ORDER_SHEM_DEV_011)
@@ -362,6 +373,15 @@ export function App() {
         const d = designerFor(p.brand);
         return !d || shownSlugs.has(d.slug);
       });
+  // Remember how many brands were shown, so the loading placeholder can reserve the same pill rows next time.
+  useEffect(() => {
+    if (!brandsReady) return;
+    try {
+      localStorage.setItem("shem-brand-count", String(shownDesigners.length));
+    } catch {
+      /* storage unavailable: the placeholder falls back to a default */
+    }
+  }, [brandsReady, shownDesigners.length]);
   const currentDesignerHidden =
     brandsReady &&
     !!currentDesigner &&
@@ -621,7 +641,7 @@ export function App() {
         <div className="header-tools">
           <button
             className="language"
-            aria-label="Switch language"
+            aria-label="HE / EN, Switch language"
             onClick={() => setLang(he ? "en" : "he")}
           >
             HE / EN
@@ -653,10 +673,11 @@ export function App() {
             </>,
           )}
         </div>
-        <a className="logo" href="#/" aria-label="SHEM home">
+        <a className="logo" href="#/">
           <img className="brand-monogram" src={shemMonogram} alt="" />
           <span className="brand-name">SHEM</span>
           <span className="brand-tagline">THEIR LABEL. YOUR SHEM.</span>
+          <span className="sr-only"> - home</span>
         </a>
         <nav
           className="desktop-nav"
@@ -1190,7 +1211,7 @@ export function App() {
           )
         ) : (route === "/shop" || route === "/wishlist" || !!collection) &&
           catalogueLoading ? (
-          <section className="page catalogue">
+          <section className="page catalogue catalogue-loading">
             <p className="eyebrow">
               SHEM / {route === "/wishlist" ? "WISHLIST" : "COLLECTION"}
             </p>
@@ -1199,6 +1220,23 @@ export function App() {
                 ? t("המועדפים שלך", "Your wishlist")
                 : t("הקולקציה", "The collection")}
             </h1>
+            <div className="catalogue-placeholder" aria-hidden="true">
+              <div className="ph-pills">
+                {Array.from({ length: placeholderPills() }, (_, i) => (
+                  <span className="ph-round" key={i} />
+                ))}
+              </div>
+              <div className="ph-controls">
+                <span className="ph-round" />
+                <span className="ph-round" />
+                <span className="ph-round" />
+              </div>
+              <div className="ph-filters">
+                <span className="ph-round" />
+                <span className="ph-round" />
+                <span className="ph-round" />
+              </div>
+            </div>
             <div
               className="product-grid catalogue-skeleton"
               role="group"
@@ -1580,10 +1618,17 @@ export function App() {
           }
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={t(
-            "עמוד האינסטגרם של SHEM, נפתח בחלון חדש",
-            "SHEM Instagram profile, opens a new window",
-          )}
+          aria-label={
+            (storeContent.operations?.instagram || "new.shem").replace(
+              /^@/,
+              "",
+            ) +
+            ", " +
+            t(
+              "עמוד האינסטגרם של SHEM, נפתח בחלון חדש",
+              "SHEM Instagram profile, opens a new window",
+            )
+          }
         >
           <InstagramLogo
             className="instagram-symbol"

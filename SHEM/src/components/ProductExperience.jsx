@@ -45,7 +45,6 @@ export function ProductGallery({ product, he = true, color = "" }) {
             move(e.changedTouches[0].clientX > start.current ? -1 : 1);
           start.current = null;
         }}
-        aria-label={he ? "הגדלת תמונת המוצר" : "Enlarge product image"}
       >
         <img
           src={active.url}

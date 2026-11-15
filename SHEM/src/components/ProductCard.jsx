@@ -45,7 +45,7 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
         ) : (
           showNew && <span className="product-new">NEW</span>
         )}
-        <a href={`#/product/${p.id}`} aria-label={name}>
+        <a href={`#/product/${p.id}`}>
           <img
             src={compact ? productImage(p) : portraitDefault(productImage(p))}
             alt={name}

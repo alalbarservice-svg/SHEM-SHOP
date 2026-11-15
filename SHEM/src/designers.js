@@ -71,9 +71,13 @@ export const isShownItem = (p) =>
   p.active !== false &&
   !p.archived &&
   (p.stock === undefined || p.stock === null || Number(p.stock) > 0);
-export const designerProducts = (products, designer) =>
+// gate=true (connected catalogue): the same rule as visibleDesigners, so a brand listed
+// there always has pieces here. gate=false (fallback catalogue): the lenient rule, unchanged.
+export const designerProducts = (products, designer, gate = false) =>
   products.filter(
-    (p) => isShownItem(p) && designerFor(p.brand)?.slug === designer.slug,
+    (p) =>
+      (gate ? isListed(p) : isShownItem(p)) &&
+      designerFor(p.brand)?.slug === designer.slug,
   );
 export function productType(p, types = defaultProductTypes) {
   if (types.some(([key]) => key === p.productType)) return p.productType;
@@ -96,10 +100,15 @@ export const hasStock = (p) => {
   return p.stock > 0;
 };
 export const isListed = (p) => p.active !== false && !p.archived && hasStock(p);
-/** Designers with at least one displayed piece. Others disappear automatically. */
-export const visibleDesigners = (products) =>
+/** Designers with at least one piece in stock. Others disappear automatically, in every mode.
+ *  gate=true (connected catalogue): isListed. gate=false (built-in catalogue): isShownItem. */
+export const visibleDesigners = (products, gate = true) =>
   designers.filter((d) =>
-    products.some((p) => isListed(p) && designerFor(p.brand)?.slug === d.slug),
+    products.some(
+      (p) =>
+        (gate ? isListed(p) : isShownItem(p)) &&
+        designerFor(p.brand)?.slug === d.slug,
+    ),
   );
 /** Product types of one designer with at least one displayed piece (gate=false: no stock rule). */
 export const visibleProductTypes = (

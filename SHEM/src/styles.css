@@ -1112,6 +1112,10 @@ td {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 26px 12px;
   }
+  /* The loading grid is a .product-grid: same 2 columns here, so show only 2 placeholders. */
+  .catalogue-skeleton .skeleton-card:nth-child(n + 3) {
+    display: none;
+  }
   .product-picture {
     aspect-ratio: 0.83;
   }
@@ -2457,16 +2461,14 @@ footer nav {
 }
 .brand-pills {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: 10px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
   padding: 4px 2px 8px;
 }
 .brand-pill {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  max-width: 100%;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -3877,3 +3879,143 @@ input[type="range"] { height: 44px; margin-block: -14px; }
   border-top: 1px solid #e4dfd3;
 }
 :root.shem-luxe .policy-page h2:first-of-type { border-top: 0; padding-top: 0; }
+
+/* Customer area: every boxed button is round (pill). Size, border, colour and behaviour unchanged. */
+.sizes button,
+.product-colors button,
+.wish-pdp,
+.help-categories button,
+.gallery-zoom > div button,
+.gallery-main > span {
+  border-radius: 999px;
+}
+/* Single-character size (S, M, L) = perfect circle; XL/XXL stay an ellipse. */
+.sizes button.size-single {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  padding: 0;
+}
+@media (max-width: 760px) {
+  .sizes button.size-single {
+    width: 48px;
+    min-width: 48px;
+  }
+}
+
+/* Customer filter fields: round (pill). Not checkbox, not range, not checkout/login/signup. */
+.inventory-filters input[type="search"],
+.inventory-filters select,
+.filter-bar select,
+.designer-results select {
+  border-radius: 999px;
+}
+.inventory-filters input[type="search"] {
+  padding-inline: 18px;
+}
+/* Start padding clears the curve; end padding keeps the native list arrow inside the shape. */
+.inventory-filters select,
+.filter-bar select,
+.designer-results select {
+  padding-inline-start: 16px;
+  padding-inline-end: 8px;
+}
+/* The shop sort/category selects had only a bottom line; a round shape needs the full outline (same colour). */
+.filter-bar select {
+  border: 1px solid #ddd;
+}
+.filter-bar select {
+  padding-inline-start: 14px;
+  padding-inline-end: 6px;
+}
+.inventory-filters select,
+.filter-bar select,
+.designer-results select {
+  text-overflow: ellipsis;
+}
+/* Phone and tablet: the colour list gets its own full-width row so long colour names are never cut. */
+@media (max-width: 1100px) {
+  .inventory-filters label.filter-color {
+    flex-basis: 100%;
+  }
+}
+
+/* Sold-out card: unavailable sizes dimmed and struck through; whole-piece label in the NEW position. */
+article.product-card .product-discover > span.size-out > bdi {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+article.product-card .product-new.product-soldout {
+  color: #4a4a4a;
+}
+
+/* Customer search fields: dark, readable clear button (replaces the browser's blue one). */
+.inventory-filters input[type="search"]::-webkit-search-cancel-button,
+.help-center input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 44px;
+  height: 44px;
+  margin-inline: -14px -10px;
+  cursor: pointer;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 3l10 10M13 3L3 13' stroke='%230b0b0b' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
+}
+
+/* Header search panel and help-center search: round fields, same start padding as /shop. */
+.search-form input,
+.help-center input[type="search"] {
+  border-radius: 999px;
+  padding-inline: 18px;
+}
+.search-form .button {
+  border-radius: 999px;
+}
+.filter-bar select {
+  min-width: 160px;
+}
+
+/* Loading state of /shop and the wishlist: grey placeholders in the layout of the regular 3:4 card. */
+.catalogue-skeleton {
+  margin-top: 32px;
+}
+.skeleton-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  animation: skeleton-pulse 1.4s ease-in-out infinite alternate;
+}
+.skeleton-picture {
+  aspect-ratio: 3 / 4;
+  background: #f4f1ea;
+}
+.skeleton-card i {
+  display: block;
+  height: 10px;
+  background: #f4f1ea;
+}
+.skeleton-card i:first-of-type {
+  width: 70%;
+}
+.skeleton-card i:last-of-type {
+  width: 40%;
+}
+@keyframes skeleton-pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-card {
+    animation: none;
+  }
+}
+
+/* Tablet: the written header menu is hidden; the same links are in the menu button (☰). */
+@media (min-width: 761px) and (max-width: 1023px) {
+  .desktop-nav {
+    display: none;
+  }
+}

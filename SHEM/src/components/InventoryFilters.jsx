@@ -45,7 +45,7 @@ export function InventoryFilters({
           ))}
         </select>
       </label>
-      <label>
+      <label className="filter-color">
         {he ? "צבע" : "Colour"}
         <select value={color} onChange={(e) => onColor(e.target.value)}>
           <option value="">{he ? "כל הצבעים" : "All colours"}</option>

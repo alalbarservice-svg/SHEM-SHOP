@@ -346,28 +346,37 @@ export function App() {
     : undefined;
   const brandRouteType = brandRoute?.[2] || "";
   const itemTypes = normalizeItemTypes(storeContent.itemTypes);
+  // Stock rule: connected catalogue = isListed, built-in (fallback) catalogue = isShownItem.
   const designerGate = catalogueStatus === "ready" && catalogueConnected;
-  const shownDesigners =
-    catalogueStatus === "loading"
-      ? []
-      : designerGate
-        ? visibleDesigners(products)
-        : designers;
+  // The "brand shown only with a piece in stock" rule applies in every mode except while loading.
+  const catalogueLoading = catalogueStatus === "loading";
+  const brandsReady = !catalogueLoading;
+  const shownDesigners = !brandsReady
+    ? []
+    : visibleDesigners(products, designerGate);
+  const shownSlugs = new Set(shownDesigners.map((d) => d.slug));
+  // While loading no brand is known to be in stock, so no product card is shown anywhere.
+  const listedProducts = catalogueLoading
+    ? []
+    : products.filter((p) => {
+        const d = designerFor(p.brand);
+        return !d || shownSlugs.has(d.slug);
+      });
   const currentDesignerHidden =
+    brandsReady &&
     !!currentDesigner &&
-    designerGate &&
     !shownDesigners.some((d) => d.slug === currentDesigner.slug);
   useEffect(() => {
     if (currentDesignerHidden) shop();
   }, [currentDesignerHidden]);
   // A direct link to an unknown brand or an empty category goes to the shop.
   useEffect(() => {
-    if (!brandRoute || catalogueStatus !== "ready" || !catalogueConnected) return;
+    if (!brandRoute || !brandsReady) return;
     if (!currentDesigner) {
       location.hash = "/shop";
       return;
     }
-    const items = designerProducts(products, currentDesigner);
+    const items = designerProducts(products, currentDesigner, designerGate);
     const emptyType =
       brandRouteType &&
       !items.some((p) => productType(p, itemTypes) === brandRouteType);
@@ -381,7 +390,9 @@ export function App() {
     products,
     storeContent.itemTypes,
   ]);
-  const current = products.find((p) => route === `/product/${p.id}`);
+  const current = catalogueLoading
+    ? undefined
+    : products.find((p) => route === `/product/${p.id}`);
   useEffect(() => {
     document.documentElement.classList.toggle(
       "shem-luxe",
@@ -418,7 +429,7 @@ export function App() {
   useEffect(() => {
     sessionStorage.setItem("shem-checkout-customer", JSON.stringify(customer));
   }, [customer]);
-  const filtered = products
+  const filtered = listedProducts
     .filter(
       (p) =>
         (!collection || collection.productIds.includes(p.id)) &&
@@ -734,7 +745,9 @@ export function App() {
               card={card}
               he={he}
               designers={shownDesigners}
+              gate={designerGate}
             />
+            {!catalogueLoading && (
             <section className="selection clearance">
               <div className="section-heading">
                 <div>
@@ -758,7 +771,7 @@ export function App() {
                   "End of season",
                 )}
               >
-                {products.filter((p) => p.previousPrice).map(compactCard)}
+                {listedProducts.filter((p) => p.previousPrice).map(compactCard)}
               </ProductRail>
               <p className="demo-note">
                 {t(
@@ -767,6 +780,7 @@ export function App() {
                 )}
               </p>
             </section>
+            )}
             {shownDesigners.length > 0 && (
               <section className="designer-strip">
                 <p className="eyebrow">THE LABELS</p>
@@ -925,7 +939,7 @@ export function App() {
             <PdpNav
               id={current.id}
               products={products}
-              fallbackIds={products.filter((p) => p.cat === current.cat).map((p) => p.id)}
+              fallbackIds={listedProducts.filter((p) => p.cat === current.cat).map((p) => p.id)}
               fallbackHref="#/shop"
               fallbackLabel=""
               label={{
@@ -976,7 +990,11 @@ export function App() {
               <ProductGallery product={current} he={he} color={selectedColor} />
               <div className="pdp-info">
                 <DesignerLogo
-                  designer={designerFor(current.brand)}
+                  designer={
+                    shownSlugs.has(designerFor(current.brand)?.slug)
+                      ? designerFor(current.brand)
+                      : undefined
+                  }
                   className="pdp-designer-logo"
                 />
                 <h1>{t(current.he, current.en)}</h1>
@@ -1073,6 +1091,7 @@ export function App() {
                         aria-pressed={s === size}
                         className={
                           (s === size ? "active " : "") +
+                          (String(s).length === 1 ? "size-single " : "") +
                           (available === 0 ? "unavailable-size" : "")
                         }
                         aria-label={`${s}${available === 0 ? t(" - לא זמין כעת", " - currently unavailable") : ""}`}
@@ -1149,7 +1168,7 @@ export function App() {
             <section className="related">
               <h2>{t("להשלמת המראה", "Complete the look")}</h2>
               <div className="product-grid">
-                {complementaryProducts(products, current).map(card)}
+                {complementaryProducts(listedProducts, current).map(card)}
               </div>
             </section>
           </section>
@@ -1169,6 +1188,32 @@ export function App() {
               initialType={brandRouteType}
             />
           )
+        ) : (route === "/shop" || route === "/wishlist" || !!collection) &&
+          catalogueLoading ? (
+          <section className="page catalogue">
+            <p className="eyebrow">
+              SHEM / {route === "/wishlist" ? "WISHLIST" : "COLLECTION"}
+            </p>
+            <h1>
+              {route === "/wishlist"
+                ? t("המועדפים שלך", "Your wishlist")
+                : t("הקולקציה", "The collection")}
+            </h1>
+            <div
+              className="product-grid catalogue-skeleton"
+              role="group"
+              aria-busy="true"
+              aria-label={t("טוענים את הקולקציה", "Loading the collection")}
+            >
+              {[0, 1, 2, 3].map((i) => (
+                <div className="skeleton-card" aria-hidden="true" key={i}>
+                  <div className="skeleton-picture" />
+                  <i />
+                  <i />
+                </div>
+              ))}
+            </div>
+          </section>
         ) : route === "/shop" || route === "/wishlist" || !!collection ? (
           <section className="page catalogue">
             <p className="eyebrow">
@@ -1240,13 +1285,13 @@ export function App() {
               </label>
               <label>
                 {t("עד מחיר", "Up to")}{" "}
-                {money(max ?? Math.max(299, ...products.map((p) => p.price)))}
+                {money(max ?? Math.max(299, ...listedProducts.map((p) => p.price)))}
                 <input
                   type="range"
                   aria-label={t("מחיר מרבי", "Maximum price")}
                   min="0"
-                  max={Math.max(299, ...products.map((p) => p.price))}
-                  value={max ?? Math.max(299, ...products.map((p) => p.price))}
+                  max={Math.max(299, ...listedProducts.map((p) => p.price))}
+                  value={max ?? Math.max(299, ...listedProducts.map((p) => p.price))}
                   onChange={(e) => setMax(Number(e.target.value))}
                 />
               </label>
@@ -1264,7 +1309,7 @@ export function App() {
               </label>
             </div>
             <MoreFilters
-              products={products}
+              products={listedProducts}
               he={he}
               query={query}
               onQuery={setQuery}
@@ -1314,7 +1359,7 @@ export function App() {
                   {t("אולי הפריטים האלה יתאימו", "You may like these pieces")}
                 </h3>
                 <div className="product-grid">
-                  {products
+                  {listedProducts
                     .filter((p) => p.stock > 0)
                     .slice(0, 4)
                     .map(card)}
@@ -1683,7 +1728,7 @@ export function App() {
                     {t("חיפוש", "Search")}
                   </button>
                 </form>
-                {products
+                {listedProducts
                   .filter((p) => matchesSearch(p, query))
                   .map((p) => (
                     <button
@@ -1733,6 +1778,9 @@ export function App() {
                     {t("מותגי SHEM", "SHEM designers")}
                   </button>
                 )}
+                <button onClick={() => shop()}>
+                  {t("חדש באתר", "New in")}
+                </button>
                 <button onClick={() => go("/wishlist")}>
                   {t("המועדפים שלי", "My wishlist")}
                 </button>

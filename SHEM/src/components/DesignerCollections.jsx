@@ -73,11 +73,14 @@ export function DesignerRails({
   card,
   he,
   designers = allDesigners,
+  gate = false,
 }) {
   return (
     <div className="designer-collections">
       {designers.map((d) => {
-        const items = designerProducts(products, d);
+        const items = designerProducts(products, d, gate);
+        // A brand without a piece in stock shows no strip, in every mode.
+        if (!items.length) return null;
         return (
           <section
             className="selection designer-collection"
@@ -96,30 +99,20 @@ export function DesignerRails({
               </h2>
               <span className="designer-meta" dir="ltr">
                 THE COLLECTION
-                {items.length ? ` · ${items.length} ${items.length === 1 ? "PIECE" : "PIECES"}` : ""}
+                {` · ${items.length} ${items.length === 1 ? "PIECE" : "PIECES"}`}
               </span>
             </div>
-            {items.length ? (
-              <>
-                <ProductRail he={he} label={d.name}>
-                  {items.map(card)}
-                </ProductRail>
-                <div className="designer-cta-row">
-                  <a className="button luxe" href={`#/brand/${d.slug}`}>
-                    {he ? `לקולקציית ${d.name}` : `Explore ${d.name}`}
-                    <ArrowRight size={19} />
-                  </a>
-                </div>
-              </>
-            ) : (
-              <div className="designer-empty">
-                <p>
-                  {he
-                    ? "הקולקציה תתעדכן בקרוב"
-                    : "The collection will be updated soon"}
-                </p>
+            <>
+              <ProductRail he={he} label={d.name}>
+                {items.map(card)}
+              </ProductRail>
+              <div className="designer-cta-row">
+                <a className="button luxe" href={`#/brand/${d.slug}`}>
+                  {he ? `לקולקציית ${d.name}` : `Explore ${d.name}`}
+                  <ArrowRight size={19} />
+                </a>
               </div>
-            )}
+            </>
           </section>
         );
       })}
@@ -140,7 +133,7 @@ export function DesignerPage({
     [sort, setSort] = useState("featured");
   const groups = visibleProductTypes(products, designer, gate, itemTypes);
   const groupKeys = new Set(groups.map(([key]) => key));
-  const all = designerProducts(products, designer).filter((p) => {
+  const all = designerProducts(products, designer, gate).filter((p) => {
     const k = productType(p, itemTypes);
     return !k || groupKeys.has(k);
   });
@@ -269,22 +262,18 @@ export function DesignerPage({
                 ) : null;
               })}
           </div>
-        ) : (
+        ) : all.length ? (
           <div className="empty designer-page-empty">
             <h2>
               {he
-                ? all.length
-                  ? "לא נמצאו פריטים בסינון שבחרתם"
-                  : "הקולקציה תתעדכן בקרוב"
-                : all.length
-                  ? "No pieces match your filters"
-                  : "The collection will be updated soon"}
+                ? "לא נמצאו פריטים בסינון שבחרתם"
+                : "No pieces match your filters"}
             </h2>
             <a className="button dark" href="#/designers">
               {he ? "למותגים נוספים" : "Explore other designers"}
             </a>
           </div>
-        )}
+        ) : null}
         <nav
           className="designer-page-more"
           aria-label={he ? "מותגים נוספים" : "More designers"}

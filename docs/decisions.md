@@ -133,3 +133,10 @@
 - The SHIMI club stays hidden after the merge (decision 31.10.2026): the club link in the nav and the club band on the SHIMI home were removed.
 - Approved: regenerate WP-THEMES/shem-storefront and update docs/project-state.md and docs/decisions.md, in the branch only. No merge to master.
 - Conditions before a merge request: owner visual approval of hero image 3 (tablet crop) and of the logos, plus testing on Safari and a real device.
+
+## 14-18.11.2026 - product images (owner decisions)
+- WebP variants for product images, option A: originals stay untouched, variants are new files products/<uuid>-<w>.webp (480, 800, 1086, never upscaled), quality 80.
+- Conversion runs in the admin browser with a wasm encoder, not in the worker (CPU limit of the hosting plan is unknown; real Safari canvas WebP encoding was not verified).
+- imageSet stores only the list of widths (for example [480, 800, 1086]); the client derives the URLs from the uuid of the original. Approved 17.11.
+- The conversion script never writes to the live site; running it on live R2 and the live catalogue needs a separate owner decision and an approved write tool.
+- 18.11 (owner): the phrase "בצע דחיפה ושמירה" means commit and push of all work so far, without asking per item. It covers commit and push to branches only; merge to master and live deploy still need explicit approval.

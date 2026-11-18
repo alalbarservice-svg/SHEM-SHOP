@@ -2,6 +2,43 @@ export const productImage = (p) =>
   p?.images?.[0]?.url ||
   p?.imageUrl ||
   `/assets/${p?.image || p?.id || "knit"}.png`;
+// WebP variants. imageSet is only the list of widths that exist, e.g. [480, 800, 1086]; the URLs are derived from the
+// original (/media/products/<uuid>.<ext> -> /media/products/<uuid>-<w>.webp). Without imageSet the image renders as before.
+const ORIGINAL_IMAGE = /^\/media\/products\/([a-f0-9-]{36})\.(png|jpg|webp)$/;
+export const variantUrl = (url, width) =>
+  String(url).replace(ORIGINAL_IMAGE, `/media/products/$1-${width}.webp`);
+export const imageSetFor = (p, url) => {
+  const set =
+    (p?.imageSet && p.imageUrl === url ? p.imageSet : null) ||
+    p?.images?.find((i) => i.url === url)?.imageSet;
+  return Array.isArray(set) ? set : null;
+};
+export const imgSrcSet = (url, widths) => {
+  if (!ORIGINAL_IMAGE.test(url || "") || !Array.isArray(widths)) return undefined;
+  const list = widths
+    .filter((w) => Number.isInteger(w) && w > 0)
+    .sort((a, b) => a - b);
+  return list.length
+    ? list.map((w) => `${variantUrl(url, w)} ${w}w`).join(", ")
+    : undefined;
+};
+// srcSet + sizes for <img>, or {} when the image has no variants.
+export const imgVariants = (p, url, sizes) => {
+  const srcSet = imgSrcSet(url, imageSetFor(p, url));
+  return srcSet ? { srcSet, sizes } : {};
+};
+// Displayed widths measured per breakpoint (390/768/1024/1440).
+export const SIZES = {
+  card: "(max-width: 760px) calc((100vw - 44px) / 2), min(316px, calc((100vw - 108px) / 4))",
+  carousel:
+    "(max-width: 760px) calc((100vw - 60px) / 2), (max-width: 1100px) 29vw, 391px",
+  gallery: "(max-width: 760px) calc(100vw - 32px), (max-width: 1100px) 50vw, 700px",
+  thumb: "80px",
+  zoom: "100vw",
+  cart: "105px",
+  orderLine: "65px",
+  search: "75px",
+};
 export const normalizeSearch = (value) =>
   String(value || "")
     .toLowerCase()

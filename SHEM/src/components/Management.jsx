@@ -508,7 +508,7 @@ function SettingForm({ kind, onNotice }) {
                       });
                       setValue((previous) => {
                         const a = [...(previous.heroImages || [])];
-                        a[i] = result.url;
+                        a[i] = result.url || result.imageUrl;
                         return { ...previous, heroImages: a };
                       });
                     } catch (error) {

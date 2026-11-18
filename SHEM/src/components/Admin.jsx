@@ -1,5 +1,6 @@
 import { Management } from "./Management";
 import { useEffect, useState, useRef } from "react";
+import { uploadVariants } from "../webp-variants";
 import { adminApi } from "../admin-api";
 import { money } from "../commerce";
 import { products as examples } from "../catalogue";
@@ -227,7 +228,7 @@ export function Admin({ route }) {
     setNotice("");
     try {
       await fn();
-      setNotice(message);
+      setNotice(typeof message === "function" ? message() : message);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -1306,15 +1307,39 @@ export function Admin({ route }) {
                     disabled={busy}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file)
-                        action(async () => {
-                          const saved = await adminApi("media", {
-                            method: "POST",
-                            headers: { "content-type": file.type },
-                            body: file,
-                          });
-                          setEdit((p) => ({ ...p, imageUrl: saved.imageUrl }));
-                        }, "התמונה הועלתה. שמרו את המוצר כדי לשייך אותה.");
+                      if (file) {
+                        let webpError = "",
+                          webpCount = 0;
+                        action(
+                          async () => {
+                            const saved = await adminApi("media", {
+                              method: "POST",
+                              headers: { "content-type": file.type },
+                              body: file,
+                            });
+                            // The original is stored as before; WebP variants are an addition and never block the upload.
+                            const { imageSet, error } = await uploadVariants(
+                              file,
+                              saved.imageUrl,
+                              adminApi,
+                            );
+                            webpError = error || "";
+                            webpCount = Object.keys(imageSet || {}).length;
+                            setEdit((p) => {
+                              const { imageSet: _old, ...rest } = p;
+                              return {
+                                ...rest,
+                                imageUrl: saved.imageUrl,
+                                ...(imageSet ? { imageSet } : {}),
+                              };
+                            });
+                          },
+                          () =>
+                            webpError
+                              ? `התמונה הועלתה (מקור בלבד). המרה ל-WebP נכשלה (פרט טכני: ${webpError}). האתר יציג את המקור. שמרו את המוצר כדי לשייך אותה.`
+                              : `התמונה הועלתה עם ${webpCount} גרסאות WebP. שמרו את המוצר כדי לשייך אותה.`,
+                        );
+                      }
                     }}
                   />
                 </label>

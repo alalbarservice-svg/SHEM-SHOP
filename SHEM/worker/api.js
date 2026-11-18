@@ -19,6 +19,7 @@ import { publicOperations, adminOperations } from "./operations.js";
 import {
   customerExperience,
   productPresentation,
+  cleanImageSet,
   shipmentEvent,
 } from "./customer-experience.js";
 const json = (data, status = 200) =>
@@ -76,12 +77,14 @@ async function handleApi(request, env) {
         return json({ error: "Origin rejected" }, 403);
       if (
         path !== "/api/admin/media" &&
+        path !== "/api/admin/media/variant" &&
         !request.headers.get("content-type")?.includes("application/json")
       )
         return json({ error: "JSON required" }, 415);
       if (
         Number(request.headers.get("content-length") || 0) > 1000000 &&
-        path !== "/api/admin/media"
+        path !== "/api/admin/media" &&
+        path !== "/api/admin/media/variant"
       )
         return json({ error: "Request too large" }, 413);
     }
@@ -359,6 +362,34 @@ async function handleApi(request, env) {
       await env.BUCKET.put(key, bytes, { httpMetadata: { contentType: type } });
       return json({ imageUrl: `/media/${key}` }, 201);
     }
+    // WebP variant of an already-uploaded original: products/<uuid>-<w>.webp. New files only, never overwritten.
+    if (path === "/api/admin/media/variant" && method === "POST") {
+      if (!env.BUCKET) return json({ error: "אחסון התמונות אינו זמין." }, 503);
+      const src = url.searchParams.get("src") || "",
+        width = Number(url.searchParams.get("w"));
+      const m = src.match(/^products\/([a-f0-9-]{36})\.(png|jpg|webp)$/);
+      if (!m) fail("מקור התמונה אינו תקין.");
+      if (!Number.isInteger(width) || width < 100 || width > 1086)
+        fail("רוחב הגרסה אינו תקין.");
+      if (request.headers.get("content-type") !== "image/webp")
+        fail("גרסה חייבת להיות WebP.");
+      const bytes = await request.arrayBuffer();
+      if (bytes.byteLength < 100 || bytes.byteLength > 1.5 * 1024 * 1024)
+        fail("גודל גרסת WebP אינו תקין.", 413);
+      const v = new Uint8Array(bytes);
+      if (
+        String.fromCharCode(...v.slice(0, 4)) !== "RIFF" ||
+        String.fromCharCode(...v.slice(8, 12)) !== "WEBP"
+      )
+        fail("תוכן הקובץ אינו WebP.");
+      if (!(await env.BUCKET.head(src))) fail("תמונת המקור לא נמצאה.", 404);
+      const key = `products/${m[1]}-${width}.webp`;
+      if (!(await env.BUCKET.head(key)))
+        await env.BUCKET.put(key, bytes, {
+          httpMetadata: { contentType: "image/webp" },
+        });
+      return json({ url: `/media/${key}`, width }, 201);
+    }
     const match = path.match(
       /^\/api\/admin\/(products|orders|promotions|members)(?:\/([^/]+))?$/,
     );
@@ -601,6 +632,9 @@ async function handleApi(request, env) {
         color: str(data.color, 50),
         image,
         imageUrl,
+        ...(cleanImageSet(data.imageSet, imageUrl)
+          ? { imageSet: cleanImageSet(data.imageSet, imageUrl) }
+          : {}),
         active: data.active !== false,
       };
     } else if (table === "orders") {

@@ -1,6 +1,6 @@
 import { Heart, ArrowUpLeft, ArrowUpRight } from "@phosphor-icons/react";
 import { money } from "../commerce";
-import { productImage } from "../experience";
+import { productImage, imgVariants, SIZES } from "../experience";
 import { hasStock } from "../designers";
 // ORDER_SHEM_DEV_013: default photos (knit, shirt, trousers) have a portrait 3:4 version for the regular card only.
 const portraitDefault = (src) =>
@@ -48,6 +48,7 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
         <a href={`#/product/${p.id}`}>
           <img
             src={compact ? productImage(p) : portraitDefault(productImage(p))}
+            {...imgVariants(p, productImage(p), compact ? SIZES.carousel : SIZES.card)}
             alt={name}
             loading="lazy"
             decoding="async"

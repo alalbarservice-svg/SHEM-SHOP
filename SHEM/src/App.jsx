@@ -30,6 +30,8 @@ import {
   lineColour,
   matchesAvailability,
   productImage,
+  imgVariants,
+  SIZES,
   experienceEvent,
 } from "./experience";
 import "./components/experience.css";
@@ -533,6 +535,7 @@ export function App() {
                   src={
                     p?.imageUrl || `/assets/${p?.image || p?.id || "knit"}.png`
                   }
+                  {...imgVariants(p, p?.imageUrl, SIZES.cart)}
                   alt={t(p.he, p.en)}
                 />
                 <div>
@@ -1459,6 +1462,7 @@ export function App() {
                             p?.imageUrl ||
                             `/assets/${p?.image || p?.id || "knit"}.png`
                           }
+                          {...imgVariants(p, p?.imageUrl, SIZES.orderLine)}
                           alt=""
                         />
                         <span>
@@ -1786,6 +1790,7 @@ export function App() {
                           p?.imageUrl ||
                           `/assets/${p?.image || p?.id || "knit"}.png`
                         }
+                        {...imgVariants(p, p?.imageUrl, SIZES.search)}
                         alt=""
                       />
                       <span>

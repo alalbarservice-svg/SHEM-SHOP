@@ -16,7 +16,10 @@ export default {
         headers: {
           "content-type":
             object.httpMetadata?.contentType || "application/octet-stream",
-          "cache-control": "public,max-age=86400",
+          // WebP variants have unique, never-rewritten names (products/<uuid>-<w>.webp).
+          "cache-control": /^products\/[a-zA-Z0-9-]+-\d{2,4}\.webp$/.test(key)
+            ? "public,max-age=31536000,immutable"
+            : "public,max-age=86400",
           "x-content-type-options": "nosniff",
         },
       });

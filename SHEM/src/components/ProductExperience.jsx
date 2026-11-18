@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { adminApi } from "../admin-api";
-import { productImage } from "../experience";
+import { uploadVariants } from "../webp-variants";
+import { productImage, imgVariants, SIZES } from "../experience";
 
 export function ProductGallery({ product, he = true, color = "" }) {
   const images = product.images?.length
@@ -48,7 +49,10 @@ export function ProductGallery({ product, he = true, color = "" }) {
       >
         <img
           src={active.url}
+          {...imgVariants(product, active.url, SIZES.gallery)}
           alt={active.alt || (he ? product.he : product.en)}
+          loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
         <span>{he ? "להגדלה" : "Enlarge"} ↗</span>
@@ -65,7 +69,12 @@ export function ProductGallery({ product, he = true, color = "" }) {
             aria-pressed={index === i}
             onClick={() => setIndex(i)}
           >
-            <img src={image.url} alt="" loading="lazy" />
+            <img
+              src={image.url}
+              {...imgVariants(product, image.url, SIZES.thumb)}
+              alt=""
+              loading="lazy"
+            />
           </button>
         ))}
       </div>
@@ -85,7 +94,12 @@ export function ProductGallery({ product, he = true, color = "" }) {
         >
           ✕
         </button>
-        <img src={active.url} alt={active.alt || product.he} />
+        <img
+          src={active.url}
+          {...imgVariants(product, active.url, SIZES.zoom)}
+          alt={active.alt || product.he}
+          loading="lazy"
+        />
         <div>
           <button type="button" onClick={() => move(-1)}>
             {he ? "הקודמת" : "Previous"}
@@ -256,14 +270,33 @@ export function ProductPresentationEditor({
                       body: f,
                       headers: { "content-type": f.type },
                     });
+                    const url = r.url || r.imageUrl;
+                    // WebP variants are an addition: on failure the original is kept and the message says so.
+                    const { imageSet, error: webpError } = await uploadVariants(
+                      f,
+                      url,
+                      adminApi,
+                    );
                     const next = [...images];
-                    next[i] = { url: r.url, alt: value.he };
+                    next[i] = {
+                      url,
+                      alt: value.he,
+                      ...(imageSet ? { imageSet } : {}),
+                    };
                     const compact = next.filter(Boolean);
+                    const { imageSet: _old, ...rest } = value;
                     onChange({
-                      ...value,
+                      ...rest,
                       images: compact,
                       imageUrl: compact[0]?.url || value.imageUrl,
+                      ...(compact[0]?.imageSet
+                        ? { imageSet: compact[0].imageSet }
+                        : {}),
                     });
+                    if (webpError)
+                      setError(
+                        `התמונה הועלתה (מקור בלבד). המרה ל-WebP נכשלה (פרט טכני: ${webpError}). האתר יציג את המקור.`,
+                      );
                   } catch (e) {
                     setError(e.message);
                   } finally {

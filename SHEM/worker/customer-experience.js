@@ -51,6 +51,23 @@ const asset = (value) =>
   (typeof value === "string" &&
     /^\/(assets|media)\/[a-zA-Z0-9_./-]+$/.test(value) &&
     !value.includes(".."));
+// imageSet: the widths of the WebP variants that exist for the original /media/products/<uuid>.<ext>, e.g. [480, 800, 1086]
+// (files products/<uuid>-<w>.webp). Anything else (old map format, odd widths, an original that is not a product upload) is dropped.
+export function cleanImageSet(set, originalUrl) {
+  if (
+    !/^\/media\/products\/[a-f0-9-]{36}\.(png|jpg|webp)$/.test(originalUrl || "") ||
+    !Array.isArray(set)
+  )
+    return undefined;
+  const widths = [...new Set(set)];
+  if (
+    !widths.length ||
+    widths.length > 4 ||
+    widths.some((w) => !Number.isInteger(w) || w < 100 || w > 1086)
+  )
+    return undefined;
+  return widths.sort((a, b) => a - b);
+}
 export function productPresentation(data) {
   const images = Array.isArray(data.images) ? data.images : [];
   if (images.length > 3 || images.some((i) => !i || !asset(i.url) || !i.url))
@@ -95,7 +112,10 @@ export function productPresentation(data) {
   if (new Set(colors.map((c) => text(c.name, 50))).size !== colors.length)
     fail("יש להסיר צבעים כפולים.");
   return {
-    images: images.map((i) => ({ url: i.url, alt: text(i.alt, 160) })),
+    images: images.map((i) => {
+      const imageSet = cleanImageSet(i.imageSet, i.url);
+      return { url: i.url, alt: text(i.alt, 160), ...(imageSet ? { imageSet } : {}) };
+    }),
     sizeGuide: {
       columns,
       rows: rows.map((r) => ({

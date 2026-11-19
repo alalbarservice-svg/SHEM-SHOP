@@ -53,7 +53,11 @@ export function ProductCard({ product: p, he, saved, onSave, compact = false }) 
             loading="lazy"
             decoding="async"
           />
-          <span className="product-discover" aria-hidden="true">
+          <span
+            className="product-discover"
+            aria-hidden="true"
+            data-long={p.sizes?.length > 5 ? "" : undefined}
+          >
             {chips}
           </span>
         </a>

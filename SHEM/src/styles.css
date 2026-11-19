@@ -4071,3 +4071,47 @@ article.product-card .product-new.product-soldout {
   opacity: 1;
   color: #7b766f;
 }
+
+/* Moshe 19.11: ONE fixed size capsule for every item and colour. Smoked glass with a fine gold ring; ivory text on a
+   dark ground of its own, so legibility never depends on the photo (min. 6.7:1 over a white photo, about 14:1 over black).
+   Show/hide behaviour (hover on mouse, always on touch) is unchanged. */
+article.product-card .product-discover {
+  inset-inline: 0;
+  margin-inline: auto;
+  width: max-content;
+  max-width: calc(100% - 18px);
+  bottom: 12px;
+  min-height: 0;
+  padding: 8px 17px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0;
+  border-radius: 999px;
+  background: rgba(24, 22, 20, 0.74);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  backdrop-filter: blur(16px) saturate(1.1);
+  border: 0.75px solid rgba(201, 169, 106, 0.85);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  color: #f6f1e7;
+  font: 500 11.5px/1 Montserrat, Arial, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+article.product-card .product-discover > span + span::before {
+  height: 9px;
+  margin-inline: 13px;
+  background: rgba(201, 169, 106, 0.8);
+}
+/* Long rows (6 or more sizes, e.g. shoes) tighten instead of being cut off. */
+article.product-card .product-discover[data-long] {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  padding-inline: 12px;
+}
+article.product-card .product-discover[data-long] > span + span::before {
+  margin-inline: 5px;
+}
+article.product-card .product-discover > span.size-out > bdi {
+  opacity: 0.55;
+}
